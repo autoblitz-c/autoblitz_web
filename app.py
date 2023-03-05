@@ -77,7 +77,7 @@ def book():
 def vacancy():
     return render_template('vacancy.html')
 
-
+#vacancy with sending mail
 @app.route('/vacancy_result', methods=['POST', 'GET'])
 def vacancy_result():
     msg0 = "############## Bewerberdaten : ###############" + '\n'
