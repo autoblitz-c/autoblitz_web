@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Kontaktieren Sie uns</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='contact_us.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="body">
+    <div class="container-fullwidth m-0 p-0">
+
+
+
+        <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
+                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab" href="/"><i id="tab" class="fa fa-home"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown">unsere Dienstleistungen</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="taxi()">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab" class="nav-link" href="/vacancy">Stellenangebote</a>
+                        </li>
+                        <li class=" nav-item">
+                            <a id="tab" class="nav-link" href="/about_us">Über uns</a>
+                        </li>
+
+
+
+                        <li class="nav-item dropdown" style="background-color:rgb(240,142,33);border-radius: 25px;">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-address-book"></i></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Mail uns"
+                                        style="text-align:center;color:rgb(240,142,33)">Kontaktieren Sie uns <i
+                                            class="fa fa-envelope" aria-hidden="true"
+                                            style="color:rgb(240,142,33)"></i></a>
+                                </li>
+                                <li hidden><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Help"
+                                        style="text-align:center">Help <i class="fa fa-question-circle fa-lg"
+                                            aria-hidden="true"></i></a></li>
+                            </ul>
+                        </li>
+                        <!--customer login-->
+                        <li class="nav-item dropdown" hidden>
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </nav>
+              <!-- Modal -->
+              <div  class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true" style="border-radius:45px">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird bald online gehen. 
+                          </h3>
+                          
+                      </div>
+                      <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                          <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                          </txt>
+                      </div>
+                      <div class="modal-footer">
+                          <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--Modal end-->
+      
+      <script type="text/javascript">
+          function taxi() {
+              $("#taxi_modal").modal('toggle');}
+      </script>
+
+        <div class="container-fullwidth" id="rect">
+            <br>
+
+            <form style="padding-left:20px;padding-right:20px" name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
+                <label for="Name"> <i id="fu" class="fa fa-user"> :</i>
+                </label>
+                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" style="width:30%"
+                    required>
+
+
+
+                <label for="Phone" style="position:relative;left:3%"><i id="fu" class="fa fa-phone"> :</i>
+                </label>
+                <input id="Phone" name="Phone" class="form" type="phone" placeholder="Rufnummer"
+                    style="position:relative;left:3%;width:fit-content" required>
+
+
+
+                <label for="Mail"  style="position:relative;left:8%"><i id="fu" class="fa fa-envelope"> :</i>
+                </label>
+                <input id="Mail" class="form" name="Mail" type="email" placeholder="Example@domain.com"
+                    style="position:relative;left:8%;width:32%" required>
+                <br>
+                <br>
+                <input type="text" id="Subject" name="Subject" class="form"
+                    style="position:relative;left:2.1%;width:40%" placeholder="Betreff" required>
+                <br>
+                <br>
+                <textarea class="form" id="Message" name="Message" rows="5" placeholder="Nachricht" col="50"
+                    style="position:relative;left:2.1%;padding-left:10px;padding-top: 10px;border-radius: 15px;"
+                    required></textarea>
+
+                <div class="container-sm" style="position:relative;top:5vh">
+                    <button name="sub"
+                        style="position:relative;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                        type="button" onclick="valid()" id="check-button"
+                        class="btn btn-primary  ">Kontaktieren Sie uns</button>
+                    <button id="res" name="res"
+                        style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
+                        class="btn btn-primary  ">Reset</button>
+                </div>
+                <!-- Modal -->
+                <div  class="modal fade" id="contact_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true" style="border-radius:45px">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Wir haben deine Anfrage erhalten. <img style="position:relative;left:-1%" src="{{url_for('static', filename='success.jpg')}}" width="15%" height="15%">
+                                </h3>
+                                
+                            </div>
+                            <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                                <txt style="font-size: 70%;color:white">Vielen Dank für Ihre Kontaktaufnahme <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">. Wir werden uns sehr bald bei Ihnen melden.
+                                </txt>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal end-->
+            </form>
+            <script>
+                function valid(){
+                    if (document.getElementById("Name").value == "") {
+                    alert("Bitte geben Sie Ihren vollständigen Namen ein")
+                }
+                else if (document.getElementById("Phone").value == "" || document.getElementById("Phone").value.includes("+", 0) == false) {
+                    alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
+                }
+                else if (document.getElementById("Mail").value == "" || document.getElementById("Mail").value.includes("@") == false) {
+                    alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
+                }
+                else if (document.getElementById("Subject").value == "" ) {
+                    alert("Bitte füllen Sie die Betreff-Spalte aus")
+                }
+                else if (document.getElementById("Message").value == "" ) {
+                    alert("Bitte füllen Sie die Nachrichtenspalte aus")
+                }
+                else{
+                    $("#contact_modal").modal('toggle');
+                }
+
+                      
+                }
+            </script>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
+
+            <footer class="text-center text-lg-start"
+                style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
+                <div class="container d-flex justify-content-center py-5">
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52); border-radius: 50px;"
+                        href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
+                        <i style="color:white" class="fa fa-facebook-f"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                        href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
+                        <i style="color:white" class="fa fa-youtube"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;">
+                        <i style="color:white" class="fa fa-instagram"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                        href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
+                        <i style="color:white" class="fa fa-twitter"></i>
+                    </a>
+                </div>
+    
+                <!-- Copyright -->
+                <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                    © 2023 Copyright:
+                    <a class="text-white" href="mailto:kontakt@tm-marketingservice.de">TM-Marketing Service</a>
+                </div>
+                <!-- Copyright -->
+            </footer>
+    
+        </div>
+    </div>
+</body>
+</html>

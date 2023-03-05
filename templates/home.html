@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+    
+</head>
+
+<body class="body">
+    <div class="container-fullwidth m-0 p-0">
+
+
+
+        <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
+                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item" style="background-color:rgb(240,142,33);border-radius:25px">
+                            <a class="nav-link" id="tab" href="#"
+                                onclick="alert('Sie sind bereits auf der Startseite, danke :)')"><i id="tab"
+                                    class="fa fa-home"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown">unsere Dienstleistungen</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="taxi()">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab" class="nav-link" href="/vacancy">Stellenangebote</a>
+                        </li>
+                        <li class=" nav-item">
+                            <a id="tab" class="nav-link" href="/about_us">Über uns</a>
+                        </li>
+
+
+
+                        <li class="nav-item dropdown">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-address-book"></i></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item" href="/contact_us" data-bs-toggle="tooltip"
+                                        title="Mail uns" style="text-align:center">Kontaktieren Sie uns <i
+                                            class="fa fa-envelope" aria-hidden="true"></i></a>
+                                </li>
+                                <li hidden><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Help"
+                                        style="text-align:center"> <i class="fa fa-question-circle fa-lg"
+                                            aria-hidden="true"></i></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" hidden>
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </nav>
+
+              <!-- Modal -->
+              <div  class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true" style="border-radius:45px">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird bald online gehen. 
+                          </h3>
+                          
+                      </div>
+                      <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                          <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                          </txt>
+                      </div>
+                      <div class="modal-footer">
+                          <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!--Modal end-->
+      
+      <script type="text/javascript">
+          function taxi() {
+              $("#taxi_modal").modal('toggle');}
+      </script>
+
+        <div class="row p-0 m-0">
+
+            <div class="col-sm-6 ">
+                <br>
+                <br>
+                <br>
+
+                <h1 class="fw-bold"
+                    style="position:relative;left:5%;top:-12%;color:rgb(240,142,33);border-radius: 25px; width:fit-content;">
+                    Einfach Fahrt Online buchen
+                </h1>
+                <p style="position:relative;left:5%;top:-12%;max-width:70%;">
+                    Mit Autoblitz können Sie Ihre nächste Fahrt schnell und stressfrei buchen. </p>
+
+
+
+
+            </div>
+
+            <div class="col-sm-6">
+
+                <img src="{{url_for('static', filename='book.gif')}}" align="right" alt="book"
+                    style="position:relative; top:0%;right:-1%; max-height:100%;max-width:100%">
+                <a class=" btn btn-primary btn-responsive" type="button" href="/book"
+                    style="position:relative;top:-15%;left:43%;max-width:45%;font-size:100%;max-height: fit-content;border-radius:35px;color: black;">Jetzt einfach buchen</a>
+            </div>
+
+
+            <div class="container-fullwidth" id="rect">
+                <iframe width="90%" height="90%" style="position:relative;top:5%;left:5%;border-radius:25px"
+                    src="https://www.youtube.com/embed/rWS9DdZv_gg" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+
+
+
+
+
+            <div class="container">
+                <br>
+                <br>
+                <h1 class="fw-bold" style="text-align:center;color:rgb(240,142,33);">
+                    Was sagen unsere Kunden über uns?
+                </h1>
+                <br>
+                <br>
+                <!--testimonals start-->
+                <div id="demo" class="container carousel slide" data-bs-ride="carousel">
+
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators" style="position:relative;top:10%">
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"
+                            style="background-color:rgb(240,142,33)"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"
+                            style="background-color:rgb(240,142,33)"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"
+                            style="background-color:rgb(240,142,33)"></button>
+                    </div>
+
+                    <!-- The slideshow/carousel -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="d-block w-100 card p-3 text-center px-4"
+                                style="position:relative;left:25%;max-width:50%;border-radius: 25px;">
+
+                                <div class="user-image">
+
+                                    <img src="{{url_for('static', filename='customer-1.jpg')}}" class="rounded-circle" width="80">
+
+                                </div>
+
+                                <div class="user-content">
+
+                                    <h3 class="mb-0">travelliners85.0</h3>
+                                    <h5 class="text-secondary">Rezension aus gelbeseiten.de</h5>
+                                    <p>Fahre nun schon seid gut 1 Jahr mit Taxi Blitz. Immer höfliche und gepflegte
+                                        Fahrer.. von den Autos die immer sauber sind mal ganz abgesehen. Bedanke mich
+                                        auf diesem Weg dafür das man am Samstag den 14 März 2015 Vertrauen geschenkt
+                                        hat, als ich am BHF Köln beklaut worden bin und mich ohne Geld nach Hause
+                                        gefahren hat. Werde heute bei dem netten Fahrer Pascal meine offene Rechnung
+                                        begleichen!!! DANKE.. ihr seid ein Top Team***
+                                    </p>
+
+                                </div>
+
+                                <div class="ratings">
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="d-block w-100 card p-3 text-center px-4"
+                                style="position:relative;left:25%;max-width:50%;border-radius: 25px;">
+
+                                <div class="user-image">
+
+                                    <img src="{{url_for('static', filename='customer-2.jpg')}}" class="rounded-circle" width="80">
+
+                                </div>
+
+                                <div class="user-content">
+
+                                    <h3 class="mb-0">konstantin1983</h3>
+                                    <h5 class="text-secondary">Rezension aus golocal.de</h5>
+                                    <p>Die Auto-Blitz Funkmietwagen GmbH ist das beste Taxiunternehmen, das ich
+                                        persönlich kenne. Immer freundliche und ortskundige Fahrer kommen pünktlich und
+                                        bringen mich schnell zum Zielort. Die Autos, mit denen ich gebracht werde, sind
+                                        sehr sauber. Jedesmal habe ich großes Vergnügen, die Dienstleistungen von
+                                        "Auto-Blitz" zu nutzen.
+                                    </p>
+
+                                </div>
+
+                                <div class="ratings">
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="d-block w-100 card p-3 text-center px-4"
+                                style="position:relative;left:25%;max-width:50%;border-radius: 25px;">
+
+                                <div class="user-image">
+
+                                    <img src="{{url_for('static', filename='customer-3.jpg')}}" class="rounded-circle" width="80">
+
+                                </div>
+
+                                <div class="user-content">
+
+                                    <h3 class="mb-0">Stephan Kreyenborg</h3>
+                                    <h5 class="text-secondary">Rezension aus Facebook</h5>
+                                    <p>Auto Blitz - ein Name und ein Programm.
+                                        Preiswerter Mietwagen-Service. Nette und kompetente Mitarbeiter.
+                                        Wenn Taxi, dann Mietwagen - dann Auto Blitz!
+                                    </p>
+
+                                </div>
+
+                                <div class="ratings">
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+                                    <i id='fa' class="fa fa-star"></i>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Left and right controls/icons -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"
+                                style="background-color:rgb(240,142,33); border-radius:50px"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"
+                                style="background-color:rgb(240,142,33);border-radius:50px"></span>
+                        </button>
+                    </div>
+
+
+
+
+                </div>
+                <!--testimonals end-->
+
+                <br>
+                <br>
+            </div>
+
+            <div id="rect1" class="container-fullwidth">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1 class="fw-bold"
+                            style="position:relative;left:5%;top:18%;color:rgb(240,142,33);border-radius: 25px; width:fit-content;">
+                            Über uns
+                        </h1>
+                        <br>
+                        <p style="position:relative;left:5%;top:20%;max-width:70%;color:white">
+                            "Seit 1951 bringt Autblitz Funkmietwagen Sie sicher und schnell ans Ziel. Unser Fuhrpark
+                            umfasst Großraumwagen, PKW´s und Busse. Egal für welchen Anlass – wir haben den passenden
+                            Wagen für Sie! Mieten Sie bei uns und profitieren Sie von unserer langjährigen Erfahrung im
+                            Bereich Funkmietwagenvermietung."
+                        </p>
+                        <br>
+                        <br>
+                        <br>
+
+                        <txt class="fw-bold"
+                            style="position:relative;left:5%;top:17%;max-width:70%;color:white;width:fit-content">Team
+                            AutoBlitz </txt>
+                        <img src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y" alt=logo
+                            style="position:relative;top:19.5%;left:5%;width:10%;height:10%">
+
+                    </div>
+                    <div class="col-sm-6">
+                        <img src="{{url_for('static', filename='about_us.jpg')}}" alt="about_us-image"
+                            style="max-height:90%;max-width:500%;position:relative;top:5%;left:4%;border-radius: 25px;">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
+
+            <footer class="text-center text-lg-start"
+                style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
+                <div class="container d-flex justify-content-center py-5">
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52); border-radius: 50px;"
+                        href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
+                        <i style="color:white" class="fa fa-facebook-f"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                        href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
+                        <i style="color:white" class="fa fa-youtube"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;">
+                        <i style="color:white" class="fa fa-instagram"></i>
+                    </a>
+                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                        href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
+                        <i style="color:white" class="fa fa-twitter"></i>
+                    </a>
+                </div>
+    
+                <!-- Copyright -->
+                <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                    © 2023 Copyright:
+                    <a class="text-white" href="mailto:kontakt@tm-marketingservice.de">TM-Marketing Service</a>
+                </div>
+                <!-- Copyright -->
+            </footer>
+    
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+* {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 1.8vw;
+  color: rgb(0, 0, 0);
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  word-wrap: break-word;
+  width: 100
+}
+
+.body {
+
+
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+
+
+}
+#rect {
+    width: 100%;
+    height: 450px;
+    background: rgb(16, 16, 52);
+    border-radius: 25px;
+}
+
+/* change navbar-toggler inside lines color (stroke) */
+.navbar-light span.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='orange' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  color: rgb(0, 0, 0);
+}
+
+/* change hamburger button border color */
+.navbar-light button.navbar-toggler {
+  border-color: rgb(0, 0, 0);
+}
+
+.btn-responsive {
+  white-space: normal !important;
+  word-wrap: break-word;
+}
+
+#ok:hover{
+background-color:rgb(240,142,33)
+}
+
+#button:hover{
+    
+    background-color: white;
+    color:rgb(240,142,33)
+  }
+
+  #logo {
+    position: relative;
+    float: left;
+    width:  125px;
+    height: 125px;
+
+}
+
+.navbar-nav > li{
+    padding-left:35px;
+    padding-right:35px;
+    
+  }
+  #tab{
+    color:rgb(0, 0, 0);
+  }
+  .nav-item:hover{
+    
+    background-color:rgb(240,142,33);
+    border-radius: 20px;
+  }
+
+.form {
+    color:rgb(112, 109, 109);
+    background-color:white;
+    padding:2px;
+    width:90%;
+    font-size: 60%;
+    padding-left: 5px;
+    border-radius: 25px;
+    text-align: left;
+  }
+
+  #fu{
+    color:white;
+    font-size: 80%;
+  }
+  @media (max-width: 1023px) {
+    #Message { grid-row: 5; }
+}

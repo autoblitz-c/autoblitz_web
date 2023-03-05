@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Book Jetzt!</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+
+</head>
+
+<body class="body">
+    <div class="container-fullwidth m-0 p-0">
+
+
+
+        <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
+                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab" href="/"><i id="tab" class="fa fa-home"></i></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown">unsere Dienstleistungen</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="taxi()">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab" class="nav-link" href="/vacancy">Stellenangebote</a>
+                        </li>
+                        <li class=" nav-item">
+                            <a id="tab" class="nav-link" href="/about_us">Über uns</a>
+                        </li>
+
+
+
+                        <li class="nav-item dropdown">
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-address-book"></i></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item" href="/contact_us" data-bs-toggle="tooltip"
+                                        title="Mail uns" style="text-align:center">Kontaktieren Sie uns <i
+                                            class="fa fa-envelope" aria-hidden="true"></i></a>
+                                </li>
+                                <li hidden><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Help"
+                                        style="text-align:center"> <i class="fa fa-question-circle fa-lg"
+                                            aria-hidden="true"></i></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" hidden>
+                            <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="#">Login mit
+                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </nav>
+        <!-- Modal -->
+        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            style="border-radius:45px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
+                            bald online gehen.
+                        </h3>
+
+                    </div>
+                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
+                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                        </txt>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal end-->
+
+        <script type="text/javascript">
+            function taxi() {
+                $("#taxi_modal").modal('toggle');
+            }
+        </script>
+        <br>
+        <br>
+
+        <!--booking type buttons-->
+        <div class="row"
+            style="background-color:rgb(255, 255, 255);padding-top:10px;padding-bottom:10px;border-radius:25px;">
+            <div id="t" class="col-sm-6" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;">
+                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:35%;top:0.5vh;"><i id="ti"
+                        class='fa fa-car' style="color:rgb(255, 255, 255);font-size:100%"> Personenbeförderung</i></a>
+            </div>
+            <div id="a" class="col-sm-6" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;">
+                <a id="abtn" type="button" onclick="ambulance()"
+                    style="position:relative;left:35%;top:0.5vh;border-radius: 25px;"><i id="ai" class='fa fa-ambulance'
+                        style="color:rgb(255, 255, 255);font-size:100%"> Krankentransport</i></a>
+            </div>
+            <br>
+            <br>
+        </div>
+        <br>
+
+
+        <script>
+            /*if (document.getElementById("taxi").style.display == 'none') {
+                document.getElementById("a").style.background = "rgb(13,110,253)"
+                document.getElementById("ambulance").style.display = "none"
+                document.getElementById("taxi").style.display = "block"
+                document.getElementById("t").style.background = "rgb(240, 142, 33)"
+
+            }
+            else if (document.getElementById("taxi").style.display == 'block') {
+                document.getElementById("taxi").style.display = "none"
+                document.getElementById("t").style.background = "rgb(13,110,253)"
+
+            }
+        }*/
+
+            function ambulance() {
+                if (document.getElementById("ambulance").style.display == 'none') {
+                    document.getElementById("t").style.background = "rgb(13,110,253)"
+                    document.getElementById("taxi").style.display = "none"
+                    document.getElementById("ambulance").style.display = "block"
+                    document.getElementById("a").style.background = "rgb(240, 142, 33)"
+
+                }
+                else if (document.getElementById("ambulance").style.display == 'block') {
+                    document.getElementById("ambulance").style.display = "none"
+                    document.getElementById("a").style.background = "rgb(13,110,253)"
+
+                }
+            }
+        </script>
+
+
+
+
+
+        <div id="taxi" class="container-fullwidth" style="display:none">
+            <div class="row">
+                <div class="col-sm-6"
+                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding:25px;max-width:100%">
+                    <form autocomplete="on">
+                        <label for="Name"> <i id="fu" class="fa fa-user"> :</i>
+                        </label>
+                        <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" required>
+
+                        <br>
+                        <br>
+
+                        <label for="Phone"><i id="fu" class="fa fa-phone"> :</i>
+                        </label>
+                        <input id="Phone" class="form" name="Phone" type="tel"
+                            placeholder="Rufnummer(bitte mit Landesvorwahl)" style="width:40%" required>
+
+
+
+                        <label for="Mail" style="position:relative;left:3%"><i id="fu" class="fa fa-envelope"> :</i>
+                        </label>
+                        <input id="Mail" class="form" type="email" placeholder="Example@domain.com"
+                            style="position:relative;left:3%;width:40%" pattern="@" title="must include @" required>
+
+                        <br>
+                        <br>
+
+                        <label for="Pick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
+
+                        <input id="Pick-up" class="form" type="text" placeholder="Abholort" />
+
+                        <br>
+                        <br>
+                        <label for="Drop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
+
+                        <input id="Drop" class="form" type="text" placeholder="Zielort" />
+
+                        <br>
+                        <br>
+
+
+                        <label for="Vehicle"><i id="fu" class="fa fa-car" aria-hidden="true"> :</i></label>
+                        <select id="Vehicle" class="form" style="width:55%">
+                            <option class="op">PKW für bis zu 4 Personen und 2 Koffer</option>
+                            <option class="op">Kombi für bis zu 4 Personen und 4 Koffer</option>
+                            <option class="op">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer</option>
+
+
+                        </select>
+
+
+                        <input class="form" id="Date" name="Date" type="date"
+                            style="position:relative;left:3%;width:fit-content">
+
+                        <input class="form" id="Time" name="Time" type="time"
+                            style="position:relative;left:5%;width:fit-content">
+                        <br>
+                        <br>
+
+                        <div class="container-sm">
+                            <button name="sub"
+                                style="position:relative;left:1%;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                                type="button" id="check-button" class="btn btn-primary  " onclick="display()">Preis
+                                prüfen</button>
+                            <button id="res" name="res"
+                                style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
+                                class="btn btn-primary  ">Reset</button>
+                        </div>
+
+
+
+
+                    </form>
+
+                </div>
+                <div id="googleMap" class="col-sm-6 hidden-sm hidden-xs">
+
+                </div>
+            </div>
+            <!--booking details-->
+            <div id="Price" class="container-fullwidth"
+                style="display:none;padding-top:10px;padding-left:20%;padding-right: 20%;">
+
+                <hr>
+                <h3 style="color:rgb(240,142,33)">Buchungsdetails:</h3>
+                <hr>
+                <i class="fa fa-user"> : <txt id="name" class="tx"></txt></i>
+                <br>
+                <i class="fa fa-phone"> : <txt id="phone" class="tx"></txt></i>
+                <i class="fa fa-envelope" style="position:relative;left:5%"> : <txt id="mail" class="tx">
+                    </txt></i>
+                <br>
+                <i class="fa fa-dot-circle-o" aria-hidden="true"> : <txt id="start" class="tx"></txt></i>
+                <br>
+                <i class="fa fa-map-marker" aria-hidden="true"> : <txt id="end" class="tx">
+                    </txt></i>
+                <br>
+                <i class="fa fa-road" aria-hidden="true">: <txt id="kms" class="tx"></txt></i>
+                <i class="fa fa-clock-o" aria-hidden="true" style="position:relative;left:7%">: <txt id="dur"
+                        class="tx"></txt></i>
+                <i class="fa fa-calendar-check-o" aria-hidden="true" style="position:relative;left:15%">: <txt
+                        id="book-datetime" class="tx"></txt></i>
+                <br>
+                <i class="fa fa-users" aria-hidden="true"> : <txt id="passengers" class="tx"></txt></i>
+                <i class="fa fa-suitcase" aria-hidden="true" style="position:relative;left:5%"> : <txt id="luggage"
+                        class="tx"></txt></i>
+                <br>
+
+                <div id="wait" style="display:none">
+                    <i class="fa fa-hourglass-start" aria-hidden="true"> : <txt id="waiting"
+                            style="color:red;font-size: 80%;" class="tx">Ihre Wartezeit
+                            beträgt etwa eine Stunde. Vielen Dank für Ihr Verständnis.</txt></i>
+                </div>
+                <br>
+
+                <hr>
+                <h3 style="color:rgb(240,142,33)">Preis Details:</h3>
+                <hr>
+
+                <table>
+                    <tr>
+                        <th>Beschreibung</th>
+                        <th>Preis (<i class="fa fa-eur" aria-hidden="true"></i>)</th>
+
+                    </tr>
+                    <tr>
+                        <td>Basisbetrag</td>
+                        <td>4.30</td>
+
+                    </tr>
+                    <tr>
+                        <td>Zusätzlicher Betrag</td>
+                        <td id="additional"></td>
+
+                    </tr>
+                    <tr>
+                        <td>Preis pro km (mindestens 1 km wird berechnet)</td>
+                        <td>2.20</td>
+
+                    </tr>
+
+                    <tr style="background-color:rgb(16, 16, 52)">
+                        <td class="fw-bold" style="color:rgb(255, 255, 255)">GESAMT</td>
+                        <td id="total" class="fw-bold" style="color:rgb(240,142,33)"></td>
+
+                    </tr>
+
+                </table>
+                <br>
+                <form method="post" action="/checkout">
+                    <hr>
+                    <h3 style="color:rgb(240,142,33)">Bitte wählen Sie eine Zahlungsmethode:</h3>
+                    <hr>
+
+                    <input type="radio" name="payment" value="paypal" id="paypal"
+                        onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
+                    <label for="paypal"><i class="fa fa-cc-paypal"></i></label><br>
+
+                    <input type="radio" name="payment" value="stripe" id="stripe"
+                        onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
+                    <label for="stripe"><i class="fa fa-cc-visa"></i> <i class="fa fa-cc-mastercard"></i> <i
+                            class="fa fa-university"></i></label><br>
+
+                    <input type="radio" name="payment" value="cash" id="cash"
+                        onclick="document.getElementById('pay').style.display ='none';document.getElementById('pay_cash').style.display ='block'">
+                    <label for="cash"><i class="fa fa-eur" aria-hidden="true"></i> <i
+                            class="fa fa-money"></i></label><br>
+                    <div style="padding-top:10px;padding-bottom:10px;">
+
+                        <button id="pay" name="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px"> </button>
+
+                        <button id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px">Buch Jetzt!</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+            <br>
+            <br>
+        </div>
+
+
+        <!--ambulance booking-->
+        <div id="ambulance" class="container-fullwidth" style="display:none">
+            <div class="row">
+                <div class="col-sm-12"
+                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding:60px;max-width:100%">
+                    <form autocomplete="on" action="/ambulance_result" method="post" enctype="multipart/form-data">
+                        <label for="PName"> <i id="fu" class="fa fa-user"> :</i>
+                        </label>
+                        <input id="PName" name="PName" class="form" type="text" placeholder="Patientenname "
+                            style="width:40%" required>
+
+                        <label for="PAge" style="position:relative;left:5%"> <i id="fu" class="fa fa-heartbeat"> :</i>
+                        </label>
+                        <input id="PAge" name="PAge" class="form" type="number" placeholder="Alter "
+                            style="position:relative;left:5%;width:40%" required>
+
+                        <br>
+                        <br>
+
+                        <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
+                        </label>
+                        <input id="PPhone" name="PPhone" class="form" type="tel"
+                            placeholder="Rufnummer (bitte mit Landesvorwahl)" style="width:40%" required>
+
+
+
+                        <label for="PMail" style="position:relative;left:5%"><i id="fu" class="fa fa-envelope"> :</i>
+                        </label>
+                        <input id="PMail" name="PMail" class="form" type="email" placeholder="Example@domain.com"
+                            style="position:relative;left:5%;width:40%" required>
+
+                        <br>
+                        <br>
+
+                        <label for="PPick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
+
+                        <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort"
+                            style="width:88%">
+
+                        <br>
+                        <br>
+                        <label for="PDrop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
+
+                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort" style="width:88%">
+
+                        <br>
+                        <br>
+
+
+                        <label for="PInsurance"><i id="fu" class="fa fa-medkit" aria-hidden="true"> :</i></label>
+                        <select id="PInsurance" name="PInsurance" class="form" style="width:30%">
+                            <option class="op">Staatliche Krankenversicherung</option>
+                            <option class="op">Private Krankenversicherungen</option>
+                            <option class="op">Berufsgenossenschaft</option>
+
+
+                        </select>
+
+
+                        <input class="form" id="PDate" name="PDate" type="date"
+                            style="position:relative;left:3%;width:fit-content">
+
+                        <input class="form" id="PTime" name="PTime" type="time"
+                            style="position:relative;left:5%;width:fit-content">
+                        <br>
+                        <br>
+
+                        <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Attest
+                                :</i></label>
+                        <input id="Doctor-letter" name="Doctor-letter" class="form" style="width:22%" type="file"
+                            placeholder="">
+
+                        <label for='P-letter' style="position:relative;left:5%;"><i id="fu" class="fa fa-file-text"
+                                aria-hidden="true"> Befreiungsschein (optional) :</i></label>
+                        <input id="P-letter" name="P-letter" class="form" style="position:relative;left:5%;width:22%"
+                            type="file" placeholder="">
+                        <br>
+                        <br>
+
+
+                        <div class="container-sm">
+                            <button name="Psub"
+                                style="position:relative;left:1%;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                                type="button" id="Pcheck-button" onClick="pvalid()"
+                                class="btn btn-primary  ">Absenden</button>
+                            <button id="Pres" name="Pres"
+                                style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
+                                class="btn btn-primary  ">Reset</button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ambulance_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" style="border-radius:45px">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">
+                                            Vielen Dank für deine
+                                            Bestellung. <img src="{{url_for('static', filename='smile.png')}}"
+                                                width="7%" height="7%">
+                                        </h3>
+
+                                    </div>
+                                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                                        <txt style="font-size: 70%;color:white">Sie erhalten eine Bestellbestätigung an
+                                            die von Ihnen angegebene E-Mail-Adresse. Bitte klicken Sie auf ok, um die
+                                            Bestellung zu bestätigen.
+
+                                        </txt>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="ok" type="submit" class="btn btn-primary"
+                                            data-bs-dismiss="modal">ok</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Modal end-->
+
+
+
+
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+        <br>
+        <br>
+    </div>
+
+
+    <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
+
+        <footer class="text-center text-lg-start"
+            style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
+            <div class="container d-flex justify-content-center py-5">
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52); border-radius: 50px;"
+                    href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
+                    <i style="color:white" class="fa fa-facebook-f"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                    href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
+                    <i style="color:white" class="fa fa-youtube"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;">
+                    <i style="color:white" class="fa fa-instagram"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                    href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
+                    <i style="color:white" class="fa fa-twitter"></i>
+                </a>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2023 Copyright:
+                <a class="text-white" href="mailto:kontakt@tm-marketingservice.de">TM-Marketing Service</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+
+    </div>
+
+
+
+    <script type="text/javascript">
+        function pvalid() {
+            if (document.getElementById("PName").value == "") {
+                alert("Bitte geben Sie Ihren vollständigen Namen ein")
+            }
+            else if (document.getElementById("PPhone").value == "" || document.getElementById("PPhone").value.includes("+", 0) == false) {
+                alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
+            }
+            else if (document.getElementById("PMail").value == "" || document.getElementById("PMail").value.includes("@") == false) {
+                alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
+            }
+            else if (document.getElementById("PPick-up").value == "" || document.getElementById("PDrop").value == "") {
+                alert("Bitte wählen Sie den gültigen Abhol- und Abgabeort aus dem Dropdown-Menü, wenn die Eingabefelder für die Abholung und Abgabe ausgewählt sind.")
+            }
+            else if (document.getElementById("PDate").value == "" || document.getElementById("PTime").value == "") {
+                alert("Bitte wählen Sie das Datum und die Uhrzeit der Fahrt")
+
+            }
+            else if (document.getElementById("Doctor-letter").value == "") {
+                alert("Bitte laden Sie Ihr ärztliches Attest hoch")
+
+            }
+            else {
+                $("#ambulance_modal").modal('toggle');
+            }
+
+        }
+        function display() {
+            /*
+            if (document.getElementById("Name").value == "") {
+                alert("Bitte geben Sie Ihren vollständigen Namen ein")
+            }
+            else if (document.getElementById("Phone").value == "" || document.getElementById("Phone").value.includes("+", 0) == false) {
+                alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
+            }
+            else if (document.getElementById("Mail").value == "" || document.getElementById("Mail").value.includes("@") == false) {
+                alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
+            }
+            else if (document.getElementById("Pick-up").value == "" || document.getElementById("Drop").value == "") {
+                alert("Bitte wählen Sie den gültigen Abhol- und Abgabeort aus dem Dropdown-Menü, wenn die Eingabefelder für die Abholung und Abgabe ausgewählt sind.")
+            }
+            else if (document.getElementById("Date").value == "" || document.getElementById("Time").value == "") {
+                alert("Bitte wählen Sie das Datum und die Uhrzeit der Fahrt")
+
+            }*/
+
+
+            calcRoute()
+            document.getElementById("name").innerHTML = document.getElementById("Name").value;
+            document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
+            document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
+            document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
+            document.getElementById("end").innerHTML = document.getElementById("Drop").value;
+            if (document.getElementById("Vehicle").value == "Normal drive für bis zu 4 Personen und 2 Koffern") {
+                document.getElementById("passengers").innerHTML = "bis zu 4 Passagiere sind erlaubt";
+                document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "0.00";
+
+
+            }
+            else if (document.getElementById("Vehicle").value == "Kombi für bis zu 4 Personen und 4 Koffern") {
+                document.getElementById("passengers").innerHTML = "bis zu 4 Passagiere sind erlaubt";
+                document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "5.00";
+                document.getElementById("total").innerHTML = "";
+
+            }
+            else if (document.getElementById("Vehicle").value == "Großraumwaggon für bis zu 8 Passagiere und mehr als 4 Koffer") {
+                document.getElementById("passengers").innerHTML = "bis zu 8 Passagiere sind erlaubt";
+                document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "10.00";
+                document.getElementById("total").innerHTML = "";
+
+            }
+            let wait = parseInt(document.getElementById('Time').value.toString())
+
+            if (wait == 00 || wait < 06) {
+                document.getElementById('wait').style.display = 'block'
+            }
+            else {
+                document.getElementById('wait').style.display = 'none'
+            }
+
+
+
+            document.getElementById("Price").style.display = "block"
+
+
+        }
+
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/src"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="{{url_for('static', filename='book.js')}}"></script>
+
+    </div>
+</body>
+</html>
