@@ -23,7 +23,7 @@ from functools import wraps
 
 app = flask.Flask(__name__, template_folder="templates/")
 app.config["DEBUG"] = False
-app.config["UPLOAD_FOLDER"] = "webapp/uploads"
+app.config["UPLOAD_FOLDER"] = "static"
 
 # stripe key
 stripe.api_key = os.environ.get('t_s_s_k')
