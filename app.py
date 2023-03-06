@@ -14,11 +14,11 @@ from email.utils import formatdate, formataddr
 from email.header import Header
 from email import encoders
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv, find_dotenv
+#from dotenv import load_dotenv, find_dotenv
 import os
 from functools import wraps
 
-load_dotenv(find_dotenv())
+#load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
@@ -26,7 +26,7 @@ app.config["DEBUG"] = False
 app.config["UPLOAD_FOLDER"] = "webapp/uploads"
 
 # stripe key
-stripe.api_key = os.getenv('t_s_s_k')
+stripe.api_key = os.environ.get('t_s_s_k')
 
 
 # creating auth
@@ -347,7 +347,7 @@ def contact_us_result():
 # map key
 @app.route('/src', methods=['POST', 'GET'])
 def src():
-    kmap = os.getenv('map')
+    kmap = os.environ.get('map')
 
     src = "https://maps.googleapis.com/maps/api/js?key=" + kmap + "&libraries=places"
 
