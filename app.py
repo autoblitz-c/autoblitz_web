@@ -165,7 +165,7 @@ def ambulance_result():
     data1 = f"Datum =  {date}" + '\n' + f"Zeit =  {time}" + '\n' + f"Krankenversicherungsart = {ins}" + '\n' + f"Abholort = {pick}" + '\n' + f"Zielort = {drop}" + '\n' + '\n' + '\n'
 
     body = msg0 + data + msg1 + data1
-    """licence = request.files['Doctor-letter']
+    licence = request.files['Doctor-letter']
     licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename))
     licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename)))
 
@@ -207,7 +207,7 @@ def ambulance_result():
     smtp.quit()
     os.remove(licence_path)
     if request.files['P-letter'].filename != "":
-        os.remove(PB_path)"""
+        os.remove(PB_path)
 
     # customer mail
 
