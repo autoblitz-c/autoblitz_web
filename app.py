@@ -111,7 +111,7 @@ def vacancy_result():
         part = MIMEBase(
             'application', "octet-stream"
         )
-        path = "webapp/uploads/{name}"
+        path = "static/{name}"
         part.set_payload(open(path.format(name=request.files[f].filename), "rb").read())
         encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
