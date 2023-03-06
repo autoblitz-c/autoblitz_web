@@ -4,12 +4,14 @@ import flask
 from flask import request, render_template, redirect, jsonify, Response
 import stripe
 import smtplib
+import email
 from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
-from email.utils import formatdate
+from email.utils import formatdate, formataddr
+from email.header import Header
 from email import encoders
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
@@ -20,7 +22,7 @@ load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
-app.config["DEBUG"] = True  # TODO: development mode
+app.config["DEBUG"] = False
 app.config["UPLOAD_FOLDER"] = "webapp/uploads"
 
 # stripe key
@@ -100,7 +102,7 @@ def vacancy_result():
 
     msg = MIMEMultipart()
     msg['From'] = "cologne.autoblitz@gmail.com"
-    msg['To'] = 'tausallu.md007@gmail.com'
+    msg['To'] = 'info@autoblitz-koeln.de'
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = "Neue Stellenbewerbung"
     msg.attach(MIMEText(body, 'plain'))
@@ -122,7 +124,7 @@ def vacancy_result():
     # Authentication
     smtp.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
 
-    smtp.sendmail("cologne.autoblitz@gmail.com", "tausallu.md007@gmail.com", msg.as_string())
+    smtp.sendmail("cologne.autoblitz@gmail.com", "info@autoblitz-koeln.de", msg.as_string())
 
     smtp.quit()
     os.remove(licence_path)
@@ -163,7 +165,7 @@ def ambulance_result():
     data1 = f"Datum =  {date}" + '\n' + f"Zeit =  {time}" + '\n' + f"Krankenversicherungsart = {ins}" + '\n' + f"Abholort = {pick}" + '\n' + f"Zielort = {drop}" + '\n' + '\n' + '\n'
 
     body = msg0 + data + msg1 + data1
-    licence = request.files['Doctor-letter']
+    """licence = request.files['Doctor-letter']
     licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename))
     licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename)))
 
@@ -175,7 +177,7 @@ def ambulance_result():
 
     msg = MIMEMultipart()
     msg['From'] = "cologne.autoblitz@gmail.com"
-    msg['To'] = 'tausallu.md007@gmail.com'
+    msg['To'] = 'bestellung@autoblitz-koeln.de'
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = "Neuer Auftrag für Krankentransport"
     msg.attach(MIMEText(body, 'plain'))
@@ -200,35 +202,44 @@ def ambulance_result():
     # Authentication
     smtp.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
 
-    smtp.sendmail("cologne.autoblitz@gmail.com", "tausallu.md007@gmail.com", msg.as_string())
+    smtp.sendmail("cologne.autoblitz@gmail.com", "bestellung@autoblitz-koeln.de", msg.as_string())
 
     smtp.quit()
     os.remove(licence_path)
     if request.files['P-letter'].filename != "":
-        os.remove(PB_path)
+        os.remove(PB_path)"""
 
     # customer mail
 
     message0 = "Vielen Dank für deine Bestellung." + '\n' + '\n' + "Dein Auto wird in kürze auf dem Weg zu dir sein." + '\n' + "Wenn du Fragen hast, kannst du dich gerne unter 0221612277 melden." + '\n' + '\n'
     message1 = "mit freundlichen Grüßen" + '\n' + "Team Autoblitz"
-    message = message0 + message1
+
     # creates SMTP session
 
-    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s = smtplib.SMTP("smtp.udag.de", port=587)
+    s.ehlo()
+
 
     # start TLS for security
     s.starttls()
+    s.ehlo()
+
 
     # Authentication
-    s.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
+    s.login("bestellung@autoblitz-koeln.de", "tiam2002")
 
     mail_msg = EmailMessage()
-    mail_msg.set_content(message)
-    mail_msg['Subject'] = "Bestellbestätigung"
-    mail_msg['From'] = "cologne.autoblitz@gmail.com"
+
+    mail_msg['Subject'] = Header("Bestellbestätigung").encode()
+    mail_msg['From'] = "bestellung@autoblitz-koeln.de"
     mail_msg['To'] = request.form.get('PMail')
+    mail_msg['Message-id'] = email.utils.make_msgid()
+    mail_msg['Date'] = email.utils.formatdate()
+
+    message = message0 + message1
 
     # sending the mail
+    mail_msg.set_content(message)
 
     s.send_message(mail_msg)
 
@@ -283,7 +294,7 @@ def kappey_result():
     mail_msg.set_content(message)
     mail_msg['Subject'] = "Kappey"
     mail_msg['From'] = "cologne.autoblitz@gmail.com"
-    mail_msg['To'] = "tausallu.md007@gmail.com"
+    mail_msg['To'] = "bestellung@autoblitz-koeln.de"
 
     # sending the mail
 
@@ -321,7 +332,7 @@ def contact_us_result():
     mail_msg.set_content(message)
     mail_msg['Subject'] = subject
     mail_msg['From'] = "cologne.autoblitz@gmail.com"
-    mail_msg['To'] = "tausallu.md007@gmail.com"
+    mail_msg['To'] = "info@autoblitz-koeln.de"
 
     # sending the mail
 
