@@ -30,7 +30,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -119,47 +119,49 @@
               $("#taxi_modal").modal('toggle');}
       </script>
 
-        <div class="container-fullwidth" id="rect">
+        <div class="container-fullwidth" style="padding:20px;background-color:rgb(16, 16, 52);border-radius: 25px;">
             <br>
 
-            <form style="padding:10px;" name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
+            <form  name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
                 <label for="Name"> <i id="fu" class="fa fa-user"> :</i>
                 </label>
-                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" style="width:30%"
+                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" style="width:40%"
                     required>
+                <br><br>
 
 
 
-                <label for="Phone" style="position:relative;left:3%"><i id="fu" class="fa fa-phone"> :</i>
+                <label for="Phone" ><i id="fu" class="fa fa-phone"> :</i>
                 </label>
-                <input id="Phone" name="Phone" class="form" type="phone" placeholder="Rufnummer"
-                    style="position:relative;left:3%;width:fit-content" required>
+                <input id="Phone" name="Phone" class="form" type="phone" placeholder="Rufnummer (bitte mit Landesvorwahl)"
+                style="width:30%" required>
+                    <br><br>
 
 
 
-                <label for="Mail"  style="position:relative;left:8%"><i id="fu" class="fa fa-envelope"> :</i>
+                <label for="Mail"  ><i id="fu" class="fa fa-envelope"> :</i>
                 </label>
                 <input id="Mail" class="form" name="Mail" type="email" placeholder="Example@domain.com"
-                    style="position:relative;left:8%;width:32%" required>
+                style="width:50%" required>
                 <br>
                 <br>
                 <input type="text" id="Subject" name="Subject" class="form"
-                    style="position:relative;left:2.1%;width:40%" placeholder="Betreff" required>
+                    style="position:relative;left:2.1%;width:55%" placeholder="Betreff" required>
                 <br>
                 <br>
                 <textarea class="form" id="Message" name="Message" rows="5" placeholder="Nachricht" col="50"
                     style="position:relative;left:2.1%;padding-left:10px;padding-top: 10px;border-radius: 15px;"
-                    required></textarea>
+                    required></textarea><br>
 
-                <div class="container-sm" style="position:relative;top:5vh">
+                
                     <button name="sub"
-                        style="position:relative;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                        style="position:relative;background-color:rgb(78, 192, 78);border-radius: 25px;left:2%;width:fit-content"
                         type="button" onclick="valid()" id="check-button"
                         class="btn btn-primary  ">Kontaktieren Sie uns</button>
                     <button id="res" name="res"
-                        style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
-                        class="btn btn-primary  ">Reset</button>
-                </div>
+                        style="position:relative;left:7%;background-color:red;border-radius: 25px;" type="reset"
+                        class="btn btn-primary  ">Reset</button><br><br>
+                
                 <!-- Modal -->
                 <div  class="modal fade" id="contact_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true" style="border-radius:45px">

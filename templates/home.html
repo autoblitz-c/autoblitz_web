@@ -31,7 +31,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -134,6 +134,10 @@
                 </h1>
                 <p style="position:relative;left:5%;top:-12%;max-width:70%;">
                     Mit Autoblitz können Sie Ihre nächste Fahrt schnell und stressfrei buchen. </p>
+                    
+                    <a class=" btn btn-primary btn-responsive" type="button" href="/book"
+                    style="position:relative;left:5%;font-size:80%;max-height: fit-content;border-radius:35px;color: black;">Jetzt einfach buchen</a>
+                    <br><br>
 
 
 
@@ -144,8 +148,7 @@
 
                 <img src="{{url_for('static', filename='book.gif')}}" align="right" alt="book"
                     style="position:relative; top:0%;right:-1%; max-height:100%;max-width:100%">
-                <a class=" btn btn-primary btn-responsive" type="button" href="/book"
-                    style="position:relative;top:-15%;left:43%;max-width:45%;font-size:100%;max-height: fit-content;border-radius:35px;color: black;">Jetzt einfach buchen</a>
+                
             </div>
 
 
@@ -303,16 +306,18 @@
                 <br>
             </div>
 
-            <div id="rect1" class="container-fullwidth">
+            <div  class="container-fullwidth">
 
-                <div class="row">
+                <div class="row" style="background-color:rgb(16, 16, 52);border-radius: 25px;">
                     <div class="col-sm-6">
+                        <br>
+                        <br>
                         <h1 class="fw-bold"
-                            style="position:relative;left:5%;top:18%;color:rgb(240,142,33);border-radius: 25px; width:fit-content;">
+                            style="position:relative;left:5%;color:rgb(240,142,33);border-radius: 25px; width:fit-content;">
                             Über uns
                         </h1>
                         <br>
-                        <p style="position:relative;left:5%;top:20%;max-width:70%;color:white">
+                        <p style="position:relative;left:5%;max-width:70%;color:white">
                             "Seit 1951 bringt Autblitz Funkmietwagen Sie sicher und schnell ans Ziel. Unser Fuhrpark
                             umfasst Großraumwagen, PKW´s und Busse. Egal für welchen Anlass – wir haben den passenden
                             Wagen für Sie! Mieten Sie bei uns und profitieren Sie von unserer langjährigen Erfahrung im
@@ -320,18 +325,19 @@
                         </p>
                         <br>
                         <br>
-                        <br>
-
+                        
+                        <img src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}" alt=logo
+                        style="position:relative;left:5%;width:15%;height:15%">
                         <txt class="fw-bold"
-                            style="position:relative;left:5%;top:17%;max-width:70%;color:white;width:fit-content">Team
+                            style="position:relative;left:5%;top:-3%;max-width:70%;color:white;width:fit-content">Team
                             AutoBlitz </txt>
-                        <img src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y" alt=logo
-                            style="position:relative;top:19.5%;left:5%;width:10%;height:10%">
+                        
 
                     </div>
                     <div class="col-sm-6">
+                        <br><br>
                         <img src="{{url_for('static', filename='new_about_us.jpeg')}}" alt="about_us-image"
-                            style="height:80%;max-width:100%;position:relative;top:5%;left:4%;border-radius: 25px;">
+                            style="height:80%;max-width:100%;position:relative;left:4%;border-radius: 25px;">
                     </div>
                 </div>
             </div>

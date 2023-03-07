@@ -38,7 +38,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -132,14 +132,16 @@
 
         <!--booking type buttons-->
         <div class="row"
-            style="background-color:rgb(255, 255, 255);padding-top:10px;padding-bottom:10px;border-radius:25px;">
-            <div id="t" class="col-sm-6" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;">
-                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:35%;top:0.5vh;"><i id="ti"
-                        class='fa fa-car' style="color:rgb(255, 255, 255);font-size:100%"> Personenbeförderung</i></a>
+            >
+            <div id="t" class="col-sm-6" >
+                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:15%;top:0.5vh;"><i id="fu"
+                        class='fa fa-car' style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;color:rgb(255, 255, 255);font-size:100%"> Personenbeförderung</i></a>
+                        <br>
+                        <br>
             </div>
-            <div id="a" class="col-sm-6" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;">
+            <div id="a" class="col-sm-6" >
                 <a id="abtn" type="button" onclick="ambulance()"
-                    style="position:relative;left:35%;top:0.5vh;border-radius: 25px;"><i id="ai" class='fa fa-ambulance'
+                    style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:20%;top:0.5vh;border-radius: 25px;"><i id="fu" class='fa fa-ambulance'
                         style="color:rgb(255, 255, 255);font-size:100%"> Krankentransport</i></a>
             </div>
             <br>
@@ -150,30 +152,31 @@
 
         <script>
             /*if (document.getElementById("taxi").style.display == 'none') {
-                document.getElementById("a").style.background = "rgb(13,110,253)"
+                document.getElementById("abtn").style.background = "rgb(13,110,253)"
                 document.getElementById("ambulance").style.display = "none"
                 document.getElementById("taxi").style.display = "block"
-                document.getElementById("t").style.background = "rgb(240, 142, 33)"
+                document.getElementById("tbtn").style.background = "rgb(240, 142, 33)"
 
             }
             else if (document.getElementById("taxi").style.display == 'block') {
                 document.getElementById("taxi").style.display = "none"
-                document.getElementById("t").style.background = "rgb(13,110,253)"
+                document.getElementById("tbtn").style.background = "rgb(13,110,253)"
 
             }
         }*/
 
             function ambulance() {
                 if (document.getElementById("ambulance").style.display == 'none') {
-                    document.getElementById("t").style.background = "rgb(13,110,253)"
+                    document.getElementById("tbtn").style.background = "rgb(13,110,253)"
+                    document.getElementById("tbtn").style.WebkitBorderRadius = "50px"
                     document.getElementById("taxi").style.display = "none"
                     document.getElementById("ambulance").style.display = "block"
-                    document.getElementById("a").style.background = "rgb(240, 142, 33)"
+                    document.getElementById("abtn").style.background = "rgb(240, 142, 33)"
 
                 }
                 else if (document.getElementById("ambulance").style.display == 'block') {
                     document.getElementById("ambulance").style.display = "none"
-                    document.getElementById("a").style.background = "rgb(13,110,253)"
+                    document.getElementById("abtn").style.background = "rgb(13,110,253)"
 
                 }
             }
@@ -382,7 +385,7 @@
                         <label for="PAge" style="position:relative;left:5%"> <i id="fu" class="fa fa-heartbeat"> :</i>
                         </label>
                         <input id="PAge" name="PAge" class="form" type="number" placeholder="Alter "
-                            style="position:relative;left:5%;width:40%" required>
+                            style="position:relative;left:5%;width:30%" required>
 
                         <br>
                         <br>
@@ -390,14 +393,14 @@
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)" style="width:40%" required>
+                            placeholder="Rufnummer (bitte mit Landesvorwahl)" style="width:40%" required><br><br>
 
 
 
-                        <label for="PMail" style="position:relative;left:5%"><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="PMail" ><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="PMail" name="PMail" class="form" type="email" placeholder="Example@domain.com"
-                            style="position:relative;left:5%;width:40%" required>
+                            style="width:50%" required>
 
                         <br>
                         <br>
@@ -424,7 +427,7 @@
                             <option class="op">Berufsgenossenschaft</option>
 
 
-                        </select>
+                        </select><br><br>
 
 
                         <input class="form" id="PDate" name="PDate" type="date"
@@ -435,20 +438,22 @@
                         <br>
                         <br>
 
-                        <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Attest
+                        <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Verordnung einer Krankenbeförderung
                                 :</i></label>
-                        <input id="Doctor-letter" name="Doctor-letter" class="form" style="width:22%" type="file"
+                        <input id="Doctor-letter" name="Doctor-letter" class="form" style="width:22%;border-radius:0;" type="file"
                             placeholder="">
+                        <br>
+                        <br>
 
-                        <label for='P-letter' style="position:relative;left:5%;"><i id="fu" class="fa fa-file-text"
-                                aria-hidden="true"> Befreiungsschein (optional) :</i></label>
-                        <input id="P-letter" name="P-letter" class="form" style="position:relative;left:5%;width:22%"
+                        <label for='P-letter' ><i id="fu" class="fa fa-file-text"
+                                aria-hidden="true"> Befreiungsausweis/ Krankenkassengenehmigung (optional) :</i></label>
+                        <input id="P-letter" name="P-letter" class="form" style="width:22%;border-radius:0;"
                             type="file" placeholder="">
                         <br>
                         <br>
 
 
-                        <div class="container-sm">
+                        
                             <button name="Psub"
                                 style="position:relative;left:1%;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
                                 type="button" id="Pcheck-button" onClick="pvalid()"
@@ -456,7 +461,7 @@
                             <button id="Pres" name="Pres"
                                 style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
                                 class="btn btn-primary  ">Reset</button>
-                        </div>
+                        
                         <!-- Modal -->
                         <div class="modal fade" id="ambulance_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true" style="border-radius:45px">

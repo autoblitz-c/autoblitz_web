@@ -55,7 +55,7 @@
             padding-top: 0%;
             padding-right: 25%;
             padding-bottom: 25%;
-            padding-left: 35%;
+            padding-left: 25%;
         }
 
         #ok:hover {
@@ -126,29 +126,30 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
 
     <div>
-        <h1 style="color:black;padding:5%; text-align:center;font-size:5vw">Kontaktiere uns</h1>
-    </div>
+        <h1 style="color:black;padding-top:10px;padding-bottom:5px;position:relative;padding-left:35%;font-size:5vw">Kappey</h1>
+    </div><br><br>
 
     <form id="form" name="kappey" action="/kappey_result" method="post" enctype="multipart/form-data">
-        <div id="s" class="mb-3 mt-3">
+        <div id="s" class="container-sm">
             <label for="date">Datum:</label>
             <input style="width:fit-content" id="date" name="date" type="date" class="btn btn-primary" formtarget="">
             <br>
             <br>
             <label for="time" style="color:black ">Zeit:</label>
             <input style="width:fit-content" id="time" name="time" type="time" class="btn btn-primary" formtarget="">
+            <br><br>
 
 
-            <div class="mb-3 mt-3" id="rr">
+            <div class="container-sm" id="rr">
 
 
 
-                <label for="kms" style="color:black " class="form-label">Km:</label>
+                <label for="kms" style="position:relative;left:-1%;color:black " class="form-label">Km:</label>
                 <input id="kms" name="kms" type="range" style="width: 50%; height:35%" value="0" min="0" max="1000"
                     class="form-range" step="0.1" oninput="this.nextElementSibling.value = this.value">
                 <input type="text" style="width:15%" id="textInput" value="">
                 <br><br>
-                <textarea id="info" style="width:75%" name="info" class="form-control" placeholder="Info"></textarea>
+                <textarea id="info" style="position:relative;left:-1%;width:75%" name="info" class="form-control" placeholder="Info"></textarea>
             </div>
 
         </div>
@@ -168,7 +169,8 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
 
         <div>
-            <button style="background-color:orange" id="t" type="button" class="btn btn-primary" href="#"><i
+            <br>
+            <button style="position:relative;left:2%;background-color:orange" id="t" type="button" class="btn btn-primary" href="#"><i
                     class="fa fa-plus"></i></button>
             <br>
             <br>

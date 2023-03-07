@@ -32,7 +32,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                        src="https://drive.google.com/thumbnail?id=1GXe6uDqIvRXPB1j9G3iAr-bRdyUTAm9Y"></a>
+                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -124,7 +124,7 @@
         <hr>
 
         <p style="padding:20px;">Wir suchen zum nächstmöglichen Zeitpunkt eine/n
-            Taxifahrer/in. Voraussetzungen sind gute Deutschkenntnisse, Führerschein Klasse B und einen gültigen
+            Fahrer/in. Voraussetzungen sind gute Deutschkenntnisse, Führerschein Klasse B und einen gültigen
             Personenbeförderungsschein.</p>
         <div id="vacancy" class="container-fullwidth">
             <hr>
@@ -132,12 +132,13 @@
             <hr>
             <div class="row">
                 <div class="col-sm-12"
-                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding:60px;max-width:100%">
+                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding:20px;max-width:100%">
+                    <br>
                     <form autocomplete="on" action="/vacancy_result" method="post" enctype="multipart/form-data">
                         <label for="VName"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
                         <input id="VName" name="VName" class="form" type="text" placeholder="Voller Name "
-                            style="width:40%" required>
+                             required>
 
                         <br>
                         <br>
@@ -145,14 +146,15 @@
                         <label for="VPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="VPhone" name="VPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)" style="width:40%" required>
+                            placeholder="Rufnummer (bitte mit Landesvorwahl)" required>
+                            <br><br>
 
 
 
-                        <label for="VMail" style="position:relative;left:5%"><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="VMail" ><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="VMail" class="form" name="VMail" type="email" placeholder="Example@domain.com"
-                            style="position:relative;left:5%;width:40%" required>
+                             required>
 
 
 
@@ -165,19 +167,20 @@
 
 
 
-                        <label for='licence'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Driving licence B
+                        <label for='licence'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Führerscheinklasse B
                                 :</i></label>
-                        <input id="licence" class="form" name="licence" style="width:22%" type="file" placeholder="">
+                        <input id="licence" class="form" name="licence" style="width:22%;border-radius: 0;" type="file" placeholder="">
+                        <br><br>
 
-                        <label for='P-letter' style="position:relative;left:5%;"><i id="fu" class="fa fa-file-text"
+                        <label for='P-letter' ><i id="fu" class="fa fa-file-text"
                                 aria-hidden="true"> Personenbeförderungsschein :</i></label>
-                        <input id="P-letter" name="P-letter" class="form" style="position:relative;left:5%;width:22%"
+                        <input id="P-letter" name="P-letter" class="form" style="width:22%;border-radius: 0;"
                             type="file" placeholder="">
                         <br>
                         <br>
 
 
-                        <div class="container-sm">
+                        
                             <button name="Psub"
                                 style="position:relative;left:1%;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
                                 type="button" id="Pcheck-button" onClick="valid()"
@@ -185,7 +188,7 @@
                             <button id="Pres" name="Pres"
                                 style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
                                 class="btn btn-primary  ">Reset</button>
-                        </div>
+                        
                         <!-- Modal -->
                 <div  class="modal fade" id="vacancy_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" style="border-radius:45px">
