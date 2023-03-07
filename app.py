@@ -14,19 +14,19 @@ from email.utils import formatdate, formataddr
 from email.header import Header
 from email import encoders
 from werkzeug.utils import secure_filename
-#from dotenv import load_dotenv, find_dotenv
+# from dotenv import load_dotenv, find_dotenv
 import os
 from functools import wraps
 
-#load_dotenv(find_dotenv())
+# load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
 app.config["DEBUG"] = False
-app.config["UPLOAD_FOLDER"] = "static"
+app.config["UPLOAD_FOLDER"] = "static/"
 
 # stripe key
-stripe.api_key = os.environ.get('t_s_s_k')
+#stripe.api_key = os.environ.get('t_s_s_k')
 
 
 # creating auth
@@ -79,7 +79,8 @@ def book():
 def vacancy():
     return render_template('vacancy.html')
 
-#vacancy with sending mail
+
+# vacancy with sending mail
 @app.route('/vacancy_result', methods=['POST', 'GET'])
 def vacancy_result():
     msg0 = "############## Bewerberdaten : ###############" + '\n'
@@ -170,7 +171,7 @@ def ambulance_result():
     licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename)))
 
     PB = request.files['P-letter']
-    print(PB.filename)
+
     PB_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename))
     if request.files['P-letter'].filename != "":
         PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename)))
@@ -178,7 +179,7 @@ def ambulance_result():
     msg = MIMEMultipart()
     msg['From'] = "cologne.autoblitz@gmail.com"
     msg['To'] = 'bestellung@autoblitz-koeln.de'
-    msg['Date'] = formatdate(localtime=True)
+
     msg['Subject'] = "Neuer Auftrag für Krankentransport"
     msg.attach(MIMEText(body, 'plain'))
 
@@ -188,12 +189,11 @@ def ambulance_result():
             part = MIMEBase(
                 'application', "octet-stream"
             )
-            path = "webapp/uploads/{name}"
+            path = "static/{name}"
             part.set_payload(open(path.format(name=request.files[f].filename), "rb").read())
             encoders.encode_base64(part)
             part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
             msg.attach(part)
-
 
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
     # start TLS for security
@@ -209,7 +209,7 @@ def ambulance_result():
     if request.files['P-letter'].filename != "":
         os.remove(PB_path)
 
-    # customer mail
+    ########## customer mail  ######
 
     message0 = "Vielen Dank für deine Bestellung." + '\n' + '\n' + "Dein Auto wird in kürze auf dem Weg zu dir sein." + '\n' + "Wenn du Fragen hast, kannst du dich gerne unter 0221612277 melden." + '\n' + '\n'
     message1 = "mit freundlichen Grüßen" + '\n' + "Team Autoblitz"
@@ -219,11 +219,9 @@ def ambulance_result():
     s = smtplib.SMTP("smtp.udag.de", port=587)
     s.ehlo()
 
-
     # start TLS for security
     s.starttls()
     s.ehlo()
-
 
     # Authentication
     s.login("bestellung@autoblitz-koeln.de", "tiam2002")
@@ -360,7 +358,7 @@ def publish():
     return
 
 
-customer = stripe.Customer.create()
+#customer = stripe.Customer.create()
 
 
 @app.route('/create-payment-intent', methods=['POST'])
@@ -368,7 +366,7 @@ def create_payment():
     try:
         data = json.loads(request.data)
         intent = stripe.PaymentIntent.create(
-            customer=customer['id'],
+            #customer=customer['id'],
 
             amount=600,
             currency='eur',
