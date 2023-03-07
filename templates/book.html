@@ -38,7 +38,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+                        src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -131,18 +131,20 @@
         <br>
 
         <!--booking type buttons-->
-        <div class="row"
-            >
-            <div id="t" class="col-sm-6" >
-                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:21%;right:30%;top:0.5vh;"><i id="fu"
-                        class='fa fa-car' style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;color:rgb(255, 255, 255);font-size:100%"> Personenbeförderung</i></a>
-                        <br>
-                        <br>
+        <div class="row">
+            <div id="t" class="col-sm-6">
+                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:21%;right:30%;top:0.5vh;"><i
+                        id="fu" class='fa fa-car'
+                        style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;color:rgb(255, 255, 255);font-size:100%">
+                        Personenbeförderung</i></a>
+                <br>
+                <br>
             </div>
-            <div id="a" class="col-sm-6" >
+            <div id="a" class="col-sm-6">
                 <a id="abtn" type="button" onclick="ambulance()"
-                    style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:25%;right:30%;top:0.5vh;border-radius: 25px;"><i id="fu" class='fa fa-ambulance'
-                        style="color:rgb(255, 255, 255);font-size:100%"> Krankentransport</i></a>
+                    style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:25%;right:30%;top:0.5vh;border-radius: 25px;"><i
+                        id="fu" class='fa fa-ambulance' style="color:rgb(255, 255, 255);font-size:100%">
+                        Krankentransport</i></a>
             </div>
             <br>
             <br>
@@ -375,7 +377,7 @@
         <div id="ambulance" class="container-fullwidth" style="display:none">
             <div class="row">
                 <div class="col-sm-12"
-                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding:20px;max-width:100%">
+                    style="background-color:rgb(16, 16, 52);border-radius:25px;padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;max-width:100%">
                     <form autocomplete="on" action="/ambulance_result" method="post" enctype="multipart/form-data">
                         <label for="PName"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
@@ -393,14 +395,14 @@
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)"  required><br><br>
+                            placeholder="Rufnummer (bitte mit Landesvorwahl)" required><br><br>
 
 
 
-                        <label for="PMail" ><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="PMail"><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="PMail" name="PMail" class="form" type="email" placeholder="Example@domain.com"
-                             required>
+                            required>
 
                         <br>
                         <br>
@@ -408,60 +410,65 @@
                         <label for="PPick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
                         <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort"
-                            style="width:88%">
+                            >
 
                         <br>
                         <br>
                         <label for="PDrop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort" style="width:88%">
+                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort" >
 
                         <br>
                         <br>
 
 
                         <label for="PInsurance"><i id="fu" class="fa fa-medkit" aria-hidden="true"> :</i></label>
-                        <select id="PInsurance" name="PInsurance" class="form" >
+                        <select id="PInsurance" name="PInsurance" class="form">
                             <option class="op">Staatliche Krankenversicherung</option>
                             <option class="op">Private Krankenversicherungen</option>
                             <option class="op">Berufsgenossenschaft</option>
 
 
                         </select><br><br>
+                        <label id="fu" for="PDate">Datum :</label>
 
 
                         <input class="form" id="PDate" name="PDate" type="date"
-                            style="position:relative;left:3%;width:30%">
+                            style="width:15%">
 
+                        <label id="fu" for="PTime" style="position:relative;left:5%">Zeit :</label>
                         <input class="form" id="PTime" name="PTime" type="time"
-                            style="position:relative;left:5%;width:30%">
+                            style="position:relative;left:5%;width:15%">
                         <br>
                         <br>
 
-                        <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Verordnung einer Krankenbeförderung
+                        <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Verordnung
+                                einer Krankenbeförderung
                                 :</i></label><br>
                         <input id="Doctor-letter" name="Doctor-letter" class="form" style="border-radius:0;" type="file"
-                            placeholder="">
-                        <br>
-                        <br>
-
-                        <label for='P-letter' ><i id="fu" class="fa fa-file-text"
-                                aria-hidden="true"> Befreiungsausweis/ Krankenkassengenehmigung (optional) :</i></label><br>
-                        <input id="P-letter" name="P-letter" class="form" style="border-radius:0;"
-                            type="file" placeholder="">
+                            placeholder="" style="width:92%;padding-left:0">
                         <br>
                         <br>
 
 
-                        
-                            <button name="Psub"
-                                style="position:relative;left:1%;background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
-                                type="button" id="Pcheck-button" onClick="pvalid()"
-                                class="btn btn-primary  ">Absenden</button>
-                            <button id="Pres" name="Pres"
-                                style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
-                                class="btn btn-primary  ">Reset</button>
-                        
+
+                        <label for='P-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Befreiungsausweis/
+                                Krankenkassengenehmigung (optional) :</i></label><br>
+                        <input id="P-letter" name="P-letter" class="form" style="border-radius:0;" type="file"
+                            placeholder="" style="width:92%;padding-left:0">
+                        <br>
+                        <br>
+
+
+
+                        <button name="Psub"
+                            style="background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                            type="button" id="Pcheck-button" onClick="pvalid()"
+                            class="btn btn-primary  ">Absenden</button>
+                        <button id="Pres" name="Pres"
+                            style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
+                            class="btn btn-primary  ">Reset</button>
+
                         <!-- Modal -->
                         <div class="modal fade" id="ambulance_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true" style="border-radius:45px">
@@ -648,4 +655,5 @@
 
     </div>
 </body>
+
 </html>
