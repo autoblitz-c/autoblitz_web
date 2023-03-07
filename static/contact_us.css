@@ -86,10 +86,10 @@ background-color:rgb(240,142,33)
 .form {
     color:rgb(112, 109, 109);
     background-color:white;
-    padding:2px;
-    width:90%;
-    font-size: 60%;
-    padding-left: 5px;
+    
+    width:85%;
+    font-size: 70%;
+    padding-left: 3px;
     border-radius: 25px;
     text-align: left;
   }
@@ -98,10 +98,10 @@ background-color:rgb(240,142,33)
     .form {
       color:rgb(112, 109, 109);
       background-color:rgb(255, 255, 255);
-      padding:2px;
+      
       width:85%;
-      font-size: 70%;
-      padding-left: 5px;
+      font-size: 9px;
+      padding-left: 3px;
       border-radius: 25px;
       text-align: left;
     }

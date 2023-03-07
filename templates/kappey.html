@@ -53,7 +53,7 @@
 
         #form {
             padding-top: 0%;
-            padding-right: 25%;
+            padding-right: 15%;
             padding-bottom: 25%;
             padding-left: 25%;
         }
@@ -72,6 +72,19 @@
 
         .output {
             background-color: black;
+        }
+
+        @media (max-width: 700px) {
+            * {
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 16px;
+                color: rgb(0, 0, 0);
+                margin: 0;
+                padding: 0;
+                scroll-behavior: smooth;
+                word-wrap: break-word;
+                width: 100
+            }
         }
     </style>
 
@@ -118,6 +131,7 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
             element.remove();
         };
+
     </script>
 
 </head>
@@ -126,7 +140,8 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
 
     <div>
-        <h1 style="color:black;padding-top:10px;padding-bottom:5px;position:relative;padding-left:35%;font-size:5vw">Kappey</h1>
+        <h1 style="color:black;padding-top:10px;padding-bottom:5px;position:relative;padding-left:35%;font-size:5vw">
+            Kappey</h1>
     </div><br><br>
 
     <form id="form" name="kappey" action="/kappey_result" method="post" enctype="multipart/form-data">
@@ -149,7 +164,8 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
                     class="form-range" step="0.1" oninput="this.nextElementSibling.value = this.value">
                 <input type="text" style="width:15%" id="textInput" value="">
                 <br><br>
-                <textarea id="info" style="position:relative;left:-1%;width:75%" name="info" class="form-control" placeholder="Info"></textarea>
+                <textarea id="info" style="position:relative;left:-1%;width:75%" name="info" class="form-control"
+                    placeholder="Info"></textarea>
             </div>
 
         </div>
@@ -170,15 +186,15 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
         <div>
             <br>
-            <button style="position:relative;left:2%;background-color:orange" id="t" type="button" class="btn btn-primary" href="#"><i
-                    class="fa fa-plus"></i></button>
+            <button style="position:relative;left:2%;background-color:orange" id="t" type="button"
+                class="btn btn-primary" href="#"><i class="fa fa-plus"></i></button>
             <br>
             <br>
 
             <input name="sub" style="background-color:rgb(78, 192, 78)" type="button" id="sub"
                 class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#kappey_modal" value="Absenden">
             <button id="res" name="res" style="background-color:red" type="reset"
-                class="btn btn-primary btn-lg">Zurücksetzen</button>
+                class="btn btn-primary btn-lg">Reset</button>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="kappey_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
