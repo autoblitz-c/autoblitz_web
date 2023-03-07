@@ -123,7 +123,7 @@ def vacancy_result():
     smtp.starttls()
 
     # Authentication
-    smtp.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
+    smtp.login("cologne.autoblitz@gmail.com", os.environ.get('c'))
 
     smtp.sendmail("cologne.autoblitz@gmail.com", "info@autoblitz-koeln.de", msg.as_string())
 
@@ -200,7 +200,7 @@ def ambulance_result():
     smtp.starttls()
 
     # Authentication
-    smtp.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
+    smtp.login("cologne.autoblitz@gmail.com", os.environ.get('c'))
 
     smtp.sendmail("cologne.autoblitz@gmail.com", "bestellung@autoblitz-koeln.de", msg.as_string())
 
@@ -224,7 +224,7 @@ def ambulance_result():
     s.ehlo()
 
     # Authentication
-    s.login("bestellung@autoblitz-koeln.de", "tiam2002")
+    s.login("bestellung@autoblitz-koeln.de", os.environ.get('b'))
 
     mail_msg = EmailMessage()
 
