@@ -134,14 +134,14 @@
         <div class="row"
             >
             <div id="t" class="col-sm-6" >
-                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:15%;top:0.5vh;"><i id="fu"
+                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:21%;right:30%;top:0.5vh;"><i id="fu"
                         class='fa fa-car' style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;color:rgb(255, 255, 255);font-size:100%"> Personenbeförderung</i></a>
                         <br>
                         <br>
             </div>
             <div id="a" class="col-sm-6" >
                 <a id="abtn" type="button" onclick="ambulance()"
-                    style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:20%;top:0.5vh;border-radius: 25px;"><i id="fu" class='fa fa-ambulance'
+                    style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:25%;right:30%;top:0.5vh;border-radius: 25px;"><i id="fu" class='fa fa-ambulance'
                         style="color:rgb(255, 255, 255);font-size:100%"> Krankentransport</i></a>
             </div>
             <br>
@@ -393,14 +393,14 @@
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)" style="width:40%" required><br><br>
+                            placeholder="Rufnummer (bitte mit Landesvorwahl)"  required><br><br>
 
 
 
                         <label for="PMail" ><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="PMail" name="PMail" class="form" type="email" placeholder="Example@domain.com"
-                            style="width:50%" required>
+                             required>
 
                         <br>
                         <br>
@@ -421,7 +421,7 @@
 
 
                         <label for="PInsurance"><i id="fu" class="fa fa-medkit" aria-hidden="true"> :</i></label>
-                        <select id="PInsurance" name="PInsurance" class="form" style="width:30%">
+                        <select id="PInsurance" name="PInsurance" class="form" >
                             <option class="op">Staatliche Krankenversicherung</option>
                             <option class="op">Private Krankenversicherungen</option>
                             <option class="op">Berufsgenossenschaft</option>
@@ -431,23 +431,23 @@
 
 
                         <input class="form" id="PDate" name="PDate" type="date"
-                            style="position:relative;left:3%;width:fit-content">
+                            style="position:relative;left:3%;width:30%">
 
                         <input class="form" id="PTime" name="PTime" type="time"
-                            style="position:relative;left:5%;width:fit-content">
+                            style="position:relative;left:5%;width:30%">
                         <br>
                         <br>
 
                         <label for='Doctor-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Verordnung einer Krankenbeförderung
-                                :</i></label>
-                        <input id="Doctor-letter" name="Doctor-letter" class="form" style="width:22%;border-radius:0;" type="file"
+                                :</i></label><br>
+                        <input id="Doctor-letter" name="Doctor-letter" class="form" style="border-radius:0;" type="file"
                             placeholder="">
                         <br>
                         <br>
 
                         <label for='P-letter' ><i id="fu" class="fa fa-file-text"
-                                aria-hidden="true"> Befreiungsausweis/ Krankenkassengenehmigung (optional) :</i></label>
-                        <input id="P-letter" name="P-letter" class="form" style="width:22%;border-radius:0;"
+                                aria-hidden="true"> Befreiungsausweis/ Krankenkassengenehmigung (optional) :</i></label><br>
+                        <input id="P-letter" name="P-letter" class="form" style="border-radius:0;"
                             type="file" placeholder="">
                         <br>
                         <br>

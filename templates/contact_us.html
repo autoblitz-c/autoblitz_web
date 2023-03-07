@@ -119,13 +119,13 @@
               $("#taxi_modal").modal('toggle');}
       </script>
 
-        <div class="container-fullwidth" style="padding:20px;background-color:rgb(16, 16, 52);border-radius: 25px;">
+        <div class="col-sm-12" style="padding:20px;background-color:rgb(16, 16, 52);border-radius: 25px;">
             <br>
 
             <form  name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
                 <label for="Name"><i id="fu" class="fa fa-user"> :</i>
                 </label>
-                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" style="width:40%"
+                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" 
                     required>
                 <br><br>
 
@@ -134,7 +134,7 @@
                 <label for="Phone" ><i id="fu" class="fa fa-phone"> :</i>
                 </label>
                 <input id="Phone" name="Phone" class="form" type="phone" placeholder="Rufnummer (bitte mit Landesvorwahl)"
-                style="width:30%" required>
+                 required>
                     <br><br>
 
 
@@ -142,15 +142,15 @@
                 <label for="Mail" ><i id="fu" class="fa fa-envelope"> :</i>
                 </label>
                 <input id="Mail" class="form" name="Mail" type="email" placeholder="Example@domain.com"
-                style="width:50%" required>
+                 required>
                 <br>
                 <br>
                 <input type="text" id="Subject" name="Subject" class="form"
-                    style="position:relative;left:2.1%;width:55%" placeholder="Betreff" required>
+                    style="width:92%" placeholder="Betreff" required>
                 <br>
                 <br>
                 <textarea class="form" id="Message" name="Message" rows="5" placeholder="Nachricht" col="50"
-                    style="position:relative;left:2.1%;padding-left:10px;padding-top: 10px;border-radius: 15px;"
+                    style="width:92%;padding-left:10px;padding-top: 10px;border-radius: 15px;"
                     required></textarea><br>
 
                 
