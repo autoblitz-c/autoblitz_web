@@ -8,6 +8,18 @@
   word-wrap: break-word;
   width: 100
 }
+@media (max-width: 700px) {
+  * {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    word-wrap: break-word;
+    width: 100
+  }
+}
 input[type='radio'] {
   accent-color: rgb(16, 16, 52);
 }
@@ -118,10 +130,31 @@ tr:nth-child(even) {
     border-radius: 25px;
     text-align: left;
   }
+  @media (max-width: 700px) {
+    .form {
+      color:rgb(112, 109, 109);
+      background-color:rgb(255, 255, 255);
+      padding:2px;
+      width:80%;
+      font-size: 100%;
+      padding-left: 5px;
+      border-radius: 25px;
+      text-align: left;
+    }
+  }
+
 
   #fu{
     color:white;
     font-size: 80%;
+  }
+  @media (max-width: 700px) {
+    #fu{
+      color:rgb(255, 255, 255);
+      font-size: 100%;
+      
+    }
+
   }
 
   .op {
