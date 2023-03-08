@@ -8,7 +8,7 @@
   word-wrap: break-word;
   width: 100
 }
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   * {
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 16px;
@@ -130,7 +130,7 @@ tr:nth-child(even) {
     border-radius: 25px;
     text-align: left;
   }
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     .form {
       color:rgb(112, 109, 109);
       background-color:rgb(255, 255, 255);
@@ -148,7 +148,7 @@ tr:nth-child(even) {
     color:white;
     font-size: 80%;
   }
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     #fu{
       color:rgb(255, 255, 255);
       font-size: 90%;
@@ -156,12 +156,12 @@ tr:nth-child(even) {
     }
 
   }
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     #Pcheck-button{
       font-size: 9px;
     }
   }
-    @media (max-width: 700px) {
+    @media (max-width: 1000px) {
     #Pres{
       font-size: 9px;
     }
@@ -182,7 +182,7 @@ tr:nth-child(even) {
     border-radius: 25px;
     
   }
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     #googleMap { display: none; }
 }
 
