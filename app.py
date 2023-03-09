@@ -262,7 +262,7 @@ def contact_us():
 
 # kappey result page
 @app.route('/kappey_result', methods=['POST', 'GET'])
-@requires_auth
+
 def kappey_result():
     msg = "Hello," + '\n' + '\n'
     date = request.form.getlist('date')
