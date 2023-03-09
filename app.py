@@ -249,7 +249,7 @@ def ambulance_result():
 
 # kappey page
 @app.route('/kappey', methods=['POST', 'GET'])
-@requires_auth
+
 def kappey():
     return render_template('kappey.html')
 
