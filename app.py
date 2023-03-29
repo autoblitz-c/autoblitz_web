@@ -260,6 +260,7 @@ def vacancy_result():
         msg['Subject'] = "Neue Stellenbewerbung"
         msg.attach(MIMEText(body, 'plain'))
 
+
         for f in request.files:
             part = MIMEBase(
                 'application', "octet-stream"
@@ -275,6 +276,10 @@ def vacancy_result():
         smtp = smtplib.SMTP('smtp.gmail.com', 587)
         # start TLS for security
         smtp.starttls()
+
+    # Authentication
+    smtp.login("cologne.autoblitz@gmail.com", os.environ.get('c'))
+
 
         # Authentication
         smtp.login("cologne.autoblitz@gmail.com", "xrqhdhqwzkrwkutc")
@@ -387,9 +392,14 @@ def ambulance_result():
         if request.files['P-letter'].filename != "":
             PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename)))
 
+
         msg = MIMEMultipart()
         msg['From'] = "cologne.autoblitz@gmail.com"
         msg['To'] = 'bestellung@autoblitz-koeln.de'
+
+    # Authentication
+    smtp.login("cologne.autoblitz@gmail.com", os.environ.get('c'))
+
 
         msg['Subject'] = "Neuer Auftrag für Krankentransport"
         msg.attach(MIMEText(body, 'plain'))
@@ -420,7 +430,10 @@ def ambulance_result():
         if request.files['P-letter'].filename != "":
             os.remove(PB_path)
 
-        ########## customer mail  ######
+
+    # Authentication
+    s.login("bestellung@autoblitz-koeln.de", os.environ.get('b'))
+
 
         message0 = "Vielen Dank für deine Bestellung." + '\n' + '\n' + "Dein Auto wird in kürze auf dem Weg zu dir sein." + '\n' + "Wenn du Fragen hast, kannst du dich gerne unter 0221612277 melden." + '\n' + '\n'
         message1 = "mit freundlichen Grüßen" + '\n' + "Team Autoblitz"
@@ -460,6 +473,7 @@ def ambulance_result():
 
 # kappey page
 @app.route('/kappey', methods=['POST', 'GET'])
+
 def kappey():
     return render_template('kappey.html')
 
@@ -474,6 +488,7 @@ def contact_us():
 
 # kappey result page
 @app.route('/kappey_result', methods=['POST', 'GET'])
+
 def kappey_result():
     msg = "Hello," + '\n' + '\n'
     date = request.form.getlist('date')
