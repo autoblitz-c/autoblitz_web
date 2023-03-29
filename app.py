@@ -106,14 +106,15 @@ geoip_reader = geoip2.database.Reader(g_file)
 
 # user location access
 def check_location():
-    try:
-        ip_address = request.remote_addr
-        country = geoip_reader.country(ip_address).country.iso_code
+    ip_address = request.remote_addr
+    country = geoip_reader.country(ip_address).country.iso_code
+    print(country)
 
-        if country != 'DEU':
-            return 'Access denied'
-    except:
-        return
+    if country != 'DEU':
+        return 'Access denied'
+
+
+
 
 
 # calculating distance of address
