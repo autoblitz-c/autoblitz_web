@@ -121,6 +121,13 @@
 
         <div class="col-sm-12" style="padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;background-color:rgb(16, 16, 52);border-radius: 25px;">
             <br>
+            {% for message in get_flashed_messages()%}
+                    
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{message}} 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
 
             <form  name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
                 <label for="Name"><i id="fu" class="fa fa-user"> :</i>

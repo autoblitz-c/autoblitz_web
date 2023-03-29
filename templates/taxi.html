@@ -5,7 +5,7 @@
     <title>Personenbeförderung</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
-    <script src="/templates/js/book.js"></script>
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,14 +30,16 @@
 </head>
 
 <body class="body">
+
     <div class="container-fullwidth m-0 p-0">
+
 
 
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+                        src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -98,12 +100,19 @@
             </div>
         </nav>
         <br>
+        {% for message in get_flashed_messages()%}
+                    
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{message}} 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
 
         <div id="taxi" class="container-fullwidth">
             <div class="row">
                 <div class="col-sm-6"
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding:25px;max-width:100%">
-                    <form autocomplete="on">
+                    <form id="booking" autocomplete="on">
                         <label for="Name"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
                         <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" required>
@@ -120,7 +129,7 @@
 
                         <label for="Mail" style="position:relative;left:3%"><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
-                        <input id="Mail" class="form" type="email" placeholder="Example@domain.com"
+                        <input id="Mail" name="Mail" class="form" type="email" placeholder="Example@domain.com"
                             style="position:relative;left:3%;width:40%" pattern="@" title="must include @" required>
 
                         <br>
@@ -128,20 +137,20 @@
 
                         <label for="Pick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
-                        <input id="Pick-up" class="form" type="text" placeholder="Abholort" />
+                        <input id="Pick-up" name="Pick-up" class="form" type="text" placeholder="Abholort" />
 
                         <br>
                         <br>
                         <label for="Drop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="Drop" class="form" type="text" placeholder="Zielort" />
+                        <input id="Drop" name="Drop" class="form" type="text" placeholder="Zielort" />
 
                         <br>
                         <br>
 
 
                         <label for="Vehicle"><i id="fu" class="fa fa-car" aria-hidden="true"> :</i></label>
-                        <select id="Vehicle" class="form" style="width:55%">
+                        <select id="Vehicle" name="Vehicle" class="form" style="width:55%">
                             <option class="op">PKW für bis zu 4 Personen und 2 Koffer</option>
                             <option class="op">Kombi für bis zu 4 Personen und 4 Koffer</option>
                             <option class="op">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer</option>
@@ -239,25 +248,26 @@
                     </tr>
 
                     <tr style="background-color:rgb(16, 16, 52)">
-                        <td class="fw-bold" style="color:rgb(255, 255, 255)">GESAMT</td>
+                        <td class="fw-bold" style="color:rgb(255, 255, 255)">GESAMT<sup style="color:white">*</sup></td>
                         <td id="total" class="fw-bold" style="color:rgb(240,142,33)"></td>
 
                     </tr>
 
                 </table>
+                <p class="fs-6" style="color:rgb(85, 85, 80)"><sup >*</sup>Dies ist nur ein geschätzter Preis, der auf
+                    unserem Client-Server berechnet wird. Der tatsächliche Preis wird auf der Checkout-Seite nach der
+                    Validierung der Details angezeigt, die mehr oder weniger als dieser geschätzte Preis sein wird.</p>
                 <br>
                 <form method="post">
                     <hr>
                     <h3 style="color:rgb(240,142,33)">Bitte wählen Sie eine Zahlungsmethode:</h3>
                     <hr>
 
-                    <input type="radio" name="payment" value="paypal" id="paypal"
-                        onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="paypal"><i class="fa fa-cc-paypal"></i></label><br>
+                   
 
                     <input type="radio" name="payment" value="stripe" id="stripe"
                         onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="stripe"><i class="fa fa-cc-visa"></i> <i class="fa fa-cc-mastercard"></i> <i
+                    <label for="stripe"><i class="fa fa-cc-paypal"></i> <i class="fa fa-cc-visa"></i> <i class="fa fa-cc-mastercard"></i> <i
                             class="fa fa-university"></i></label><br>
 
                     <input type="radio" name="payment" value="cash" id="cash"
@@ -266,8 +276,8 @@
                             class="fa fa-money"></i></label><br>
                     <div style="padding-top:10px;padding-bottom:10px;">
 
-                        <button id="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
-                            style="display:none;border-radius:25px"> </button>
+                        <a id="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px" href="/checkout"> </a>
 
                         <button id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
                             style="display:none;border-radius:25px">Jetzt Fahrer rufen</button>
@@ -308,7 +318,7 @@
                         <i style="color:white" class="fa fa-twitter"></i>
                     </a>
                 </div>
-    
+
                 <!-- Copyright -->
                 <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                     © 2023 Copyright:
@@ -316,13 +326,26 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-    
+
         </div>
 
 
         <script type="text/javascript">
 
             function display() {
+                let formData = new FormData(document.getElementById('booking'));
+
+                // Send an AJAX request to the Flask route
+                fetch('/booking', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Do something with the response data
+                        console.log(data);
+                    })
+                    .catch(error => console.error(error));
                 if (document.getElementById("Name").value == "") {
                     alert("Bitte geben Sie Ihren vollständigen Namen ein")
                 }
@@ -387,12 +410,12 @@
 
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script
-            src="/src"></script>
+        <script src="/src"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="Scripts/jquery-3.1.1.min.js"></script>
-        <script src="{{url_for('static', filename='taxi.js')}}"></script>
+        <script src="{{url_for('static', filename='book.js')}}"></script>
     </div>
 </body>
+
 </html>

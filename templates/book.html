@@ -378,6 +378,15 @@
             <div class="row">
                 <div class="col-sm-12"
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;max-width:100%">
+                    <br>
+                    {% for message in get_flashed_messages()%}
+                    
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{message}} 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
+                    
                     <form autocomplete="on" action="/ambulance_result" method="post" enctype="multipart/form-data">
                         <label for="PName"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
@@ -395,7 +404,7 @@
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)" required><br><br>
+                            placeholder="Rufnummer (bitte mit +49)" required><br><br>
 
 
 
@@ -557,6 +566,9 @@
         function pvalid() {
             if (document.getElementById("PName").value == "") {
                 alert("Bitte geben Sie Ihren vollständigen Namen ein")
+            }
+            else if (document.getElementById("PAge").value == "") {
+                alert("Bitte geben Sie Ihren alter ein")
             }
             else if (document.getElementById("PPhone").value == "" || document.getElementById("PPhone").value.includes("+", 0) == false) {
                 alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")

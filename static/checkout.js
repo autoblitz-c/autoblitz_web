@@ -1,5 +1,22 @@
 // This is your test publishable API key.
-const stripe = Stripe("pk_test_51Mf4HGCS2WC23MwEmCvzlvGRyLCXkukibl1sv9L6wKuG3UPsPE0JJB2sXbvCCGICVhClPq0M2p5FrAu2rHm68sG600O0igYXwO");
+let myData;
+
+fetch('/publish')
+  .then(response => response.json())
+  .then(data => {
+    myData = data;
+    Data(myData); // log the data to the console
+  })
+  .catch(error => console.error(error));
+
+  function Data(data) {
+    const stripe =  Stripe(data.key, {locale: 'de'});
+    // do something else with the data here
+  
+
+
+
+
 
 // The items the customer wants to buy
 const items = [{ id: "taxi" }];
@@ -23,14 +40,29 @@ async function initialize() {
   });
   const { clientSecret } = await response.json();
 
-  const appearance = {
-    theme: 'stripe',
-    variables: {
-      colorPrimary: 'rgb(240,142,33)',
-      colorBackground: 'rgb(0, 100, 100)',
-      colorText: 'rgb(255,255,255)',
-    },
-  };
+const appearance = {
+  theme: 'night',
+  variables: {
+    fontFamily: 'Sohne, system-ui, sans-serif',
+    fontWeightNormal: '500',
+    borderRadius: '8px',
+    colorBackground: '#0A2540',
+    colorPrimary: '#EFC078',
+    colorPrimaryText: '#1A1B25',
+    colorText: 'white',
+    colorTextSecondary: 'white',
+    colorTextPlaceholder: '#727F96',
+    colorIconTab: 'white',
+    colorLogo: 'dark',
+    colorWarningText: 'red'
+  },
+  rules: {
+    '.Input, .Block': {
+      backgroundColor: 'transparent',
+      border: '1.5px solid var(--colorPrimary)'
+    }
+  }
+};
   elements = stripe.elements({ appearance, clientSecret });
 
   const linkAuthenticationElement = elements.create("linkAuthentication");
@@ -42,15 +74,12 @@ async function initialize() {
 
   const paymentElementOptions = {
     layout: {
-        type: 'accordion',
+        type: 'tabs',
         defaultCollapsed: false,
         radios: true,
         spacedAccordionItems: false,
         
         
-      },
-      networks: {
-        "available": ["visa", "mastercard"]
       }
       
         
@@ -69,7 +98,8 @@ async function handleSubmit(e) {
     elements,
     confirmParams: {
       // Make sure to change this to your payment completion page
-      return_url: "http://127.0.0.1:5000/checkout",
+      return_url: "http://127.0.0.1:5000/online_booking",
+      
       receipt_email: emailAddress,
     },
   });
@@ -142,4 +172,6 @@ function setLoading(isLoading) {
     document.querySelector("#spinner").classList.add("hidden");
     document.querySelector("#button-text").classList.remove("hidden");
   }
+}
+
 }
