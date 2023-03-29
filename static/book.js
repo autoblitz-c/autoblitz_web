@@ -44,15 +44,9 @@ function calcRoute() {
             //Get distance and time
             const output = document.getElementById('kms');
             output.innerHTML = result.routes[0].legs[0].distance.text;
-            if (result.routes[0].legs[0].distance.text.includes(',')) {
-                var dist = parseFloat(result.routes[0].legs[0].distance.text.split(",")[0] + result.routes[0].legs[0].distance.text.split(",")[1].split()[0])
-            }
-            else {
-                var dist = parseFloat(result.routes[0].legs[0].distance.text.split("")[0]);
+            
 
-            }
-
-            var dist = parseFloat(result.routes[0].legs[0].distance.text.split()[0]);
+            var dist = parseFloat((result.routes[0].legs[0].distance.value)/1000);
             var dur = result.routes[0].legs[0].duration.text;
             document.getElementById('dur').innerHTML = dur;
             document.getElementById('book-datetime').innerHTML = document.getElementById('Date').value.toString() + ", " + document.getElementById('Time').value.toString();
@@ -60,37 +54,37 @@ function calcRoute() {
             if (document.getElementById("Vehicle").value == "PKW für bis zu 4 Personen und 2 Koffer") {
 
                 if (dist < 1) {
-                    document.getElementById("total").innerHTML = 4.3 + 0 + 2.20;
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 0 + (2.20 )).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + 2.20).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 )).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
 
                 }
                 else {
-                    document.getElementById("total").innerHTML = 4.3 + 0 + (2.20 * dist);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 0 + (2.20 * dist)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
 
                 }
             }
             else if (document.getElementById("Vehicle").value == "Kombi für bis zu 4 Personen und 4 Koffer") {
                 if (dist < 1) {
-                    document.getElementById("total").innerHTML = 4.3 + 5 + 2.20;
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 5 + 2.20 ).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + 2.20).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + 2.20 ).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
 
                 }
                 else {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + (2.20 * dist));
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 5 + (2.20 * dist)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>" 
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>" 
 
                 }
 
             } else {
                 if (dist < 1) {
-                    document.getElementById("total").innerHTML = 4.3 + 10 + 2.20;
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 10 + (2.20 )).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + 2.20).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + 2.20 ).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
 
                 }
                 else {
-                    document.getElementById("total").innerHTML = 4.3 + 10 + (2.20 * dist);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (4.3 + 10 + (2.20 * dist)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2);
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
 
                 }
 

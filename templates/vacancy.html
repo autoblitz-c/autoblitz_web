@@ -32,7 +32,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+                        src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -93,32 +93,35 @@
             </div>
         </nav>
         <!-- Modal -->
-        <div  class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" style="border-radius:45px">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird bald online gehen. 
-                    </h3>
-                    
-                </div>
-                <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                    <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
-                    </txt>
-                </div>
-                <div class="modal-footer">
-                    <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-                    
+        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            style="border-radius:45px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
+                            bald online gehen.
+                        </h3>
+
+                    </div>
+                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
+                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                        </txt>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Modal end-->
+        <!--Modal end-->
 
-<script type="text/javascript">
-    function taxi() {
-        $("#taxi_modal").modal('toggle');}
-</script>
+        <script type="text/javascript">
+            function taxi() {
+                $("#taxi_modal").modal('toggle');
+            }
+        </script>
         <hr>
         <h3 style="color:rgb(240,142,33)"> Stellenbeschreibung</h3>
         <hr>
@@ -134,11 +137,17 @@
                 <div class="col-sm-12"
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;max-width:100%">
                     <br>
+                    {% for message in get_flashed_messages()%}
+                    
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{message}} 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
                     <form autocomplete="on" action="/vacancy_result" method="post" enctype="multipart/form-data">
                         <label for="VName"><i id="fu" class="fa fa-user"> :</i>
                         </label>
-                        <input id="VName" name="VName" class="form" type="text" placeholder="Voller Name "
-                             required>
+                        <input id="VName" name="VName" class="form" type="text" placeholder="Voller Name " required>
 
                         <br>
                         <br>
@@ -146,15 +155,15 @@
                         <label for="VPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="VPhone" name="VPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit Landesvorwahl)" required>
-                            <br><br>
+                            placeholder="Rufnummer (bitte mit +49)" required>
+                        <br><br>
 
 
 
-                        <label for="VMail" ><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="VMail"><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="VMail" class="form" name="VMail" type="email" placeholder="Example@domain.com"
-                             required>
+                            required>
 
 
 
@@ -169,75 +178,81 @@
 
                         <label for='licence'><i id="fu" class="fa fa-file-text" aria-hidden="true"> Führerscheinklasse B
                                 :</i></label><br>
-                        <input id="licence" class="form" name="licence" style="border-radius: 0;" type="file" placeholder="" style="width:92%;padding-left:0">
+                        <input id="licence" class="form" name="licence" style="border-radius: 0;" type="file"
+                            placeholder="" style="width:92%;padding-left:0">
                         <br><br>
 
-                        <label for='P-letter' ><i id="fu" class="fa fa-file-text"
-                                aria-hidden="true"> Personenbeförderungsschein :</i></label><br>
-                        <input id="P-letter" name="P-letter" class="form" style="border-radius: 0;"
-                            type="file" placeholder="" style="width:92%;padding-left:0">
+                        <label for='P-letter'><i id="fu" class="fa fa-file-text" aria-hidden="true">
+                                Personenbeförderungsschein :</i></label><br>
+                        <input id="P-letter" name="P-letter" class="form" style="border-radius: 0;" type="file"
+                            placeholder="" style="width:92%;padding-left:0">
                         <br>
                         <br>
 
 
-                        
-                            <button name="Psub"
-                                style="background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
-                                type="button" id="Pcheck-button" onClick="valid()"
-                                class="btn btn-primary  ">Absenden</button>
-                            <button id="Pres" name="Pres"
-                                style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
-                                class="btn btn-primary  ">Reset</button>
-                        
+
+                        <button name="Psub"
+                            style="background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                            type="button" id="Pcheck-button" onClick="valid()"
+                            class="btn btn-primary  ">Absenden</button>
+                        <button id="Pres" name="Pres"
+                            style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
+                            class="btn btn-primary  ">Reset</button>
+
                         <!-- Modal -->
-                <div  class="modal fade" id="vacancy_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true" style="border-radius:45px">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Wir haben Ihre Bewerbung erhalten. 
-                            </h3>
-                            
+                        <div class="modal fade" id="vacancy_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" style="border-radius:45px">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">
+                                            Wir haben Ihre Bewerbung erhalten.
+                                        </h3>
+
+                                    </div>
+                                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                                        <txt style="font-size: 70%;color:white">Vielen Dank für Ihr Interesse an unserem
+                                            Unternehmen <img src="{{url_for('static', filename='smile.png')}}"
+                                                width="7%" height="7%">. Wir werden uns sehr bald bei Ihnen melden.
+                                            Klicken Sie bitte auf ok, um die Daten zu senden.
+                                        </txt>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="ok" type="submit" class="btn btn-primary"
+                                            data-bs-dismiss="modal">ok</button>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                            <txt style="font-size: 70%;color:white">Vielen Dank für Ihr Interesse an unserem Unternehmen <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">. Wir werden uns sehr bald bei Ihnen melden. Klicken Sie bitte auf ok, um die Daten zu senden.
-                            </txt>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Modal end-->
+                        <!--Modal end-->
 
 
 
 
                     </form>
                     <script>
-                        function valid(){
+                        function valid() {
                             if (document.getElementById("VName").value == "") {
-                            alert("Bitte geben Sie Ihren vollständigen Namen ein")
-                        }
-                        else if (document.getElementById("VPhone").value == "" || document.getElementById("VPhone").value.includes("+", 0) == false) {
-                            alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
-                        }
-                        else if (document.getElementById("VMail").value == "" || document.getElementById("VMail").value.includes("@") == false) {
-                            alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
-                        }
-                        else if (document.getElementById("licence").value == "" ) {
-                            alert("Bitte laden Sie Ihren Führerschein hoch.")
-                        }
-                        else if (document.getElementById("P-letter").value == "" ) {
-                            alert("Bitte laden Sie das entsprechende Dokument hoch.")
-                        }
-                        else{
-                            $("#vacancy_modal").modal('toggle');
-                        }
-        
-                              
+                                alert("Bitte geben Sie Ihren vollständigen Namen ein")
+                            }
+                            else if (document.getElementById("VPhone").value == "" || document.getElementById("VPhone").value.includes("+", 0) == false) {
+                                alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
+                            }
+                            else if (document.getElementById("VMail").value == "" || document.getElementById("VMail").value.includes("@") == false) {
+                                alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
+                            }
+                            else if (document.getElementById("licence").value == "") {
+                                alert("Bitte laden Sie Ihren Führerschein hoch.")
+                            }
+                            else if (document.getElementById("P-letter").value == "") {
+                                alert("Bitte laden Sie das entsprechende Dokument hoch.")
+                            }
+                            else {
+                                $("#vacancy_modal").modal('toggle');
+                            }
+
+
                         }
                     </script>
 
@@ -271,7 +286,7 @@
                         <i style="color:white" class="fa fa-twitter"></i>
                     </a>
                 </div>
-    
+
                 <!-- Copyright -->
                 <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                     © 2023 Copyright:
@@ -279,7 +294,7 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-    
+
         </div>
 
     </div>
