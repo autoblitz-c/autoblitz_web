@@ -270,7 +270,7 @@ def vacancy_result():
             part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
             msg.attach(part)
 
-        error = None
+
 
         smtp = smtplib.SMTP('smtp.gmail.com', 587)
         # start TLS for security
