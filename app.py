@@ -1,10 +1,10 @@
 # resources...
 import json
 import requests
-from datetime import datetime, time, date
+from datetime import datetime, time, date, timedelta
 import time
 import flask
-from flask import request, render_template, redirect, jsonify, Response, flash
+from flask import request, render_template, redirect, jsonify, Response, flash, abort
 import urllib.parse
 from phonenumbers import geocoder, parse
 from geopy.geocoders import Nominatim
@@ -25,8 +25,9 @@ from dotenv import load_dotenv, find_dotenv
 import os
 from functools import wraps
 import googlemaps
+from gsheet import add_data, delete_data, query_data
 
-#load_dotenv(find_dotenv())
+load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
@@ -34,6 +35,127 @@ app.config["DEBUG"] = False
 app.config["UPLOAD_FOLDER"] = "static/"
 app.config["Book"] = "static/booking/"
 app.secret_key = '123456789@autoblitz'
+
+# booking data storage
+file_N = []
+counter = 0
+order_ids = []
+
+
+# order creating
+def create_order():
+    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    book = file_N[0]
+    #book = json.load(data)
+    price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
+
+    amount = int(price * 100)
+
+    Plat, Plng = lat_long(book['pick'])
+    Dlat, Dlng = lat_long(book['drop'])
+    p_zip = zip_code(book['pick'])
+    d_zip = zip_code(book['drop'])
+    p_street = street(book['pick'])
+    d_street = street(book['drop'])
+    t, valid = validate_time(book['date'], book['time'])
+    if t == 0:
+        p_time = 0
+    else:
+        p_time = unix(book['date'], book['time'])
+    print(book['vehicle'])
+    if book['vehicle'] == "PKW für bis zu 4 Personen und 2 Koffer":
+        vehicle_type = "MINI"
+        book['vehicle'] = vehicle_type
+    elif book['vehicle'] == "Kombi für bis zu 4 Personen und 4 Koffer":
+        vehicle_type = "COMBI"
+        book['vehicle'] = vehicle_type
+    elif book['vehicle'] == "Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer":
+        vehicle_type = "VAN"
+        book['vehicle'] = vehicle_type
+
+
+    c_phone = book['phone'][0:3] + " " + book['phone'][3:6] + " " + book['phone'][6:]
+    PlatLng = {
+        "lat": float(Plat),
+        "lng": float(Plng)
+    }
+    DlatLng = {
+        "lat": float(Dlat),
+        "lng": float(Dlng)
+    }
+
+    Pickup = {
+        "name": "",
+        "pos": PlatLng,
+        "street": p_street,
+        "streetNo": "9999",
+        "zip": p_zip,
+        "city": "cologne",
+        "pickupTime": p_time,
+    }
+    Destination = {
+        "name": "",
+        "pos": DlatLng,
+        "street": d_street,
+        "streetNo": "9999",
+        "zip": d_zip,
+        "city": "cologne"
+    }
+
+    Customer = {
+        "customerName": book['name'],
+        "customerAgentId": book['name'],
+        "customerPhone": c_phone,
+        "customerEmail": book['mail']
+    }
+    Billing = {
+        "accCustNo": 1,
+        'fixedPriceGross': amount,
+
+    }
+
+    OrderRequest = {
+        "dispFleetId": 63,
+        "productId": "1",
+
+        "pickup": Pickup,
+        "dest": Destination,
+        "title": "test",
+        "customer": Customer,
+
+        "payment": "PAY_INV_BY_AGENT",
+        "billingInfo": Billing,
+        'dispOptions': [book['vehicle']]
+    }
+
+    send = {"cmd": "create_order",
+            "data": OrderRequest}
+    headers = {'Content-Type': 'application/json',
+               'Authentication': 'optipos-apiIdentifier \
+               apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
+                apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+
+               }
+    order_json = json.dumps(send, indent=4)
+    req = requests.post(url, headers=headers, data=order_json)
+
+    return req.json()
+
+#query order
+def query_order(orderguid):
+    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    send = {"cmd": "query_order",
+            "data": {"orderGUID": orderguid}}
+    headers = {'Content-Type': 'application/json',
+               'Authentication': 'optipos-apiIdentifier \
+                      apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
+                       apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+
+               }
+    order_json = json.dumps(send, indent=4)
+    req = requests.post(url, headers=headers, data=order_json)
+
+    return req.json()
 
 
 # lat_long finder
@@ -100,6 +222,45 @@ def unix(datum: str, zeit: str):
     return int(time.mktime(datetime_obj.timetuple()))
 
 
+def validate_date(datum: str):
+    date_str = datum  # Example date string in ISO format
+    date_format = "%Y-%m-%d"  # Format string for ISO date
+    today = date.today()
+    end_date = today + timedelta(days=6)
+
+    date_obj = datetime.strptime(date_str, date_format).date()
+    if today <= date_obj <= end_date:
+        return True
+    else:
+        return False
+
+
+def validate_time(datum: str, zeit: str):
+    date_str = datum  # Example date string in ISO format
+    date_format = "%Y-%m-%d"  # Format string for ISO date
+    time_str = zeit  # Example time in 24-hour format
+    time_format = "%H:%M"  # Format string for 24-hour time
+    # Parse date string and time string into date and time objects
+    date_obj = datetime.strptime(date_str, date_format).date()
+    time_obj = datetime.strptime(time_str, time_format).time()
+    # Combine date and time objects into a datetime object
+    datetime_obj = datetime.combine(date_obj, time_obj)
+    now = datetime.now()
+    time_diff = datetime_obj - now
+    hours = int(time_diff.total_seconds() / 3600)
+    minutes = int(time_diff.total_seconds() / 60)
+    if datetime_obj < now:
+        pickup_time, valid = -1, False
+        return pickup_time, valid
+    else:
+        if time_diff.days == 0 and hours == 0 and minutes <= 10:
+            pickup_time, valid = 0, True
+            return pickup_time, valid
+        else:
+            pickup_time, valid = 1, True
+            return pickup_time, valid
+
+
 g_file = os.path.join(app.config['UPLOAD_FOLDER'], 'GeoLite2-Country.mmdb')
 geoip_reader = geoip2.database.Reader(g_file)
 
@@ -118,10 +279,9 @@ def check_location():
 
 
 # calculating distance of address
-def cal_dis(pick: str, drop: str):
-    # Example time in 24-hour format
 
-    gmaps = googlemaps.Client(key=os.environ.get('map'))
+def cal_dis(pick: str, drop: str):
+    gmaps = googlemaps.Client(key=os.environ.get('pmap'))
     my_dist = gmaps.distance_matrix([pick], [drop], mode="driving")
 
     return float(my_dist['rows'][0]['elements'][0]['distance']['value'] / 1000)
@@ -129,6 +289,7 @@ def cal_dis(pick: str, drop: str):
 
 def cal_price(pick: str, drop: str, vehicle: str):
     dist = cal_dis(pick, drop)
+    print(dist)
     if vehicle == "PKW für bis zu 4 Personen und 2 Koffer":
         if dist < 1:
             price = float(4.3 + 0 + 2.20)
@@ -153,10 +314,8 @@ def cal_price(pick: str, drop: str, vehicle: str):
 
 
 # stripe key
-#stripe.api_key = os.getenv('t_s_s_k')
-
-
-# stripe.api_key = os.environ.get('t_s_s_k')
+stripe.api_key = os.getenv('t_s_s_k')
+stripe.api_key = os.environ.get('t_s_s_k')
 
 
 # creating auth
@@ -261,7 +420,6 @@ def vacancy_result():
         msg['Subject'] = "Neue Stellenbewerbung"
         msg.attach(MIMEText(body, 'plain'))
 
-
         for f in request.files:
             part = MIMEBase(
                 'application', "octet-stream"
@@ -272,14 +430,11 @@ def vacancy_result():
             part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
             msg.attach(part)
 
-
-
         smtp = smtplib.SMTP('smtp.gmail.com', 587)
         # start TLS for security
         smtp.starttls()
         # Authentication
         smtp.login(os.environ.get("cg"), os.environ.get('cgp'))
-
 
         smtp.sendmail(os.environ.get("cg"), os.environ.get("ik"), msg.as_string())
 
@@ -287,11 +442,6 @@ def vacancy_result():
         os.remove(licence_path)
 
         os.remove(PB_path)
-
-
-
-
-
 
     return render_template('vacancy.html')
 
@@ -302,10 +452,6 @@ def taxi():
     if check_location() == 'Access denied':
         return "Access Denied"
     return render_template('taxi.html')
-
-
-# booking data storage
-file_N = []
 
 
 @app.route('/booking', methods=['POST'])
@@ -329,10 +475,11 @@ def booking():
             "date": date,
             "time": time,
             "vehicle": vehicle}
-    file_name = os.path.join(app.config["Book"], name.split()[0] + '.json')
-    file_N.append(file_name)
-    with open(file_name, "w") as f:
-        json.dump(book, f)
+    #file_name = os.path.join(app.config["Book"], name.split()[0] + phone.split()[0][-5:] + '.json')
+    #file_N.append(file_name)
+    #with open(file_name, "w") as f:
+        #json.dump(book, f)
+    file_N.append(book)
 
     return jsonify({'message': 'Form data received!'})
 
@@ -394,14 +541,9 @@ def ambulance_result():
         if request.files['P-letter'].filename != "":
             PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename)))
 
-
         msg = MIMEMultipart()
         msg['From'] = os.environ.get("cg")
         msg['To'] = os.environ.get("bk")
-
-
-
-
 
         msg['Subject'] = "Neuer Auftrag für Krankentransport"
         msg.attach(MIMEText(body, 'plain'))
@@ -431,12 +573,6 @@ def ambulance_result():
         os.remove(licence_path)
         if request.files['P-letter'].filename != "":
             os.remove(PB_path)
-
-
-
-
-
-
 
         message0 = "Vielen Dank für deine Bestellung." + '\n' + '\n' + "Dein Auto wird in kürze auf dem Weg zu dir sein." + '\n' + "Wenn du Fragen hast, kannst du dich gerne unter 0221612277 melden." + '\n' + '\n'
         message1 = "mit freundlichen Grüßen" + '\n' + "Team Autoblitz"
@@ -476,7 +612,6 @@ def ambulance_result():
 
 # kappey page
 @app.route('/kappey', methods=['POST', 'GET'])
-
 def kappey():
     return render_template('kappey.html')
 
@@ -491,7 +626,6 @@ def contact_us():
 
 # kappey result page
 @app.route('/kappey_result', methods=['POST', 'GET'])
-
 def kappey_result():
     msg = "Hello," + '\n' + '\n'
     date = request.form.getlist('date')
@@ -584,10 +718,6 @@ def contact_us_result():
     return render_template('contact_us.html')
 
 
-# map key
-valid = []
-
-
 @app.route('/src', methods=['GET'])
 def src():
     if check_location() == 'Access denied':
@@ -600,15 +730,12 @@ def src():
 
 
 # publish key #
-@app.route('/publish', methods=['POST', 'GET'])
+@app.route('/publish', methods=['GET'])
 def publish():
     if check_location() == 'Access denied':
         return "Access Denied"
     msg = {"key": os.getenv('t_s_p_k')}
     return jsonify(msg)
-
-
-
 
 
 @app.route('/create-payment-intent', methods=['POST'])
@@ -617,8 +744,8 @@ def create_payment():
         return "Access Denied"
     try:
         customer = stripe.Customer.create()
-        json_data = open(file_N[0])
-        book = json.load(json_data)
+        book = file_N[0]
+        #book = json.load(json_data)
         price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
 
         amount = int(price * 100)
@@ -633,51 +760,135 @@ def create_payment():
             currency='eur',
 
             receipt_email=str(book['mail']),
-            payment_method_types= allowed_payment_methods,
+            payment_method_types=allowed_payment_methods,
             payment_method_options={
                 "card": {
                     "request_three_d_secure": "automatic"
 
-
                 }
             },
 
-            description=str(book['name']) + "'s" +" order"
+            description=str(book['name']) + "'s" + " order"
 
         )
-
 
         test = jsonify({
             'clientSecret': intent['client_secret']
         })
-        book['pay'] = intent['client_secret']
-        with open(file_N[0], 'w') as new_json:
-            json.dump(book, new_json)
+        book['pay'] = intent['client_secret'].split('_secret')[0]
+        """with open(file_N[0], 'w') as new_json:
+            json.dump(book, new_json)"""
 
         return test
 
     except Exception as e:
         return jsonify(error=str(e)), 403, print(str(e))
 
+
 @app.route('/online_booking', methods=['POST', 'GET'])
 def online_booking():
-    data = open(file_N[0])
-    book = json.load(data)
-    id = book['pay'].split('_secret')[0]
-    intent = stripe.PaymentIntent.retrieve(id)
+    return render_template('online_booking.html')
 
 
+@app.route('/online_booking_res', methods=['POST', 'GET'])
+def online_booking_res():
+    return render_template('online_booking_res.html', orderid=order_ids[0]), order_ids.clear()
 
-    return render_template('online_booking.html' )
 
+@app.route('/booking_status', methods=['POST', 'GET'])
+def booking_status():
+    book = file_N[0]
+    #book = json.load(data)
+
+    id = book['pay']
+    while True:
+        intent = stripe.PaymentIntent.retrieve(id)
+        book["amount"] = intent.amount
+        book['payment_type'] = stripe.PaymentMethod.retrieve(intent.payment_method).type
+        status = intent.status
+        order_ids.clear()
+        print(status)
+
+        if status == "succeeded":
+            while True:
+                order = create_order()
+                if order['status'] == "OK":
+                    break
+                time.sleep(5)
+
+            order_ids.append(order['data']['orderNo'])
+            book["orderGUID"] = order['data']['orderGUID']
+            book["orderNo"] = order['data']['orderNo']
+            print(order['status'])
+            print(order['data']['orderGUID'])
+            add_data('Customer_data', 1, book)
+            time.sleep(3)
+
+            response_data = {
+                'status': 'succeeded',
+                'template': 'online_booking_res',
+
+            }
+            #os.remove(file_N[0])
+            return jsonify(response_data), file_N.clear()
+
+
+        else:
+            response_data = {
+                'status': 'pending',
+                'template': 'online_booking'
+            }
+            return jsonify(response_data)
+
+
+@app.route('/order_status', methods=['POST', 'GET'])
+def order_status():
+    return
+
+
+@app.route('/cancel_booking', methods=['POST', 'GET'])
+def cancel_booking():
+    return render_template('cancel_booking.html')
+
+@app.route('/cancel', methods=['POST'])
+def cancel():
+    orderNo = str(request.form['orderNo'])
+    query = query_data('Customer_data', 'orderNo', orderNo, 1)
+    status = query_order(query['data']['orderGUID'])
+    if status['data']['orderState'] == 'O_CONFIRMED' or status['data']['orderState'] == 'O_IN_DISPATCH':
+        refund_amount = int(query['amount'])
+        amt_cut = "No"
+    else:
+        refund_amount = int(query['amount']) - 500
+        amt_cut = "Yes"
+    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    send = {"cmd": "cancel_order",
+            "data": {"orderGUID": query['orderGUID']}}
+    headers = {'Content-Type': 'application/json',
+               'Authentication': 'optipos-apiIdentifier \
+                      apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
+                       apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+
+               }
+    order_json = json.dumps(send, indent=4)
+    req = requests.post(url, headers=headers, data=order_json)
+    print(req)
+    res = req.json()
+    if res['data']['orderState'] == 'O_CANCELED':
+        r_res = stripe.Refund.create(payment_intent=query['pay'], amount=refund_amount)
+        if r_res['status'] == 'succeeded':
+            response = {"orderNo": query['orderNo'], "mail": query['mail'], "amount": r_res['amount'], "amt_cut": amt_cut}
+            return jsonify(response)
 # check out  page
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
     if check_location() == 'Access denied':
         return "Access Denied"
+
     try:
-        json_data = open(file_N[0])
-        book = json.load(json_data)
+        book = file_N[0]
+        #book = json.load(json_data)
+        pickup_time_v, valid = validate_time(book["date"], book["time"])
         if book['name'] == "" or book['phone'] == "" or str(book["phone"]).find('+') == -1 or book["mail"] == "" or \
                 book["pick"] == "" or book["drop"] == "" or book["vehicle"] == "" or book["date"] == "" or book[
             "time"] == "":
@@ -688,20 +899,36 @@ def checkout():
         elif ph_country(str(book["phone"])) != "Germany":
             flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
             return render_template("taxi.html")
+        elif validate_date(book["date"]) == False:
+            flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
+            return render_template("taxi.html")
+
+        elif valid == False:
+            flash("Bitte wählen Sie den gegenwärtigen oder zukünftigen Zeitpunkt")
+            return render_template("taxi.html")
 
         elif city_filter(str(book["pick"]))["city"] != "Köln" or city_filter(str(book["drop"]))["city"] != "Köln":
             flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
             return render_template("taxi.html")
+
+
         else:
+            print('hi')
 
             price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
+            print(price)
             return render_template('checkout.html', price=price)
     except:
         flash(
-            "Es tut uns leid, die Formulardaten wurden nicht an den Server übertragen. Bitte geben Sie daher die Daten noch einmal ein.")
+            "Wir bitten um Entschuldigung, aber die Formulardaten wurden nicht an den Server übertragen. Bitte geben Sie daher die Daten erneut ein.")
         return render_template("taxi.html")
 
-
+@app.route('/datenschutz', methods=['POST', 'GET'])
+def datenschutz():
+    return render_template('data_privacy.html')
+@app.route('/impressum', methods=['POST', 'GET'])
+def impressum():
+    return render_template('impressum.html')
 # runing the application
 if __name__ == '__main__':
     app.run()

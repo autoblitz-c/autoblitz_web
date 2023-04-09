@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>booking_status</title>
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var intervalId = setInterval(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "/booking_status",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status === "succeeded") {
+                            $('#booking-container').html('');
+                            $('#booking-container').load(response.template);
+                            document.getElementById("loading").style.display = "none";
+                            clearInterval(intervalId);
+                        } else {
+                            document.getElementById("loading").style.display = "block";
+                        }
+                    }
+                });
+            }, 5000);  // Poll every 5 seconds
+        });
+    </script>
+</head>
+<body >
+    <div id="booking-container" class="container-sm-fullwidth "></div>
+<div id="loading" style="display: block">
+    <br><br>
+    <h1 style="text-align:center">Bitte Warten booking in progress</h1><br>
+    <div style="display:flex;justify-content:center"><img style="width: 40%;" src="{{url_for('static', filename='loading.gif')}}" alt="loading">
+    </div>
+</div>
+
+
+</body>
+</html>

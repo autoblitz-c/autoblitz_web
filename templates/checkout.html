@@ -17,9 +17,11 @@
 <body style="background-color:rgb(16, 16, 52)">
     <!-- Display a payment form -->
     <form id="payment-form" style="background-color:rgb(71, 69, 69)">
-        <h5 style="text-align:center;font-weight:bold;color:rgb(240,142,33)">Zu bezahlen = <h8 style="color:white">{{price}} <i class="fa fa-eur" aria-hidden="true"></i></h8></h5>
-        
-        
+        <h5 style="text-align:center;font-weight:bold;color:rgb(240,142,33)">Zu bezahlen = <h8 style="color:white">
+                {{price}} <i class="fa fa-eur" aria-hidden="true"></i></h8>
+        </h5>
+
+
         <div id="link-authentication-element">
             <!--Stripe.js injects the Link Authentication Element-->
         </div>
@@ -40,37 +42,38 @@
     </form>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
-<script>
-    var CREATE_PAYMENT_URL  = 'http://127.0.0.1:5000/paypal';
-    var EXECUTE_PAYMENT_URL = 'http://127.0.0.1:5000/execute';
+    <script>
+        var CREATE_PAYMENT_URL = 'http://127.0.0.1:5000/paypal';
+        var EXECUTE_PAYMENT_URL = 'http://127.0.0.1:5000/execute';
 
-    paypal.Button.render({
+        paypal.Button.render({
 
-        env: 'sandbox', // Or 'sandbox'
+            env: 'sandbox', // Or 'sandbox'
 
-        commit: true, // Show a 'Pay Now' button
-        
+            commit: true, // Show a 'Pay Now' button
 
-        payment: function() {
-            return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
-                return data.paymentID;
-            });
-        },
 
-        onAuthorize: function(data) {
-            return paypal.request.post(EXECUTE_PAYMENT_URL, {
-                paymentID: data.paymentID,
-                payerID:   data.payerID
-            }).then(function(res) {
+            payment: function () {
+                return paypal.request.post(CREATE_PAYMENT_URL).then(function (data) {
+                    return data.paymentID;
+                });
+            },
 
-                console.log(res.success)
-                // The payment is complete!
-                // You can now show a confirmation message to the customer
-            });
-        }
+            onAuthorize: function (data) {
+                return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                    paymentID: data.paymentID,
+                    payerID: data.payerID
+                }).then(function (res) {
 
-    }, '#paypal-button');
-</script>
+                    console.log(res.success)
+                    // The payment is complete!
+                    // You can now show a confirmation message to the customer
+                });
+            }
+
+        }, '#paypal-button');
+    </script>
+   
 
 </body>
 

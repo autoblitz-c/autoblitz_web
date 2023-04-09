@@ -5,7 +5,7 @@
     <title>Personenbeförderung</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
-    
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,14 +82,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" hidden>
+                        <li class="nav-item dropdown" >
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
+                                        </a></li>
+                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
+                                        </a></li>
 
                             </ul>
                         </li>
@@ -101,12 +101,12 @@
         </nav>
         <br>
         {% for message in get_flashed_messages()%}
-                    
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}} 
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                    {% endfor %}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
 
         <div id="taxi" class="container-fullwidth">
             <div class="row">
@@ -159,11 +159,31 @@
                         </select>
 
 
-                        <input class="form" id="Date" name="Date" type="date"
+                        <input class="form" id="Date" name="Date" type="date" min="{{ today }}" max="{{ future }}"
                             style="position:relative;left:3%;width:fit-content">
 
-                        <input class="form" id="Time" name="Time" type="time"
-                            style="position:relative;left:5%;width:fit-content">
+                        <script>
+                            // Get the current date and add 1 day to get the minimum selectable date
+                            var today = new Date();
+                            today.setDate(today.getDate() );
+
+                            // Get the date 7 days in the future to use as the maximum selectable date
+                            var future = new Date();
+                            future.setDate(future.getDate() + 6);
+
+                            // Format the dates in ISO format (YYYY-MM-DD)
+                            var todayFormatted = today.toISOString().split('T')[0];
+                            var futureFormatted = future.toISOString().split('T')[0];
+
+                            // Set the 'min' and 'max' attributes of the input element
+                            document.getElementById('Date').setAttribute('min', todayFormatted);
+                            document.getElementById('Date').setAttribute('max', futureFormatted);
+                        </script>
+
+                        <input class="form" id="Time" name="Time" type="time" 
+                            style="position:relative;left:5%;width:fit-content" required>
+
+                        
                         <br>
                         <br>
 
@@ -254,7 +274,7 @@
                     </tr>
 
                 </table>
-                <p class="fs-6" style="color:rgb(85, 85, 80)"><sup >*</sup>Dies ist nur ein geschätzter Preis, der auf
+                <p class="fs-6" style="color:rgb(85, 85, 80)"><sup>*</sup>Dies ist nur ein geschätzter Preis, der auf
                     unserem Client-Server berechnet wird. Der tatsächliche Preis wird auf der Checkout-Seite nach der
                     Validierung der Details angezeigt, die mehr oder weniger als dieser geschätzte Preis sein wird.</p>
                 <br>
@@ -263,12 +283,12 @@
                     <h3 style="color:rgb(240,142,33)">Bitte wählen Sie eine Zahlungsmethode:</h3>
                     <hr>
 
-                   
+
 
                     <input type="radio" name="payment" value="stripe" id="stripe"
                         onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="stripe"><i class="fa fa-cc-paypal"></i> <i class="fa fa-cc-visa"></i> <i class="fa fa-cc-mastercard"></i> <i
-                            class="fa fa-university"></i></label><br>
+                    <label for="stripe"><i class="fa fa-cc-paypal"></i> <i class="fa fa-cc-visa"></i> <i
+                            class="fa fa-cc-mastercard"></i> <i class="fa fa-university"></i></label><br>
 
                     <input type="radio" name="payment" value="cash" id="cash"
                         onclick="document.getElementById('pay').style.display ='none';document.getElementById('pay_cash').style.display ='block'">
@@ -318,6 +338,11 @@
                         <i style="color:white" class="fa fa-twitter"></i>
                     </a>
                 </div>
+                <div class="container d-flex justify-content-center ">
+                    <a id="datap" type="button" href="/datenschutz" target="_blank">Datenschutz</a>
+                    <span class="vertical-line"></span>
+                    <a id="datap" type="button" href="/impressum" target="_blank">Impressum</a>
+                </div>
 
                 <!-- Copyright -->
                 <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
@@ -326,6 +351,7 @@
                 </div>
                 <!-- Copyright -->
             </footer>
+            
 
         </div>
 
