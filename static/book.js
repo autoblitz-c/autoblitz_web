@@ -29,7 +29,7 @@ directionsDisplay.setMap(map);
 
 function calcRoute() {
     //create request
-    
+
     var request = {
         origin: document.getElementById("Pick-up").value,
         destination: document.getElementById("Drop").value,
@@ -44,47 +44,74 @@ function calcRoute() {
             //Get distance and time
             const output = document.getElementById('kms');
             output.innerHTML = result.routes[0].legs[0].distance.text;
-            
 
-            var dist = parseFloat((result.routes[0].legs[0].distance.value)/1000);
+
+            var dist = parseFloat((result.routes[0].legs[0].distance.value) / 1000);
             var dur = result.routes[0].legs[0].duration.text;
             document.getElementById('dur').innerHTML = dur;
             document.getElementById('book-datetime').innerHTML = document.getElementById('Date').value.toString() + ", " + document.getElementById('Time').value.toString();
+            document.getElementById("name").innerHTML = document.getElementById("Name").value;
+            document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
+            document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
+            document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
+            document.getElementById("end").innerHTML = document.getElementById("Drop").value;
 
-            if (document.getElementById("Vehicle").value == "PKW für bis zu 4 Personen und 2 Koffer") {
+            let wait = parseInt(document.getElementById('Time').value.toString())
+
+            if (wait == 00 || wait < 06) {
+                document.getElementById('wait').style.display = 'block'
+            }
+            else {
+                document.getElementById('wait').style.display = 'none'
+            }
+
+            document.getElementById("Price").style.display = "block"
+
+
+            if (document.getElementById("Vehicle").value == "mini") {
+                document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
+                document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "0.00";
 
                 if (dist < 1) {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 )).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20)).toFixed(2)).toString() + " " + "€"
+
 
                 }
                 else {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
 
                 }
             }
-            else if (document.getElementById("Vehicle").value == "Kombi für bis zu 4 Personen und 4 Koffer") {
+            else if (document.getElementById("Vehicle").value == "combi" ) {
+                document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
+                document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "5.00";
                 if (dist < 1) {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + 2.20 ).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + 2.20).toFixed(2)).toString() + " " + "€"
 
                 }
                 else {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>" 
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
 
                 }
 
-            } else {
+            } else if  (document.getElementById("Vehicle").value == "wagen" ){
+                document.getElementById("passengers").innerHTML = "bis zu 8 Personen sind erlaubt";
+                document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
+                document.getElementById("additional").innerHTML = "10.00";
                 if (dist < 1) {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + 2.20 ).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + 2.20).toFixed(2)).toString() + " " + "€"
 
                 }
                 else {
                     document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2)).toString() + " " + "<i style='color:white'class='fa fa-eur ' aria-hidden='true'></i>"
+                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
 
                 }
 

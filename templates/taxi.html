@@ -123,14 +123,14 @@
                         <label for="Phone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="Phone" class="form" name="Phone" type="tel"
-                            placeholder="Rufnummer(bitte mit Landesvorwahl)" style="width:40%" required>
+                            placeholder="Rufnummer(bitte mit Landesvorwahl)"  required><br><br>
 
 
 
-                        <label for="Mail" style="position:relative;left:3%"><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="Mail" ><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
                         <input id="Mail" name="Mail" class="form" type="email" placeholder="Example@domain.com"
-                            style="position:relative;left:3%;width:40%" pattern="@" title="must include @" required>
+                             pattern="@" title="must include @" required>
 
                         <br>
                         <br>
@@ -150,17 +150,17 @@
 
 
                         <label for="Vehicle"><i id="fu" class="fa fa-car" aria-hidden="true"> :</i></label>
-                        <select id="Vehicle" name="Vehicle" class="form" style="width:55%">
-                            <option class="op">PKW für bis zu 4 Personen und 2 Koffer</option>
-                            <option class="op">Kombi für bis zu 4 Personen und 4 Koffer</option>
-                            <option class="op">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer</option>
+                        <select id="Vehicle" name="Vehicle" class="form" >
+                            <option class="op" value="mini">PKW für bis zu 4 Personen und 2 Koffer</option>
+                            <option class="op" value="combi">Kombi für bis zu 4 Personen und 4 Koffer</option>
+                            <option class="op" value="wagen">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer</option>
 
 
-                        </select>
+                        </select><br><br>
 
 
                         <input class="form" id="Date" name="Date" type="date" min="{{ today }}" max="{{ future }}"
-                            style="position:relative;left:3%;width:fit-content">
+                            style="position:relative;left:6%;width:30%">
 
                         <script>
                             // Get the current date and add 1 day to get the minimum selectable date
@@ -181,11 +181,13 @@
                         </script>
 
                         <input class="form" id="Time" name="Time" type="time" 
-                            style="position:relative;left:5%;width:fit-content" required>
+                            style="position:relative;left:30%;width:30%" required>
 
                         
                         <br>
                         <br>
+                        <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Preis prüfen", akzeptieren Sie unsere  <a class="fs-5"href="/datenschutz" target="_blank">DSGVO und AGB.</a></p>
+                        
 
                         <div class="container-sm">
                             <button name="sub"
@@ -208,15 +210,15 @@
                 </div>
             </div>
             <div id="Price" class="container-fullwidth"
-                style="display:none;padding-top:10px;padding-left:20%;padding-right: 20%;">
+                style="display:none;padding-top:10px;">
 
                 <hr>
                 <h3 style="color:rgb(240,142,33)">Buchungsdetails:</h3>
                 <hr>
                 <i class="fa fa-user"> : <txt id="name" class="tx"></txt></i>
                 <br>
-                <i class="fa fa-phone"> : <txt id="phone" class="tx"></txt></i>
-                <i class="fa fa-envelope" style="position:relative;left:5%"> : <txt id="mail" class="tx">
+                <i class="fa fa-phone"> : <txt id="phone" class="tx"></txt></i><br>
+                <i class="fa fa-envelope" > : <txt id="mail" class="tx">
                     </txt></i>
                 <br>
                 <i class="fa fa-dot-circle-o" aria-hidden="true"> : <txt id="start" class="tx"></txt></i>
@@ -225,13 +227,13 @@
                     </txt></i>
                 <br>
                 <i class="fa fa-road" aria-hidden="true">: <txt id="kms" class="tx"></txt></i>
-                <i class="fa fa-clock-o" aria-hidden="true" style="position:relative;left:7%">: <txt id="dur"
-                        class="tx"></txt></i>
-                <i class="fa fa-calendar-check-o" aria-hidden="true" style="position:relative;left:15%">: <txt
+                <i class="fa fa-clock-o" aria-hidden="true" style="position:relative;left:10%">: <txt id="dur"
+                        class="tx"></txt></i><br>
+                <i class="fa fa-calendar-check-o" aria-hidden="true" >: <txt
                         id="book-datetime" class="tx"></txt></i>
                 <br>
-                <i class="fa fa-users" aria-hidden="true"> : <txt id="passengers" class="tx"></txt></i>
-                <i class="fa fa-suitcase" aria-hidden="true" style="position:relative;left:5%"> : <txt id="luggage"
+                <i class="fa fa-users" aria-hidden="true"> : <txt id="passengers" class="tx"></txt></i><br>
+                <i class="fa fa-suitcase" aria-hidden="true" > : <txt id="luggage"
                         class="tx"></txt></i>
                 <br>
                 <div id="wait" style="display:none">
@@ -248,7 +250,7 @@
                 <table>
                     <tr>
                         <th>Beschreibung</th>
-                        <th>Preis (<i class="fa fa-eur" aria-hidden="true"></i>)</th>
+                        <th>Preis  (<i class="fa fa-eur" aria-hidden="true"></i>)</th>
 
                     </tr>
                     <tr>
@@ -268,7 +270,7 @@
                     </tr>
 
                     <tr style="background-color:rgb(16, 16, 52)">
-                        <td class="fw-bold" style="color:rgb(255, 255, 255)">GESAMT<sup style="color:white">*</sup></td>
+                        <td class="fw-bold imp" ><txt  style="color:white ">GESAMT</txt></td>
                         <td id="total" class="fw-bold" style="color:rgb(240,142,33)"></td>
 
                     </tr>
@@ -276,7 +278,7 @@
                 </table>
                 <p class="fs-6" style="color:rgb(85, 85, 80)"><sup>*</sup>Dies ist nur ein geschätzter Preis, der auf
                     unserem Client-Server berechnet wird. Der tatsächliche Preis wird auf der Checkout-Seite nach der
-                    Validierung der Details angezeigt, die mehr oder weniger als dieser geschätzte Preis sein wird.</p>
+                    Validierung der Details angezeigt.</p>
                 <br>
                 <form method="post">
                     <hr>
@@ -287,7 +289,7 @@
 
                     <input type="radio" name="payment" value="stripe" id="stripe"
                         onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="stripe"><i class="fa fa-cc-paypal"></i> <i class="fa fa-cc-visa"></i> <i
+                    <label for="stripe"><i class="fa fa-cc-paypal" hidden></i> <i class="fa fa-cc-visa"></i> <i
                             class="fa fa-cc-mastercard"></i> <i class="fa fa-university"></i></label><br>
 
                     <input type="radio" name="payment" value="cash" id="cash"
@@ -297,10 +299,10 @@
                     <div style="padding-top:10px;padding-bottom:10px;">
 
                         <a id="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
-                            style="display:none;border-radius:25px" href="/checkout"> </a>
+                            style="display:none;border-radius:25px;color: white !important;" href="/checkout"> </a>
 
-                        <button id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
-                            style="display:none;border-radius:25px">Jetzt Fahrer rufen</button>
+                        <a id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px; color:white !important"href="/cash_booking">Jetzt Fahrer rufen</a>
 
                     </div>
 
@@ -357,6 +359,10 @@
 
 
         <script type="text/javascript">
+            touchElement.addEventListener('check-button', function() {
+                display()
+  
+});
 
             function display() {
                 let formData = new FormData(document.getElementById('booking'));
@@ -391,43 +397,7 @@
                 else {
 
                     calcRoute()
-                    document.getElementById("name").innerHTML = document.getElementById("Name").value;
-                    document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
-                    document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
-                    document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
-                    document.getElementById("end").innerHTML = document.getElementById("Drop").value;
-                    if (document.getElementById("Vehicle").value == "PKW für bis zu 4 Personen und 2 Koffer") {
-                        document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
-                        document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
-                        document.getElementById("additional").innerHTML = "0.00";
-
-
-                    }
-                    else if (document.getElementById("Vehicle").value == "Kombi für bis zu 4 Personen und 4 Koffer") {
-                        document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
-                        document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
-                        document.getElementById("additional").innerHTML = "5.00";
-                        document.getElementById("total").innerHTML = "";
-
-                    }
-                    else if (document.getElementById("Vehicle").value == "Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer") {
-                        document.getElementById("passengers").innerHTML = "bis zu 8 Personen sind erlaubt";
-                        document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
-                        document.getElementById("additional").innerHTML = "10.00";
-                        document.getElementById("total").innerHTML = "";
-
-                    }
-                    let wait = parseInt(document.getElementById('Time').value.toString())
-
-                    if (wait == 00 || wait < 06) {
-                        document.getElementById('wait').style.display = 'block'
-                    }
-                    else {
-                        document.getElementById('wait').style.display = 'none'
-                    }
-
-                    document.getElementById("Price").style.display = "block"
-
+                    
 
                 }
             }

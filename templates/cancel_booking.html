@@ -97,86 +97,85 @@
                 </div>
             </div>
         </nav><br><br>
+
+        {% for message in get_flashed_messages()%}
+                    
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{message}} 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
         <form>
             <div style="display: flex; justify-content: center;">
-                <input id="order" style="width:50%" class="form" type="text" placeholder="Your Bestellnummer">
+                <input id="order" name="order" style="width:50%" class="form" type="text" placeholder="Ihre Bestellnummer" required>
             </div><br>
             <div style="display: flex; justify-content: center;">
-                <select id="reason" name="reason" class="form" style="width:50%">
-                    <option class="op">Wählen Sie den Grund aus</option>
+                <select id="reason" name="reason" class="form" style="width:50%" required>
+                    <option class="op">falsche Buchungsdaten</option>
                     <option class="op">zu hoher Preis</option>
                     <option class="op">lange Wartezeit</option>
-                    <option class="op">falsche Buchungsdaten</option>
                     <option class="op">andere</option>
 
 
                 </select>
             </div><br>
+            <div style="padding-left:20%;padding-right:20%;">
+                <p class="fs-5" style="color:red">*Wenn das Fahrzeug einem Fahrer zugeteilt wurde, werden 5€ von Ihrem Erstattungsbetrag abgezogen und der Restbetrag wird auf die von Ihnen gewählte Zahlungsart zurück überwiesen.</p>
+            </div><br>
+            <div style="padding-left:20%;padding-right:20%;">
+                <p class="fs-5" style="color:rgb(0, 0, 0)">Durch das klicken auf der Schaltfläche "Buchung stornieren", akzeptieren Sie unsere  <a class="fs-5"href="/datenschutz" target="_blank">DSGVO und AGB.</a></p>
+                        
+            </div><br>
             <div style="display: flex; justify-content: center;">
-                <button type="button" class="btn btn-primary" style="background-color:red;border-radius:15px;height:20%"
-                    onclick="cancel_modal()">Buchung stornieren</button><br><br>
+                <button type="button" onclick="check()" class="btn btn-primary" style="background-color:red;border-radius:15px;height:20%"
+                   >Buchung stornieren</button><br><br>
             </div>
-        </form>
-        <p id="cancel_msg" style="display:none"></p>
-        <div class="modal fade" id="cancel_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-            style="border-radius:45px">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel" style="color:red">Wollen Sie die Buchung wirklich
-                            stornieren?
-                        </h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                    </div>
-                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                        <txt style="font-size: 70%;color:white">Wenn sich das Fahrzeug nähert, werden 5 Euro von Ihrem
-                            Erstattungsbetrag abgezogen und der Restbetrag wird auf die von Ihnen bei der Buchung
-                            gewählte Zahlungsart überwiesen. Wenn ja, drücken Sie ok, sonst stornieren Sie.
-                        </txt>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="ok" class="btn btn-primary" data-bs-dismiss="modal" onclick="cancel()">ok</button>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Modal end-->
+           
+        </form><br>
+        <div id="error_msg" style="display:none;justify-content:center"><p id="emsg" style="padding-left:20%;padding-right:20%;color:red"></p></div>
+        <div id="success_msg" style="display:none;justify-content:center"><p id="smsg" style="padding-left:20%;padding-right:20%;color:rgb(14, 205, 93)"></p></div>
+        <div id="loading_img" style="display:none;justify-content:center"><img style="width: 20%;"
+                src="{{url_for('static', filename='loading.gif')}}" alt="loading"></div>
         <script>
-            function cancel_modal() {
+            function check() {
+                document.getElementById("error_msg").style.display = "none";
+                document.getElementById("success_msg").style.display = "none";
+                
                 var orderno = document.getElementById("order").value;
-                var reason = document.getElementById("reason").value;
+
                 if (orderno == "") {
-                    alert("Bitte geben Sie Ihr Bestellnummer")
-                }
-                else if (reason == "Wählen Sie den Grund aus") {
-                    alert("Bitte wählen Sie den Grund für die Stornierung")
-                }
+                    alert("Bitte geben Sie Ihre Bestellnummer ein.");
+                } 
                 else {
-                    $("#cancel_modal").modal('toggle');
-
+                    document.getElementById("loading_img").style.display = "flex";
+                    api_check();
                 }
-
-
             }
-            function cancel() {
-                // Send a POST request to the Flask route
+            
+
+            function api_check() {
+
+
                 $.ajax({
                     type: "POST",
                     url: "/cancel",
-                    data: {
-                        orderNo: orderno,
-                        Reason: reason
-                    },
+                    data: JSON.stringify({ order: document.getElementById("order").value, reason: document.getElementById("reason").value }),
+                    contentType: "application/json",
+                    dataType: "json",
                     success: function (response) {
-                        var cancelOrder = response;
-                        let orderNoGet = cancelOrder["orderNo"]
-                        let Email = cancelOrder["mail"]
-                        var cancelOrderMsg = "Ihre Bestellung Nummer ${orderNoGet} wurde erfolgreich storniert. Bitte überprüfen Sie Ihre E-Mail ${Email} für weitere Informationen. Je nach Ihrer Bank wird der Betrag innerhalb von 7-15 Tagen auf Ihr Konto zurückerstattet.\nWir freuen uns darauf, Sie wieder zu bedienen, Danke."
-                        $('#cancel_msg').text(cancelOrderMsg);
-                        document.getElementById("cancel_msg").style.display = "block";
+                        if (response.status === "succeeded") {
+                            document.getElementById("loading_img").style.display = "none";
+                            $('#smsg').text(response.message);
+                            document.getElementById("success_msg").style.display = "block";
 
+                        } 
+                        else if (response.status === "error"){
+                            document.getElementById("loading_img").style.display = "none";
+                            $('#emsg').text(response.message);
+                            document.getElementById("error_msg").style.display = "block";
+
+                        }
+                        
                     }
                 });
             }
@@ -184,6 +183,11 @@
 
 
         </script>
+
+        
+        
+        
+        
 
 
         

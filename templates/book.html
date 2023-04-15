@@ -80,14 +80,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" >
+                        <li class="nav-item dropdown">
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
-                                        </a></li>
-                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
-                                        </a></li>
+                                    </a></li>
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                    </a></li>
 
                             </ul>
                         </li>
@@ -188,11 +188,11 @@
 
 
 
-        <div id="taxi" class="container-fullwidth" style="display:none">
+        <div id="taxi" class="container-fullwidth">
             <div class="row">
                 <div class="col-sm-6"
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding:25px;max-width:100%">
-                    <form autocomplete="on">
+                    <form id="booking" autocomplete="on">
                         <label for="Name"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
                         <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" required>
@@ -203,49 +203,74 @@
                         <label for="Phone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
                         <input id="Phone" class="form" name="Phone" type="tel"
-                            placeholder="Rufnummer(bitte mit Landesvorwahl)" style="width:40%" required>
+                            placeholder="Rufnummer(bitte mit Landesvorwahl)" required><br><br>
 
 
 
-                        <label for="Mail" style="position:relative;left:3%"><i id="fu" class="fa fa-envelope"> :</i>
+                        <label for="Mail"><i id="fu" class="fa fa-envelope"> :</i>
                         </label>
-                        <input id="Mail" class="form" type="email" placeholder="Example@domain.com"
-                            style="position:relative;left:3%;width:40%" pattern="@" title="must include @" required>
+                        <input id="Mail" name="Mail" class="form" type="email" placeholder="Example@domain.com"
+                            pattern="@" title="must include @" required>
 
                         <br>
                         <br>
 
                         <label for="Pick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
-                        <input id="Pick-up" class="form" type="text" placeholder="Abholort" />
+                        <input id="Pick-up" name="Pick-up" class="form" type="text" placeholder="Abholort" />
 
                         <br>
                         <br>
                         <label for="Drop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="Drop" class="form" type="text" placeholder="Zielort" />
+                        <input id="Drop" name="Drop" class="form" type="text" placeholder="Zielort" />
 
                         <br>
                         <br>
 
 
                         <label for="Vehicle"><i id="fu" class="fa fa-car" aria-hidden="true"> :</i></label>
-                        <select id="Vehicle" class="form" style="width:55%">
-                            <option class="op">PKW für bis zu 4 Personen und 2 Koffer</option>
-                            <option class="op">Kombi für bis zu 4 Personen und 4 Koffer</option>
-                            <option class="op">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer</option>
+                        <select id="Vehicle" name="Vehicle" class="form">
+                            <option class="op" value="mini">PKW für bis zu 4 Personen und 2 Koffer</option>
+                            <option class="op" value="combi">Kombi für bis zu 4 Personen und 4 Koffer</option>
+                            <option class="op" value="wagen">Großraumwagen für bis zu 8 Personen und mehr als 4 Koffer
+                            </option>
 
 
-                        </select>
+                        </select><br><br>
 
 
-                        <input class="form" id="Date" name="Date" type="date"
-                            style="position:relative;left:3%;width:fit-content">
+                        <input class="form" id="Date" name="Date" type="date" min="{{ today }}" max="{{ future }}"
+                            style="position:relative;left:6%;width:30%">
+
+                        <script>
+                            // Get the current date and add 1 day to get the minimum selectable date
+                            var today = new Date();
+                            today.setDate(today.getDate());
+
+                            // Get the date 7 days in the future to use as the maximum selectable date
+                            var future = new Date();
+                            future.setDate(future.getDate() + 6);
+
+                            // Format the dates in ISO format (YYYY-MM-DD)
+                            var todayFormatted = today.toISOString().split('T')[0];
+                            var futureFormatted = future.toISOString().split('T')[0];
+
+                            // Set the 'min' and 'max' attributes of the input element
+                            document.getElementById('Date').setAttribute('min', todayFormatted);
+                            document.getElementById('Date').setAttribute('max', futureFormatted);
+                        </script>
 
                         <input class="form" id="Time" name="Time" type="time"
-                            style="position:relative;left:5%;width:fit-content">
+                            style="position:relative;left:30%;width:30%" required>
+
+
                         <br>
                         <br>
+                        <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Preis
+                            prüfen", akzeptieren Sie unsere <a class="fs-5" href="/datenschutz" target="_blank">DSGVO
+                                und AGB.</a></p>
+
 
                         <div class="container-sm">
                             <button name="sub"
@@ -268,16 +293,15 @@
                 </div>
             </div>
             <!--booking details-->
-            <div id="Price" class="container-fullwidth"
-                style="display:none;padding-top:10px;padding-left:20%;padding-right: 20%;">
+            <div id="Price" class="container-fullwidth" style="display:none;padding-top:10px;">
 
                 <hr>
                 <h3 style="color:rgb(240,142,33)">Buchungsdetails:</h3>
                 <hr>
                 <i class="fa fa-user"> : <txt id="name" class="tx"></txt></i>
                 <br>
-                <i class="fa fa-phone"> : <txt id="phone" class="tx"></txt></i>
-                <i class="fa fa-envelope" style="position:relative;left:5%"> : <txt id="mail" class="tx">
+                <i class="fa fa-phone"> : <txt id="phone" class="tx"></txt></i><br>
+                <i class="fa fa-envelope"> : <txt id="mail" class="tx">
                     </txt></i>
                 <br>
                 <i class="fa fa-dot-circle-o" aria-hidden="true"> : <txt id="start" class="tx"></txt></i>
@@ -286,16 +310,13 @@
                     </txt></i>
                 <br>
                 <i class="fa fa-road" aria-hidden="true">: <txt id="kms" class="tx"></txt></i>
-                <i class="fa fa-clock-o" aria-hidden="true" style="position:relative;left:7%">: <txt id="dur"
-                        class="tx"></txt></i>
-                <i class="fa fa-calendar-check-o" aria-hidden="true" style="position:relative;left:15%">: <txt
-                        id="book-datetime" class="tx"></txt></i>
+                <i class="fa fa-clock-o" aria-hidden="true" style="position:relative;left:10%">: <txt id="dur"
+                        class="tx"></txt></i><br>
+                <i class="fa fa-calendar-check-o" aria-hidden="true">: <txt id="book-datetime" class="tx"></txt></i>
                 <br>
-                <i class="fa fa-users" aria-hidden="true"> : <txt id="passengers" class="tx"></txt></i>
-                <i class="fa fa-suitcase" aria-hidden="true" style="position:relative;left:5%"> : <txt id="luggage"
-                        class="tx"></txt></i>
+                <i class="fa fa-users" aria-hidden="true"> : <txt id="passengers" class="tx"></txt></i><br>
+                <i class="fa fa-suitcase" aria-hidden="true"> : <txt id="luggage" class="tx"></txt></i>
                 <br>
-
                 <div id="wait" style="display:none">
                     <i class="fa fa-hourglass-start" aria-hidden="true"> : <txt id="waiting"
                             style="color:red;font-size: 80%;" class="tx">Ihre Wartezeit
@@ -330,26 +351,29 @@
                     </tr>
 
                     <tr style="background-color:rgb(16, 16, 52)">
-                        <td class="fw-bold" style="color:rgb(255, 255, 255)">GESAMT</td>
+                        <td class="fw-bold imp">
+                            <txt style="color:white ">GESAMT</txt>
+                        </td>
                         <td id="total" class="fw-bold" style="color:rgb(240,142,33)"></td>
 
                     </tr>
 
                 </table>
+                <p class="fs-6" style="color:rgb(85, 85, 80)"><sup>*</sup>Dies ist nur ein geschätzter Preis, der auf
+                    unserem Client-Server berechnet wird. Der tatsächliche Preis wird auf der Checkout-Seite nach der
+                    Validierung der Details angezeigt.</p>
                 <br>
-                <form method="post" action="/checkout">
+                <form method="post">
                     <hr>
                     <h3 style="color:rgb(240,142,33)">Bitte wählen Sie eine Zahlungsmethode:</h3>
                     <hr>
 
-                    <input type="radio" name="payment" value="paypal" id="paypal"
-                        onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="paypal"><i class="fa fa-cc-paypal"></i></label><br>
+
 
                     <input type="radio" name="payment" value="stripe" id="stripe"
                         onclick="document.getElementById('pay_cash').style.display ='none';document.getElementById('pay').style.display ='block'">
-                    <label for="stripe"><i class="fa fa-cc-visa"></i> <i class="fa fa-cc-mastercard"></i> <i
-                            class="fa fa-university"></i></label><br>
+                    <label for="stripe"><i class="fa fa-cc-paypal" hidden></i> <i class="fa fa-cc-visa"></i> <i
+                            class="fa fa-cc-mastercard"></i> <i class="fa fa-university"></i></label><br>
 
                     <input type="radio" name="payment" value="cash" id="cash"
                         onclick="document.getElementById('pay').style.display ='none';document.getElementById('pay_cash').style.display ='block'">
@@ -357,15 +381,17 @@
                             class="fa fa-money"></i></label><br>
                     <div style="padding-top:10px;padding-bottom:10px;">
 
-                        <button id="pay" name="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
-                            style="display:none;border-radius:25px"> </button>
+                        <a id="pay" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px;color: white !important;" href="/checkout"> </a>
 
-                        <button id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
-                            style="display:none;border-radius:25px">Buch Jetzt!</button>
+                        <a id="pay_cash" class="btn btn-primary btn-lg mb-3 flex-fill" type="submit"
+                            style="display:none;border-radius:25px; color:white !important" href="/cash_booking">Jetzt
+                            Fahrer rufen</a>
 
                     </div>
 
                 </form>
+
 
             </div>
             <br>
@@ -380,13 +406,13 @@
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;max-width:100%">
                     <br>
                     {% for message in get_flashed_messages()%}
-                    
+
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}} 
+                        {{message}}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                    </div>
                     {% endfor %}
-                    
+
                     <form autocomplete="on" action="/ambulance_result" method="post" enctype="multipart/form-data">
                         <label for="PName"> <i id="fu" class="fa fa-user"> :</i>
                         </label>
@@ -403,8 +429,8 @@
 
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
-                        <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit +49)" required><br><br>
+                        <input id="PPhone" name="PPhone" class="form" type="tel" placeholder="Rufnummer (bitte mit +49)"
+                            required><br><br>
 
 
 
@@ -418,14 +444,13 @@
 
                         <label for="PPick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
-                        <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort"
-                            >
+                        <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort">
 
                         <br>
                         <br>
                         <label for="PDrop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort" >
+                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort">
 
                         <br>
                         <br>
@@ -442,8 +467,7 @@
                         <label id="fu" for="PDate">Datum :</label>
 
 
-                        <input class="form" id="PDate" name="PDate" type="date"
-                            style="width:15%">
+                        <input class="form" id="PDate" name="PDate" type="date" style="width:15%">
 
                         <label id="fu" for="PTime" style="position:relative;left:5%">Zeit :</label>
                         <input class="form" id="PTime" name="PTime" type="time"
@@ -467,6 +491,9 @@
                             placeholder="" style="width:92%;padding-left:0">
                         <br>
                         <br>
+                        <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Buchung
+                            stornieren", akzeptieren Sie unsere <a class="fs-5" href="/datenschutz"
+                                target="_blank">DSGVO und AGB.</a></p>
 
 
 
@@ -562,7 +589,7 @@
             </div>
             <!-- Copyright -->
         </footer>
-        
+
 
     </div>
 
@@ -598,8 +625,27 @@
             }
 
         }
+    </script>
+    <script type="text/javascript">
+        touchElement.addEventListener('check-button', function () {
+            display()
+
+        });
+
         function display() {
-            /*
+            let formData = new FormData(document.getElementById('booking'));
+
+            // Send an AJAX request to the Flask route
+            fetch('/booking', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Do something with the response data
+                    console.log(data);
+                })
+                .catch(error => console.error(error));
             if (document.getElementById("Name").value == "") {
                 alert("Bitte geben Sie Ihren vollständigen Namen ein")
             }
@@ -615,53 +661,16 @@
             else if (document.getElementById("Date").value == "" || document.getElementById("Time").value == "") {
                 alert("Bitte wählen Sie das Datum und die Uhrzeit der Fahrt")
 
-            }*/
-
-
-            calcRoute()
-            document.getElementById("name").innerHTML = document.getElementById("Name").value;
-            document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
-            document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
-            document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
-            document.getElementById("end").innerHTML = document.getElementById("Drop").value;
-            if (document.getElementById("Vehicle").value == "Normal drive für bis zu 4 Personen und 2 Koffern") {
-                document.getElementById("passengers").innerHTML = "bis zu 4 Passagiere sind erlaubt";
-                document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "0.00";
-
-
-            }
-            else if (document.getElementById("Vehicle").value == "Kombi für bis zu 4 Personen und 4 Koffern") {
-                document.getElementById("passengers").innerHTML = "bis zu 4 Passagiere sind erlaubt";
-                document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "5.00";
-                document.getElementById("total").innerHTML = "";
-
-            }
-            else if (document.getElementById("Vehicle").value == "Großraumwaggon für bis zu 8 Passagiere und mehr als 4 Koffer") {
-                document.getElementById("passengers").innerHTML = "bis zu 8 Passagiere sind erlaubt";
-                document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "10.00";
-                document.getElementById("total").innerHTML = "";
-
-            }
-            let wait = parseInt(document.getElementById('Time').value.toString())
-
-            if (wait == 00 || wait < 06) {
-                document.getElementById('wait').style.display = 'block'
             }
             else {
-                document.getElementById('wait').style.display = 'none'
+
+                calcRoute()
+
+
             }
-
-
-
-            document.getElementById("Price").style.display = "block"
-
-
         }
-
     </script>
+
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
