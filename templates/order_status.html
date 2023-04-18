@@ -2,7 +2,7 @@
 <html lang="de">
 
 <head>
-    <title>Buchung stornieren</title>
+    <title>Buchungsstatus überprüfen</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
 
@@ -84,9 +84,10 @@
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
+                                <li><a class="dropdown-item" style="color:rgb(240,142,33)" href="#">Buchungsstatus
+                                        überprüfen
                                     </a></li>
-                                <li><a class="dropdown-item" style="color:rgb(240,142,33)" href="#">Buchung stornieren
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
                                     </a></li>
 
                             </ul>
@@ -97,76 +98,90 @@
                 </div>
             </div>
         </nav><br><br>
-
-        {% for message in get_flashed_messages()%}
-                    
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{message}} 
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                    {% endfor %}
-        <form>
+        <form id="ordering">
             <div style="display: flex; justify-content: center;">
-                <input id="order" name="order" style="width:50%" class="form" type="text" placeholder="Ihre Bestellnummer" required>
+                <input id="order" name="order" style="width:50%" class="form" type="text"
+                    placeholder="Ihre Bestellnummer">
             </div><br>
-            <div style="display: flex; justify-content: center;">
-                <select id="reason" name="reason" class="form" style="width:50%" required>
-                    <option class="op" value="falsche Buchungsdaten">falsche Buchungsdaten</option>
-                    <option class="op" value="zu hoher Preis">zu hoher Preis</option>
-                    <option class="op" value="lange Wartezeit">lange Wartezeit</option>
-                    <option class="op" value="andere">andere</option>
 
-
-                </select>
-            </div><br>
-            <div style="padding-left:20%;padding-right:20%;">
-                <p class="fs-5" style="color:red">*Wenn das Fahrzeug einem Fahrer zugeteilt wurde, werden 5€ von Ihrem Erstattungsbetrag abgezogen und der Restbetrag wird auf die von Ihnen gewählte Zahlungsart zurück überwiesen.</p>
-            </div><br>
-            <div style="padding-left:20%;padding-right:20%;">
-                <p class="fs-5" style="color:rgb(0, 0, 0)">Durch das klicken auf der Schaltfläche "Buchung stornieren", akzeptieren Sie unsere  <a class="fs-5"href="/datenschutz" target="_blank">DSGVO und AGB.</a></p>
-                        
-            </div><br>
             <div style="display: flex; justify-content: center;">
-                <button type="button" onclick="check()" class="btn btn-primary" style="background-color:red;border-radius:15px;height:20%"
-                   >Buchung stornieren</button><br><br>
+                <button type="button" class="btn btn-primary"
+                    style="background-color:green;border-radius:15px;height:20%" onclick="check()">Buchungsstatus
+                    überprüfen</button><br><br>
             </div>
-           
-        </form><br>
-        <div id="error_msg" style="display:none;justify-content:center"><p id="emsg" style="padding-left:20%;padding-right:20%;color:red"></p></div>
-        <div id="success_msg" style="display:none;justify-content:center"><p id="smsg" style="padding-left:20%;padding-right:20%;color:rgb(14, 205, 93)"></p></div>
+        </form>
+        <div style="display: flex; justify-content: center;">
+            <table style="display: flex; justify-content: center;">
+
+                <tr id="general" style="display:none">
+                    <td style="background-color:rgb(16, 16, 52);border-top-left-radius: 25px;border-bottom-left-radius:25px; color:white">Buchungsstatus: </td>
+                    <td id="bstatus" style="background-color:rgb(240,142,33);border-top-right-radius: 25px;border-bottom-right-radius:25px; color:white"></td>
+
+                </tr>
+                <tr id='driver_name' style="display:none">
+                    <td style="background-color:rgb(16, 16, 52);border-top-left-radius: 25px;border-bottom-left-radius:25px; color:white">Name des Fahrers:
+                    </td>
+                    <td id="dnstatus" style="background-color:rgb(240,142,33);border-top-right-radius: 25px;border-bottom-right-radius:25px; color:white"></td>
+
+                </tr>
+                <tr id='driver_phone' style="display:none">
+                    <td style="background-color:rgb(16, 16, 52);border-top-left-radius: 25px;border-bottom-left-radius:25px; color:white">Telefonnummer des
+                        Fahrers: </td>
+                    <td id="dpstatus" style="background-color:rgb(240,142,33);border-top-right-radius: 25px;border-bottom-right-radius:25px; color:white"></td>
+
+                </tr>
+                <tr id='vehicle_name' style="display:none">
+                    <td style="background-color:rgb(16, 16, 52);border-top-left-radius: 25px;border-bottom-left-radius:25px; color:white">Automodell: </td>
+                    <td id="vstatus" style="background-color:rgb(240,142,33);border-top-right-radius: 25px;border-bottom-right-radius:25px; color:white"></td>
+
+                </tr>
+
+
+            </table>
+        </div>
+        <div id="error_msg" style="display:none;justify-content:center"><p id="emsg" style="display:flex;justify-content:center;color:red"></p></div>
         <div id="loading_img" style="display:none;justify-content:center"><img style="width: 20%;"
                 src="{{url_for('static', filename='loading.gif')}}" alt="loading"></div>
+
+
+
         <script>
             function check() {
                 document.getElementById("error_msg").style.display = "none";
-                document.getElementById("success_msg").style.display = "none";
-                
+                document.getElementById("general").style.display = "none";
+                document.getElementById("driver_name").style.display = "none";
+                document.getElementById("driver_phone").style.display = "none";
+                document.getElementById("vehicle_name").style.display = "none";
+                document.getElementById("loading_img").style.display = "flex";
                 var orderno = document.getElementById("order").value;
 
                 if (orderno == "") {
                     alert("Bitte geben Sie Ihre Bestellnummer ein.");
-                } 
-                else {
-                    document.getElementById("loading_img").style.display = "flex";
+                } else {
                     api_check();
                 }
             }
-            
 
             function api_check() {
 
 
                 $.ajax({
                     type: "POST",
-                    url: "/cancel",
-                    data: JSON.stringify({ order: document.getElementById("order").value, reason: document.getElementById("reason").value }),
+                    url: "/order",
+                    data: JSON.stringify({ order: document.getElementById("order").value}),
                     contentType: "application/json",
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "succeeded") {
                             document.getElementById("loading_img").style.display = "none";
-                            $('#smsg').text(response.message);
-                            document.getElementById("success_msg").style.display = "block";
+                            $('#bstatus').text(response.message);
+                            $('#dnstatus').text(response.drvName);
+                            $('#dpstatus').text(response.drvPhone);
+                            $('#vstatus').text(response.vehModel);
+                            document.getElementById("general").style.display = "block";
+                            document.getElementById("driver_name").style.display = "block";
+                            document.getElementById("driver_phone").style.display = "block";
+                            document.getElementById("vehicle_name").style.display = "block";
 
                         } 
                         else if (response.status === "error"){
@@ -175,7 +190,11 @@
                             document.getElementById("error_msg").style.display = "block";
 
                         }
-                        
+                        else {
+                            $('#bstatus').text(response.message);
+                            document.getElementById("loading_img").style.display = "none";
+                            document.getElementById("general").style.display = "block";
+                        }
                     }
                 });
             }
@@ -184,14 +203,9 @@
 
         </script>
 
-        
-        
-        
-        
 
 
-        
-        
+
         <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
 
             <footer class="text-center text-lg-start"
@@ -231,6 +245,6 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-            
+
 
         </div>

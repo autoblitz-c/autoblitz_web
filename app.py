@@ -32,7 +32,7 @@ from threading import Lock
 lock = Lock()
 
 
-load_dotenv(find_dotenv())
+#load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
@@ -314,7 +314,7 @@ def cal_price(pick: str, drop: str, vehicle: str):
 
 
 # stripe key
-stripe.api_key = os.getenv('t_s_s_k')
+#stripe.api_key = os.getenv('t_s_s_k')
 stripe.api_key = os.environ.get('t_s_s_k')
 
 
@@ -323,7 +323,7 @@ def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'autoblitz' and password == '1234@autoblitz'
+    return username == 'autoblitz' and password == 'autoblitz@tm2023'
 
 
 def authenticate():
@@ -461,6 +461,7 @@ def vacancy_result():
 
 # taxi booking page
 @app.route('/taxi', methods=['POST', 'GET'])
+@requires_auth
 def taxi():
     if check_location() == 'Access denied':
         return "Access Denied"
@@ -793,7 +794,7 @@ def src():
 def publish():
     if check_location() == 'Access denied':
         return "Access Denied"
-    msg = {"key": os.getenv('t_s_p_k')}
+    msg = {"key": os.environ.get('t_s_p_k')}
     return jsonify(msg)
 
 
@@ -803,7 +804,7 @@ def create_payment():
     if check_location() == 'Access denied':
         return "Access Denied"
     try:
-        customer = stripe.Customer.create()
+
         user_id = session.get('user_id', None)
         if user_id is None or session.get(f'data_{user_id}') is None:
             flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
@@ -811,16 +812,21 @@ def create_payment():
             return render_template('taxi.html')
 
         book = session.get(f'data_{user_id}')
+        # Create a customer object
+        customer = stripe.Customer.create(
+            email=book['mail'],
+            description=book['name']
+        )
         # book = json.load(json_data)
         price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
 
         amount = int(price * 100)
         data = json.loads(request.data)
-        allowed_payment_methods = ["card", "paypal", "sofort", "giropay", "link"]
+        allowed_payment_methods = ["card", "paypal", "sofort", "giropay", "link", "apple_pay",  "google_pay"]
         allowed_card_networks = ["visa", "mastercard"]
 
         intent = stripe.PaymentIntent.create(
-            customer=customer['id'],
+            customer=customer.id,
 
             amount=amount,
             currency='eur',
@@ -932,7 +938,7 @@ def booking_status():
                 print(order['data']['orderGUID'])
 
                 ############ mail for customer #############
-                me = "bestellung@autoblitz-koeln.de"
+                me = os.environ.get("bk")
                 you = book['mail']
 
                 # Create message container - the correct MIME type is multipart/alternative.
@@ -978,11 +984,19 @@ def booking_status():
                 s.ehlo()
 
                 # Authentication
-                s.login(me, 'tiam2002')
+                s.login(os.environ.get("bk"), os.environ.get("bkp"))
                 # sendmail function takes 3 arguments: sender's address, recipient's address
                 # and message to send - here it is sent as one string.
                 s.sendmail(me, you, msg.as_string())
                 s.quit()
+                if book['payment_type'] == 'link':
+                    book['net_amount'] = (int(book['amount'])/100) - (((int(book['amount'])/100) * (1.2/100)) + 0.25)
+                elif book['payment_type'] == 'card' or book['payment_type'] == 'apple_pay' or book['payment_type'] == 'google_pay':
+                    book['net_amount'] = (int(book['amount']) / 100) - (
+                                ((int(book['amount']) / 100) * (2.28 / 100)) + 0.25)
+                elif book['payment_type'] == 'giropay' or book['payment_type'] == 'sofort':
+                    book['net_amount'] = (int(book['amount']) / 100) - (
+                                ((int(book['amount']) / 100) * (1.4 / 100)) + 0.25)
 
                 add_data('Customer_data', 1, book)
 
@@ -1069,7 +1083,7 @@ def booking_cash_status():
 
             }
             ############ mail for customer #############
-            me = "bestellung@autoblitz-koeln.de"
+            me = os.environ.get("bk")
             you = book['mail']
 
             # Create message container - the correct MIME type is multipart/alternative.
@@ -1115,13 +1129,14 @@ def booking_cash_status():
             s.ehlo()
 
             # Authentication
-            s.login(me, 'tiam2002')
+            s.login(os.environ.get("bk"), os.environ.get("bkp"))
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
             s.sendmail(me, you, msg.as_string())
             s.quit()
 
             time.sleep(1)
+            book['net_amount'] = int(book['amount'])/100
             add_data('Customer_data', 1, book)
             print('added data', book)
             lock.release()
@@ -1339,7 +1354,7 @@ def cancel():
 
             
             ############ mail for customer #############
-            me = "bestellung@autoblitz-koeln.de"
+            me = os.environ.get("bk")
             you = query['mail']
 
             # Create message container - the correct MIME type is multipart/alternative.
@@ -1384,7 +1399,7 @@ def cancel():
             s.ehlo()
 
             # Authentication
-            s.login(me, 'tiam2002')
+            s.login(os.environ.get("bk"), os.environ.get("bkp"))
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
             s.sendmail(me, you, msg.as_string())
@@ -1395,8 +1410,8 @@ def cancel():
 
             datum = str(now.date())
             zeit = str(now.time())
-            response_cash = {"orderNo": query['orderNo'], "mail": query['mail'], "amount": query['amount'],
-                             "refund_amount": "NA", "reason": reason, "date": datum, "time": zeit}
+            response_cash = {"orderNo": query['orderNo'], "mail": query['mail'], "payment_type": "cash", "amount": float(int(query['amount'])/100),
+                             "refund_amount": "0", "reason": reason, "date": datum, "time": zeit}
             add_data("Customer_data", 2, response_cash)
 
             response_data = {
@@ -1480,7 +1495,7 @@ def cancel():
                 datum = str(now.date())
                 zeit = str(now.time())
 
-                response = {"orderNo": query['orderNo'], "mail": query['mail'], "amount": float(int(query['amount'])/100),
+                response = {"orderNo": query['orderNo'], "mail": query['mail'],"payment_type": query['payment_type'], "amount": float(int(query['amount'])/100),
                             "refund_amount": float(int(r_res['amount']) / 100), "reason": reason, "date": datum,
                             "time": zeit}
                 add_data("Customer_data", 2, response)
@@ -1565,6 +1580,11 @@ def datenschutz():
 @app.route('/impressum', methods=['POST', 'GET'])
 def impressum():
     return render_template('impressum.html')
+
+@app.route('/dashboard', methods=['POST', 'GET'])
+@requires_auth
+def dashboard():
+    return render_template('dashboard.html')
 
 
 # runing the application
