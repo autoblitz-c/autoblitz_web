@@ -30,7 +30,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+                        src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -73,15 +73,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <!--customer login-->
-                        <li class="nav-item dropdown" hidden>
+                        <li class="nav-item dropdown">
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
+                                    </a></li>
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                    </a></li>
 
                             </ul>
                         </li>
@@ -91,101 +90,106 @@
                 </div>
             </div>
         </nav>
-              <!-- Modal -->
-              <div  class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-              aria-hidden="true" style="border-radius:45px">
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird bald online gehen. 
-                          </h3>
-                          
-                      </div>
-                      <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                          <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
-                          </txt>
-                      </div>
-                      <div class="modal-footer">
-                          <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-                          
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!--Modal end-->
-      
-      <script type="text/javascript">
-          function taxi() {
-              $("#taxi_modal").modal('toggle');}
-      </script>
+        <!-- Modal -->
+        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            style="border-radius:45px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
+                            bald online gehen.
+                        </h3>
 
-        <div class="col-sm-12" style="padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;background-color:rgb(16, 16, 52);border-radius: 25px;">
+                    </div>
+                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
+                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                        </txt>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal end-->
+
+        <script type="text/javascript">
+            function taxi() {
+                $("#taxi_modal").modal('toggle');
+            }
+        </script>
+
+        <div class="col-sm-12"
+            style="padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;background-color:rgb(16, 16, 52);border-radius: 25px;">
             <br>
             {% for message in get_flashed_messages()%}
-                    
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}} 
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                    {% endfor %}
 
-            <form  name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+
+            <form name="contact_us" action="/contact_us_result" method="post" enctype="multipart/form-data">
                 <label for="Name"><i id="fu" class="fa fa-user"> :</i>
                 </label>
-                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" 
-                    required>
+                <input id="Name" name="Name" class="form" type="text" placeholder="Voller Name" required>
                 <br><br>
 
 
 
-                <label for="Phone" ><i id="fu" class="fa fa-phone"> :</i>
+                <label for="Phone"><i id="fu" class="fa fa-phone"> :</i>
                 </label>
-                <input id="Phone" name="Phone" class="form" type="phone" placeholder="Rufnummer (bitte mit Landesvorwahl)"
-                 required>
-                    <br><br>
+                <input id="Phone" name="Phone" class="form" type="phone"
+                    placeholder="Rufnummer (bitte mit Landesvorwahl)" required>
+                <br><br>
 
 
 
-                <label for="Mail" ><i id="fu" class="fa fa-envelope"> :</i>
+                <label for="Mail"><i id="fu" class="fa fa-envelope"> :</i>
                 </label>
-                <input id="Mail" class="form" name="Mail" type="email" placeholder="Example@domain.com"
-                 required>
+                <input id="Mail" class="form" name="Mail" type="email" placeholder="Example@domain.com" required>
                 <br>
                 <br>
-                <input type="text" id="Subject" name="Subject" class="form"
-                    style="width:92%" placeholder="Betreff" required>
+                <input type="text" id="Subject" name="Subject" class="form" style="width:92%" placeholder="Betreff"
+                    required>
                 <br>
                 <br>
                 <textarea class="form" id="Message" name="Message" rows="5" placeholder="Nachricht" col="50"
-                    style="width:92%;padding-left:10px;padding-top: 10px;border-radius: 15px;"
-                    required></textarea><br>
+                    style="width:92%;padding-left:10px;padding-top: 10px;border-radius: 15px;" required></textarea><br>
+                    <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Absenden", akzeptieren Sie unsere  <a class="fs-5"href="/datenschutz" target="_blank">DSGVO und AGB.</a></p>
 
-                
-                    <button name="sub"
-                        style="background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
-                        type="button" onclick="valid()" id="check-button"
-                        class="btn btn-primary  ">Absenden</button>
-                    <button id="res" name="res"
-                        style="position:relative;left:5%;background-color:red;border-radius: 25px;" type="reset"
-                        class="btn btn-primary ">Reset</button><br><br>
-                
+
+                <button name="sub" style="background-color:rgb(78, 192, 78);border-radius: 25px;width:fit-content"
+                    type="button" onclick="valid()" id="check-button" class="btn btn-primary  ">Absenden</button>
+                <button id="res" name="res" style="position:relative;left:5%;background-color:red;border-radius: 25px;"
+                    type="reset" class="btn btn-primary ">Reset</button><br><br>
+
                 <!-- Modal -->
-                <div  class="modal fade" id="contact_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="contact_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true" style="border-radius:45px">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Wir haben deine Anfrage erhalten. <img style="position:relative;left:-1%" src="{{url_for('static', filename='success.jpg')}}" width="15%" height="15%">
+                                <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Wir haben
+                                    deine Anfrage erhalten. <img style="position:relative;left:-1%"
+                                        src="{{url_for('static', filename='success.jpg')}}" width="15%" height="15%">
                                 </h3>
-                                
+
                             </div>
                             <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                                <txt style="font-size: 70%;color:white">Vielen Dank für Ihre Kontaktaufnahme <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">. Wir werden uns sehr bald bei Ihnen melden. Klicken Sie bitte auf ok, um die Daten zu senden.
+                                <txt style="font-size: 70%;color:white">Vielen Dank für Ihre Kontaktaufnahme <img
+                                        src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">. Wir
+                                    werden uns sehr bald bei Ihnen melden. Klicken Sie bitte auf ok, um die Daten zu
+                                    senden.
                                 </txt>
                             </div>
                             <div class="modal-footer">
-                                <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-                                
+                                <button id="ok" type="submit" class="btn btn-primary"
+                                    data-bs-dismiss="modal">ok</button>
+
                             </div>
                         </div>
                     </div>
@@ -193,27 +197,27 @@
                 <!--Modal end-->
             </form>
             <script>
-                function valid(){
+                function valid() {
                     if (document.getElementById("Name").value == "") {
-                    alert("Bitte geben Sie Ihren vollständigen Namen ein")
-                }
-                else if (document.getElementById("Phone").value == "" || document.getElementById("Phone").value.includes("+", 0) == false) {
-                    alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
-                }
-                else if (document.getElementById("Mail").value == "" || document.getElementById("Mail").value.includes("@") == false) {
-                    alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
-                }
-                else if (document.getElementById("Subject").value == "" ) {
-                    alert("Bitte füllen Sie die Betreff-Spalte aus")
-                }
-                else if (document.getElementById("Message").value == "" ) {
-                    alert("Bitte füllen Sie die Nachrichtenspalte aus")
-                }
-                else{
-                    $("#contact_modal").modal('toggle');
-                }
+                        alert("Bitte geben Sie Ihren vollständigen Namen ein")
+                    }
+                    else if (document.getElementById("Phone").value == "" || document.getElementById("Phone").value.includes("+", 0) == false) {
+                        alert("Bitte geben Sie eine gültige Telefonnummer mit Landesvorwahl ein (z.B. +49).")
+                    }
+                    else if (document.getElementById("Mail").value == "" || document.getElementById("Mail").value.includes("@") == false) {
+                        alert("Bitte geben Sie die gültige E-Mail-Adresse ein")
+                    }
+                    else if (document.getElementById("Subject").value == "") {
+                        alert("Bitte füllen Sie die Betreff-Spalte aus")
+                    }
+                    else if (document.getElementById("Message").value == "") {
+                        alert("Bitte füllen Sie die Nachrichtenspalte aus")
+                    }
+                    else {
+                        $("#contact_modal").modal('toggle');
+                    }
 
-                      
+
                 }
             </script>
         </div>
@@ -247,7 +251,12 @@
                         <i style="color:white" class="fa fa-twitter"></i>
                     </a>
                 </div>
-    
+                <div class="container d-flex justify-content-center ">
+                    <a id="datap" type="button" href="/datenschutz" target="_blank">Datenschutz</a>
+                    <span class="vertical-line"></span>
+                    <a id="datap" type="button" href="/impressum" target="_blank">Impressum</a>
+                </div>
+
                 <!-- Copyright -->
                 <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                     © 2023 Copyright:
@@ -255,8 +264,10 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-    
+
+
         </div>
     </div>
 </body>
+
 </html>

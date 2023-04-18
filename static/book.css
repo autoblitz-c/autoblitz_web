@@ -106,10 +106,24 @@ tr:nth-child(even) {
     height: 125px;
 
 }
+#datap{
+  color:rgb(85, 85, 85)
+}
+#datap:hover{
+  color:black
+}
+.vertical-line {
+  display: inline-block;
+  width: 1px;
+  height: 36px; /* Set the height of the line according to your requirement */
+  background-color: rgb(85, 85, 85); /* Set the color of the line */
+  margin: 0 10px; /* Set the margin according to your requirement */
+  vertical-align: middle; /* To align the line with the text in the <a> tags */
+}
 
 .navbar-nav > li{
-    padding-left:35px;
-    padding-right:35px;
+    padding-left:15px;
+    padding-right:25px;
     
   }
   #tab{
@@ -174,7 +188,7 @@ tr:nth-child(even) {
   /*map*/
   #googleMap {
     width: 45%;
-    height: 500px;
+    height: 700px;
     padding-top:25px;
     position:relative;
     top:0%;
@@ -185,4 +199,17 @@ tr:nth-child(even) {
   @media (max-width: 1000px) {
     #googleMap { display: none; }
 }
+#Price {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+@media(max-width: 1000px){
+  #Price {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 
+}
+.imp {
+  color: rgb(255, 255, 255);
+}

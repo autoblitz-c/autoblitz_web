@@ -80,14 +80,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" hidden>
+                        <li class="nav-item dropdown" >
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-user-circle"></i></a>
+                                data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-phone" aria-hidden="true"></i></a></li>
-                                <li><a class="dropdown-item" href="#">Login mit
-                                        <i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
+                                        </a></li>
+                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
+                                        </a></li>
 
                             </ul>
                         </li>
@@ -198,8 +198,21 @@
                         <label id="fu" for="PDate">Datum :</label>
 
 
-                        <input class="form" id="PDate" name="PDate" type="date"
+                        <input class="form" id="PDate" name="PDate" type="date" min="{{ today }}"
                             style="width:15%">
+                            <script>
+                                // Get the current date and add 1 day to get the minimum selectable date
+                                var today = new Date();
+                                today.setDate(today.getDate() + 1);
+    
+                                // Format the dates in ISO format (YYYY-MM-DD)
+                                var todayFormatted = today.toISOString().split('T')[0];
+                                
+    
+                                // Set the 'min' and 'max' attributes of the input element
+                                document.getElementById('PDate').setAttribute('min', todayFormatted);
+                                
+                            </script>
                         <label id="fu" for="PTime" style="position:relative;left:5%">Zeit :</label>
 
                         <input class="form" id="PTime" name="PTime" type="time"
@@ -221,6 +234,10 @@
                             placeholder="" style="width:92%;padding-left:0">
                         <br>
                         <br>
+                        <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Buchung
+                            stornieren", akzeptieren Sie unsere <a class="fs-5" href="/datenschutz"
+                                target="_blank">DSGVO und AGB.</a></p>
+                        
 
 
 
@@ -299,6 +316,11 @@
                         <i style="color:white" class="fa fa-twitter"></i>
                     </a>
                 </div>
+                <div class="container d-flex justify-content-center ">
+                    <a id="datap" type="button" href="/datenschutz" target="_blank">Datenschutz</a>
+                    <span class="vertical-line"></span>
+                    <a id="datap" type="button" href="/impressum" target="_blank">Impressum</a>
+                </div>
 
                 <!-- Copyright -->
                 <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
@@ -307,9 +329,9 @@
                 </div>
                 <!-- Copyright -->
             </footer>
+            
 
         </div>
-
 
         <script type="text/javascript">
             function pvalid() {

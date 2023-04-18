@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>booking_status</title>
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+    var pollFlag = false;
+
+    function startPolling() {
+        setTimeout(function () {
+            if (!pollFlag) {
+                $.ajax({
+                    type: "GET",
+                    url: "/booking_cash_status",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "succeeded") {
+                            pollFlag = true;
+                            $('#booking-container').html('');
+                            $('#booking-container').load(response.template);
+                        } else {
+                            document.getElementById("loading").style.display = "block";
+                        }
+                    },
+                    complete: function () {
+                        startPolling(); // Call startPolling() again after the AJAX call has completed
+                    }
+                });
+            } else {
+                startPolling(); // Call startPolling() again if pollFlag is true (i.e. if a previous AJAX call is still in progress)
+            }
+        }, 5000); // Wait for 5 seconds before triggering the AJAX call
+    }
+
+    startPolling(); // Start polling on page load
+});
+
+    </script>
+</head>
+<body >
+    <div id="booking-container" class="container-sm-fullwidth "></div>
+<div id="loading" style="display: block">
+    <br><br>
+    <h1 style="text-align:center">Die Buchung wird bearbeitet. Es kann bis zu 2 Minuten dauern.  </h1><br>
+    <div style="display:flex;justify-content:center"><img style="width: 40%;" src="{{url_for('static', filename='loading.gif')}}" alt="loading">
+    </div>
+</div>
+
+
+</body>
+</html>

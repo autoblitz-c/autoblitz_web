@@ -11,7 +11,7 @@ fetch('/publish')
 
   function Data(data) {
     const stripe =  Stripe(data.key, {locale: 'de'});
-    // do something else with the data here
+    
   
 
 
@@ -98,7 +98,7 @@ async function handleSubmit(e) {
     elements,
     confirmParams: {
       // Make sure to change this to your payment completion page
-      return_url: "http://127.0.0.1:5000/online_booking",
+      return_url: "http://192.168.178.56:5000/online_booking",
       
       receipt_email: emailAddress,
     },
