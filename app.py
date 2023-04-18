@@ -822,7 +822,7 @@ def create_payment():
 
         amount = int(price * 100)
         data = json.loads(request.data)
-        allowed_payment_methods = ["card", "paypal", "sofort", "giropay", "link", "apple_pay",  "google_pay"]
+        allowed_payment_methods = ["card", "paypal", "sofort", "giropay", "link"]
         allowed_card_networks = ["visa", "mastercard"]
 
         intent = stripe.PaymentIntent.create(
