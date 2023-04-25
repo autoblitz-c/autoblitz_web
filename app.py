@@ -368,6 +368,7 @@ def book():
 def vacancy():
     # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
     return render_template('vacancy.html')
@@ -486,8 +487,9 @@ def booking():
     # with open(file_name, "w") as f:
     # json.dump(book, f)
     # Store data in the session
-    session.permanent = True  # Make the session permanent
+    #session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
     # Store data in the session using the user ID as the key
@@ -504,8 +506,9 @@ def booking():
 def ambulance():
     if check_location() == 'Access denied':
         return "Access Denied"
-    session.permanent = True  # Make the session permanent
+    #session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
     return render_template('ambulance.html')
@@ -652,8 +655,9 @@ def kappey():
 def contact_us():
     if check_location() == 'Access denied':
         return "Access Denied"
-    session.permanent = True  # Make the session permanent
+    #session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
     return render_template('contact_us.html')
@@ -770,8 +774,6 @@ def contact_us_result():
 
 @app.route('/src', methods=['GET'])
 def src():
-    if check_location() == 'Access denied':
-        return "Access Denied"
     kmap = os.environ.get('map')
 
     src = "https://maps.googleapis.com/maps/api/js?key=" + kmap + "&libraries=places"
@@ -782,8 +784,6 @@ def src():
 # publish key #
 @app.route('/publish', methods=['GET'])
 def publish():
-    if check_location() == 'Access denied':
-        return "Access Denied"
     msg = {"key": os.environ.get('t_s_p_k')}
     return jsonify(msg)
 
@@ -791,8 +791,7 @@ def publish():
 @app.route('/create-payment-intent', methods=['POST'])
 def create_payment():
     lock.acquire()
-    if check_location() == 'Access denied':
-        return "Access Denied"
+
     try:
 
         user_id = session.get('user_id', None)
@@ -1143,8 +1142,9 @@ def booking_cash_status():
 
 @app.route('/order_status', methods=['POST', 'GET'])
 def order_status():
-    session.permanent = True  # Make the session permanent
+    #session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
     return render_template('order_status.html')
@@ -1226,8 +1226,9 @@ def order():
 
 @app.route('/cancel_booking', methods=['POST', 'GET'])
 def cancel_booking():
-    session.permanent = True  # Make the session permanent
+    #session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
+    session.clear()
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
 
