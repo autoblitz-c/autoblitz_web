@@ -40,8 +40,8 @@ app.config["DEBUG"] = False
 app.config["UPLOAD_FOLDER"] = "static/"
 app.config["Book"] = "static/booking/"
 app.secret_key = '123456789@autoblitz'
-# Set permanent session lifetime to 30 minutes
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
+# Set permanent session lifetime to 10 minutes
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 # order creating
 def create_order(pay_type: str):
@@ -348,34 +348,25 @@ def requires_auth(f):
 # home page
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    if check_location() == 'Access denied':
-        return "Access Denied"
-
     return render_template('home.html')
 
 
 # about us page
 @app.route('/about_us', methods=['POST', 'GET'])
 def about_us():
-    if check_location() == 'Access denied':
-        return "Access Denied"
     return render_template('about_us.html')
 
 
 # booking page
 @app.route('/book', methods=['POST', 'GET'])
 def book():
-    if check_location() == 'Access denied':
-        return "Access Denied"
     return render_template('book.html')
 
 
 # vacancy page
 @app.route('/vacancy', methods=['POST', 'GET'])
 def vacancy():
-    if check_location() == 'Access denied':
-        return "Access Denied"
-    session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     user_id = str(uuid.uuid4())
     session['user_id'] = user_id
@@ -386,8 +377,7 @@ def vacancy():
 @app.route('/vacancy_result', methods=['POST', 'GET'])
 def vacancy_result():
     lock.acquire()
-    if check_location() == 'Access denied':
-        return "Access Denied"
+
     user_id = session.get('user_id', None)
     if user_id is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
@@ -1521,8 +1511,7 @@ def cancel():
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
     lock.acquire()
-    if check_location() == 'Access denied':
-        return "Access Denied"
+
 
     try:
         user_id = session.get('user_id', None)
