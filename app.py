@@ -1575,6 +1575,10 @@ def impressum():
 @requires_auth
 def dashboard():
     return render_template('dashboard.html')
+@app.route('/gdash', methods=['POST', 'GET'])
+@requires_auth
+def gdash():
+    return render_template('Gdash.html')
 
 
 # runing the application
