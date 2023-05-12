@@ -3,12 +3,13 @@
 
 <head>
     <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,10 +21,41 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
-    
+
 </head>
 
 <body class="body">
+    {% if cookies_check() %}
+    {# then user has already consented so no requirement for consent banner #}
+    {% else %}
+    {# show a cookie consent banner #}
+    <div id="cookie-consent-container" class="cookie-banner fixed-bottom bg-dark text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h3 style="color:white"><i class='fas fa-cookie-bite' style='color:rgb(240,142,33)'></i> Drittanbieter-Cookies</h3>
+                    <p class="mb-0" style="color:white;font-size: 14px;">Wir verwenden Cookies von Drittanbietern, um Inhalte und Anzeigen zu personalisieren und den Website-Verkehr zu analysieren.</p>
+                    <a style="font-size: 14px;" href="/datenschutz">Mehr erfahren</a>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button id="cookie-consent" type="button" class="btn btn-outline-light btn-sm"
+                        data-bs-dismiss="cookie-banner">Akzeptieren</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var fn = function () {
+            document.cookie = "cookie_consent=true";
+            document.getElementById('cookie-consent-container').hidden = true;
+        };
+
+        document.getElementById('cookie-consent').onclick = fn;
+
+    </script>
+    {% endif %}
     <div class="container-fullwidth m-0 p-0">
 
 
@@ -31,7 +63,7 @@
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
-                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+                        src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -75,14 +107,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" >
+                        <li class="nav-item dropdown">
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
-                                        </a></li>
-                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
-                                        </a></li>
+                                    </a></li>
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                    </a></li>
 
                             </ul>
                         </li>
@@ -93,33 +125,36 @@
             </div>
         </nav>
 
-              <!-- Modal -->
-              <div  class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-              aria-hidden="true" style="border-radius:45px">
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird bald online gehen. 
-                          </h3>
-                          
-                      </div>
-                      <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                          <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
-                          </txt>
-                      </div>
-                      <div class="modal-footer">
-                          <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-                          
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!--Modal end-->
-      
-      <script type="text/javascript">
-          function taxi() {
-              $("#taxi_modal").modal('toggle');}
-      </script>
+        <!-- Modal -->
+        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            style="border-radius:45px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
+                            bald online gehen.
+                        </h3>
+
+                    </div>
+                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
+                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
+                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
+                        </txt>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal end-->
+
+        <script type="text/javascript">
+            function taxi() {
+                $("#taxi_modal").modal('toggle');
+            }
+        </script>
 
         <div class="row p-0 m-0">
 
@@ -134,10 +169,11 @@
                 </h1>
                 <p style="position:relative;left:5%;top:-12%;max-width:70%;">
                     Mit Autoblitz können Sie Ihre nächste Fahrt schnell und stressfrei buchen. </p>
-                    
-                    <a class=" btn btn-primary btn-responsive" type="button" href="/book"
-                    style="position:relative;left:5%;font-size:80%;max-height: fit-content;border-radius:35px;color: black;">Jetzt einfach buchen</a>
-                    <br><br>
+
+                <a class=" btn btn-primary btn-responsive" type="button" href="/book"
+                    style="position:relative;left:5%;font-size:80%;max-height: fit-content;border-radius:35px;color: black;">Jetzt
+                    einfach buchen</a>
+                <br><br>
 
 
 
@@ -148,7 +184,7 @@
 
                 <img src="{{url_for('static', filename='book.gif')}}" align="right" alt="book"
                     style="position:relative; top:0%;right:-1%; max-height:100%;max-width:100%">
-                
+
             </div>
 
 
@@ -192,7 +228,8 @@
 
                                 <div class="user-image">
 
-                                    <img src="{{url_for('static', filename='customer-1.jpg')}}" class="rounded-circle" width="80">
+                                    <img src="{{url_for('static', filename='customer-1.jpg')}}" class="rounded-circle"
+                                        width="80">
 
                                 </div>
 
@@ -200,7 +237,8 @@
 
                                     <h3 class="mb-0">travelliners85.0</h3>
                                     <h5 class="text-secondary">Rezension aus gelbeseiten.de</h5>
-                                    <p id="carousel_p">Fahre nun schon seid gut 1 Jahr mit Taxi Blitz. Immer höfliche und gepflegte
+                                    <p id="carousel_p">Fahre nun schon seid gut 1 Jahr mit Taxi Blitz. Immer höfliche
+                                        und gepflegte
                                         Fahrer.. von den Autos die immer sauber sind mal ganz abgesehen. Bedanke mich
                                         auf diesem Weg dafür das man am Samstag den 14 März 2015 Vertrauen geschenkt
                                         hat, als ich am BHF Köln beklaut worden bin und mich ohne Geld nach Hause
@@ -226,7 +264,8 @@
 
                                 <div class="user-image">
 
-                                    <img src="{{url_for('static', filename='customer-2.jpg')}}" class="rounded-circle" width="80">
+                                    <img src="{{url_for('static', filename='customer-2.jpg')}}" class="rounded-circle"
+                                        width="80">
 
                                 </div>
 
@@ -234,7 +273,8 @@
 
                                     <h3 class="mb-0">konstantin1983</h3>
                                     <h5 class="text-secondary">Rezension aus golocal.de</h5>
-                                    <p id="carousel_p">Die Auto-Blitz Funkmietwagen GmbH ist das beste Taxiunternehmen, das ich
+                                    <p id="carousel_p">Die Auto-Blitz Funkmietwagen GmbH ist das beste Taxiunternehmen,
+                                        das ich
                                         persönlich kenne. Immer freundliche und ortskundige Fahrer kommen pünktlich und
                                         bringen mich schnell zum Zielort. Die Autos, mit denen ich gebracht werde, sind
                                         sehr sauber. Jedesmal habe ich großes Vergnügen, die Dienstleistungen von
@@ -254,12 +294,13 @@
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <div  class="d-block w-100 card p-3 text-center px-4"
+                            <div class="d-block w-100 card p-3 text-center px-4"
                                 style="position:relative;width:70%;border-radius: 25px;">
 
                                 <div class="user-image">
 
-                                    <img src="{{url_for('static', filename='customer-3.jpg')}}" class="rounded-circle" width="80">
+                                    <img src="{{url_for('static', filename='customer-3.jpg')}}" class="rounded-circle"
+                                        width="80">
 
                                 </div>
 
@@ -306,7 +347,7 @@
                 <br>
             </div>
 
-            <div  class="container-fullwidth">
+            <div class="container-fullwidth">
 
                 <div class="row" style="background-color:rgb(16, 16, 52);border-radius: 25px;">
                     <div class="col-sm-6">
@@ -325,13 +366,13 @@
                         </p>
                         <br>
                         <br>
-                        
+
                         <img src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}" alt=logo
-                        style="position:relative;left:5%;width:15%;height:15%">
+                            style="position:relative;left:5%;width:15%;height:15%">
                         <txt class="fw-bold"
                             style="position:relative;left:5%;top:-3%;max-width:70%;color:white;width:fit-content">Team
                             AutoBlitz </txt>
-                        
+
 
                     </div>
                     <div class="col-sm-6">
@@ -386,7 +427,7 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-            
+
 
         </div>
     </div>
@@ -403,4 +444,5 @@
 
 
 </body>
+
 </html>

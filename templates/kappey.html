@@ -110,9 +110,7 @@
 <label for="time" style="color:black ">Zeit:</label>\
 <input style="width:fit-content" id="time" name="time"  type="time" class="btn btn-primary" formtarget=""><br><br>\
 <label for="kms" style="color:black " class="form-label">Km:</label>\
-<input id="kms" name="kms" type="range"  style="width: 50%; height:35%" value="0" min="0" max="1000"\
-class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.value">\
-<input type="text" style="width:15%" id="textInput" value=""> <br> <br>\
+<input id="kms" name="kms" type="number" style="width: 50%; height:35%" value="0"><br> <br>\
             <textarea style="width:75%" id="info" name="info" class="form-control" placeholder="Info"></textarea>\
 </div>\
 ';
@@ -160,9 +158,9 @@ class="form-range"  step="0.1" oninput="this.nextElementSibling.value = this.val
 
 
                 <label for="kms" style="position:relative;left:-1%;color:black " class="form-label">Km:</label>
-                <input id="kms" name="kms" type="range" style="width: 50%; height:35%" value="0" min="0" max="1000"
-                    class="form-range" step="0.1" oninput="this.nextElementSibling.value = this.value">
-                <input type="text" style="width:15%" id="textInput" value="">
+                <input id="kms" name="kms" type="number" style="width: 50%; height:35%" value="0" 
+                      >
+                
                 <br><br>
                 <textarea id="info" style="position:relative;left:-1%;width:75%" name="info" class="form-control"
                     placeholder="Info"></textarea>

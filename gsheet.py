@@ -2,12 +2,15 @@ import gspread
 from google.oauth2 import service_account
 from dotenv import load_dotenv
 import os
-import json
+import pandas as pd
+from gspread_dataframe import set_with_dataframe
 import time
 from datetime import datetime, timedelta
+from threading import Lock
 
-#load_dotenv()
-
+load_dotenv() #TODO: changes this
+# create a lock for synchronizing access to the Google Sheet
+lock = Lock()
 credentials_dict = {
     'type': os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_TYPE'),
     'project_id': os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID'),
@@ -31,49 +34,41 @@ client = gspread.authorize(credentials)
 
 
 def add_data(filename: str, sheet_no: int, json_data):
+    lock.acquire()
+    json_data = [json_data]
     while True:
         try:
             if sheet_no == 1:
                 sheet = client.open(filename).worksheet('Sheet1')
-                if len(sheet.row_values(1)) == 0:
-                    data = list(str(i) for i in json_data.keys())
-                    # Get the existing row data
-                    sheet.insert_row(data, 1)
-                    values = list(json_data.values())
-                    sheet.append_row(values)
+                rows = sheet.get_all_values()
+                if len(rows) > 1:
+                    old_df = pd.DataFrame(rows[1:], columns=rows[0])
+                    # convert the list of dictionaries to a pandas DataFrame
+                    df = pd.DataFrame(json_data)
+                    new_df = pd.concat([old_df, df], axis=0)
+                    set_with_dataframe(sheet, new_df)
                 else:
-                    header = sheet.row_values(1)
-                    values = []
-                    for col in header:
-                        if col in json_data.keys():
-                            values.append(json_data[col])
-                        else:
-                            values.append("NA")
-                    sheet.append_row(values)
+                    df = pd.DataFrame(json_data)
+                    set_with_dataframe(sheet, df)
+
             elif sheet_no == 2:
                 sheet2 = client.open(filename).worksheet('Sheet2')
-                if len(sheet2.row_values(1)) == 0:
-                    data = list(str(i) for i in json_data.keys())
-                    # Get the existing row data
-                    sheet2.insert_row(data, 1)
-                    values = list(json_data.values())
-                    sheet2.append_row(values)
-                    print("data added")
+                rows2 = sheet2.get_all_values()
+                if len(rows2) > 1:
+                    old_df = pd.DataFrame(rows2[1:], columns=rows2[0])
+                    # convert the list of dictionaries to a pandas DataFrame
+                    df = pd.DataFrame(json_data)
+                    new_df = pd.concat([old_df, df], axis=0)
+                    set_with_dataframe(sheet2, new_df)
                 else:
-                    header = sheet2.row_values(1)
-                    values = []
-                    for col in header:
-                        if col in json_data.keys():
-                            values.append(json_data[col])
-                        else:
-                            values.append("NA")
-                    sheet2.append_row(values)
-                    print("data added")
+                    df = pd.DataFrame(json_data)
+                    set_with_dataframe(sheet2, df)
 
             break
         except:
             time.sleep(40)
             continue
+    lock.release()
     return "done"
 
 
@@ -103,48 +98,52 @@ def delete_data(filename: str, days: int, sheet_no: int):
 
 
 def query_data(filename: str, match_col: str, match_value: str, sheet_no: int):
+    lock.acquire()
     if sheet_no == 1:
         print("going")
         sheet = client.open(filename).worksheet('Sheet1')
+        data = sheet.get_all_values()
+        headers = data.pop(0)
+        df = pd.DataFrame(data, columns=headers)
         # Define the column names and values to match
         match_column_name = match_col  # Replace with the name of your column to match
         match_value = match_value  # Replace with the value to match
-
-        # Find the rows that match the column value
-        cell_list = sheet.findall(match_value, in_column=sheet.find(match_column_name).col)
-
-        for cell in cell_list:
-            row_values = sheet.row_values(cell.row)
-            row_dict = {sheet.cell(1, col).value: row_values[col - 1] for col in range(1, len(row_values) + 1)}
-            return row_dict
-
-
-
-
-
+        filtered_df = df[df[match_column_name] == match_value]
+        filtered_dic = filtered_df.to_dict(orient='records')
+        if len(filtered_dic) != 0:
+            lock.release()
+            return filtered_dic[0]
+        else:
+            lock.release()
+            return 0
 
     elif sheet_no == 2:
+        print("going")
         sheet2 = client.open(filename).worksheet('Sheet2')
+        data = sheet2.get_all_values()
+        headers = data.pop(0)
+        df = pd.DataFrame(data, columns=headers)
         # Define the column names and values to match
         match_column_name = match_col  # Replace with the name of your column to match
         match_value = match_value  # Replace with the value to match
+        filtered_df = df[df[match_column_name] == match_value]
+        filtered_dic = filtered_df.to_dict(orient='records')
+        if len(filtered_dic) != 0:
+            lock.release()
+            return filtered_dic[0]
+        else:
+            lock.release()
+            return 0
 
-        # Find the rows that match the column value
-        cell_list = sheet2.findall(match_value, in_column=sheet2.find(match_column_name).col)
-
-        # Get the values for all columns in the matching rows
-        return_values = []
-        for cell in cell_list:
-            row_values = sheet2.row_values(cell.row)
-            row_dict = {sheet2.cell(1, col).value: row_values[col - 1] for col in range(1, len(row_values) + 1)}
-            return row_dict
 
 
 """data = open("static/booking/autoblitz97453.json")
 book = json.load(data)
 print(book['name'])
 add_data("Customer_data", book)"""
-response = {"orderNo": "1234", "mail": "tau@gmail.com", "amount": "2500",
-            "refund_amount": "1500", "reason": "hi"}
-# print(add_data("Customer_data", 2, response))
-# print(query_data("Customer_data",'orderNo', 'ct8-6z0')['orderGUID'])
+
+
+#response = {"orderNo": "12345", "date": "2023-05-12", "time": "12.20", "mail": "tau@gmail.com", "payment_type": "cash", "amount": "2500",
+            #"refund_amount": "1500", "reason": "hi"}
+#add_data("Customer_data", 2, response)
+#print(query_data("Customer_data",'orderNo', '1234', 2))

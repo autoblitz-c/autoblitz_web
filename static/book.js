@@ -37,6 +37,31 @@ function calcRoute() {
         unitSystem: google.maps.UnitSystem.METRIC
     }
 
+    var home = {
+        origin: "Keupstraße 26, 51063 Köln, Germany",
+        destination: document.getElementById("Pick-up").value,
+        travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
+        unitSystem: google.maps.UnitSystem.METRIC
+    }
+
+    var home_dist; // Declare a global variable to store the distance value
+
+    function calculateDistance() {
+        return new Promise(function (resolve, reject) {
+            directionsService.route(home, function (out, stat) {
+                if (stat == google.maps.DirectionsStatus.OK) {
+                    home_dist = parseFloat((out.routes[0].legs[0].distance.value) / 1000);
+                    resolve(home_dist);
+                } else {
+                    reject(new Error("Failed to calculate distance"));
+                }
+            })
+        });
+    }
+
+
+
+
     //pass the request to the route method
     directionsService.route(request, function (result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
@@ -47,80 +72,126 @@ function calcRoute() {
 
 
             var dist = parseFloat((result.routes[0].legs[0].distance.value) / 1000);
-            var dur = result.routes[0].legs[0].duration.text;
-            document.getElementById('dur').innerHTML = dur;
-            document.getElementById('book-datetime').innerHTML = document.getElementById('Date').value.toString() + ", " + document.getElementById('Time').value.toString();
-            document.getElementById("name").innerHTML = document.getElementById("Name").value;
-            document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
-            document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
-            document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
-            document.getElementById("end").innerHTML = document.getElementById("Drop").value;
+            calculateDistance()
+                .then(function (distance) {
+                    console.log(home_dist); // You can access home_dist here
+                    var dur = result.routes[0].legs[0].duration.text;
+                    document.getElementById('dur').innerHTML = dur;
+                    document.getElementById('book-datetime').innerHTML = document.getElementById('Date').value.toString() + ", " + document.getElementById('Time').value.toString();
+                    document.getElementById("name").innerHTML = document.getElementById("Name").value;
+                    document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
+                    document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
+                    document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
+                    document.getElementById("end").innerHTML = document.getElementById("Drop").value;
 
-            let wait = parseInt(document.getElementById('Time').value.toString())
+                    let wait = parseInt(document.getElementById('Time').value.toString())
 
-            if (wait == 00 || wait < 06) {
-                document.getElementById('wait').style.display = 'block'
-            }
-            else {
-                document.getElementById('wait').style.display = 'none'
-            }
+                    if (wait == 00 || wait < 06) {
+                        document.getElementById('wait').style.display = 'block'
+                    }
+                    else {
+                        document.getElementById('wait').style.display = 'none'
+                    }
 
-            document.getElementById("Price").style.display = "block"
-
-
-            if (document.getElementById("Vehicle").value == "mini") {
-                document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
-                document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "0.00";
-
-                if (dist < 1) {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20)).toFixed(2)).toString() + " " + "€"
+                    document.getElementById("Price").style.display = "block"
 
 
-                }
-                else {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 0 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
+                    if (document.getElementById("Vehicle").value == "mini") {
+                        document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
+                        document.getElementById("luggage").innerHTML = "bis zu 2 Koffer sind erlaubt";
+                        document.getElementById("additional").innerHTML = "0.00";
 
-                }
-            }
-            else if (document.getElementById("Vehicle").value == "combi" ) {
-                document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
-                document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "5.00";
-                if (dist < 1) {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + 2.20).toFixed(2)).toString() + " " + "€"
-
-                }
-                else {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 5 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
-
-                }
-
-            } else if  (document.getElementById("Vehicle").value == "wagen" ){
-                document.getElementById("passengers").innerHTML = "bis zu 8 Personen sind erlaubt";
-                document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
-                document.getElementById("additional").innerHTML = "10.00";
-                if (dist < 1) {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + 2.20).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + 2.20).toFixed(2)).toString() + " " + "€"
-
-                }
-                else {
-                    document.getElementById("total").innerHTML = parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2);
-                    document.getElementById('pay').innerHTML = "Bezahlen " + (parseFloat(4.3 + 10 + (2.20 * dist)).toFixed(2)).toString() + " " + "€"
-
-                }
-
-            }
+                        if (dist < 1 && home_dist < 7) {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 0 + 2.20 + 0);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20) + 0)).toString() + " " + "€"
 
 
+                        }
+                        else if (dist < 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 0 + 2.20 + 4.30);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20) + 4.30)).toString() + " " + "€"
 
 
+                        }
+                        else if (dist > 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 0 + (2.20 * dist) + 4.3);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20 * dist) + 4.3)).toString() + " " + "€"
 
+
+                        }
+                        else {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 0 + (2.20 * dist) + 0);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20 * dist) + 0)).toString() + " " + "€"
+
+                        }
+                    }
+                    else if (document.getElementById("Vehicle").value == "combi") {
+                        document.getElementById("passengers").innerHTML = "bis zu 4 Personen sind erlaubt";
+                        document.getElementById("luggage").innerHTML = "bis zu 4 Koffer sind erlaubt";
+                        document.getElementById("additional").innerHTML = "5.00";
+                        if (dist < 1 && home_dist < 7) {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 5 + 2.20 + 0);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + 2.20 + 0)).toString() + " " + "€"
+
+                        }
+                        else if (dist < 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 5 + 2.20 + 4.3);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + 2.20 + 4.3)).toString() + " " + "€"
+
+                        }
+                        else if (dist > 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 5 + (2.20 * dist) + 4.3);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + (2.20 * dist) + 4.3)).toString() + " " + "€"
+
+                        }
+                        else {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 5 + (2.20 * dist) + 0);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + (2.20 * dist) + 0)).toString() + " " + "€"
+
+                        }
+
+                    } else if (document.getElementById("Vehicle").value == "wagen") {
+                        document.getElementById("passengers").innerHTML = "bis zu 8 Personen sind erlaubt";
+                        document.getElementById("luggage").innerHTML = "mehr als 4 Koffer sind erlaubt";
+                        document.getElementById("additional").innerHTML = "10.00";
+                        if (dist < 1 && home_dist < 7) {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 10 + 2.20 + 0);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + 2.20 + 0)).toString() + " " + "€"
+
+                        }
+                        else if (dist < 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 10 + 2.20 + 4.30);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + 2.20 + 4.30)).toString() + " " + "€"
+
+                        }
+                        else if (dist > 1 && home_dist > 7) {
+                            document.getElementById("Hadditional").innerHTML = "4.30"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 10 + (2.20 * dist) + 4.30);
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + (2.20 * dist) + 4.30)).toString() + " " + "€"
+
+                        }
+                        else {
+                            document.getElementById("Hadditional").innerHTML = "0.00"
+                            document.getElementById("total").innerHTML = Math.round(4.3 + 10 + (2.20 * dist));
+                            document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + (2.20 * dist))).toString() + " " + "€"
+
+                        }
+
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
             //display route
             directionsDisplay.setDirections(result);
         } else {
@@ -132,6 +203,7 @@ function calcRoute() {
             //show error message
             output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
         }
+
     });
 
 }

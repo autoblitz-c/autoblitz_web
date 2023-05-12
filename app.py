@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, time, date, timedelta
 import time
 import flask
-from flask import request, render_template, redirect, jsonify, Response, flash, abort,session
+from flask import request, render_template, redirect, jsonify, Response, flash, abort, session
 import urllib.parse
 from phonenumbers import geocoder, parse
 from geopy.geocoders import Nominatim
@@ -31,8 +31,7 @@ from threading import Lock
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
 
-
-#load_dotenv(find_dotenv())
+load_dotenv(find_dotenv()) #TODO: changes this
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
@@ -42,6 +41,10 @@ app.config["Book"] = "static/booking/"
 app.secret_key = '123456789@autoblitz'
 # Set permanent session lifetime to 10 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+
+#backend api
+identifier = os.environ.get('apiIdentifier_test')
+secert = os.environ.get('apiSecretKey_test')
 
 # order creating
 def create_order(pay_type: str):
@@ -59,7 +62,6 @@ def create_order(pay_type: str):
     book['amount'] = amount
     book['kms'] = cal_dis(str(book["pick"]), str(book["drop"]))
     print(lat_long(book['pick']))
-
 
     Plat, Plng = lat_long(book['pick'])
     Dlat, Dlng = lat_long(book['drop'])
@@ -142,17 +144,19 @@ def create_order(pay_type: str):
     send = {"cmd": "create_order",
             "data": OrderRequest}
     headers = {'Content-Type': 'application/json',
-               'Authentication': 'optipos-apiIdentifier \
-               apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
-                apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+               'Authentication': f'optipos-apiIdentifier \
+               apiIdentifier={identifier}\
+                apiSecretKey={secert}',
 
                }
     order_json = json.dumps(send, indent=4)
-    #req = requests.post(url, headers=headers, data=order_json)
+    # req = requests.post(url, headers=headers, data=order_json)
     while True:
         try:
             req = requests.post(url, headers=headers, data=order_json)
-            break
+            req_test = req.json()
+            if req_test['status'] == 'OK':
+                break
         except requests.exceptions.RequestException:
             time.sleep(10)
     session[f'data_{user_id}'] = book
@@ -167,9 +171,9 @@ def query_order(orderguid):
     send = {"cmd": "query_order",
             "data": {"orderGUID": orderguid}}
     headers = {'Content-Type': 'application/json',
-               'Authentication': 'optipos-apiIdentifier \
-                      apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
-                       apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+               'Authentication': f'optipos-apiIdentifier \
+                      apiIdentifier={identifier}\
+                       apiSecretKey={secert}',
 
                }
     order_json = json.dumps(send, indent=4)
@@ -198,6 +202,7 @@ def ph_country(phone_number: str):
         return country
     except:
         flash('Ihre Anfrage wird nicht bearbeitet. Bitte geben Sie eine gültige Telefonnummer ein.')
+
 
 # street, city, zipcode
 def geo_cal(address: str):
@@ -289,32 +294,52 @@ def cal_dis(pick: str, drop: str):
 
 def cal_price(pick: str, drop: str, vehicle: str):
     dist = cal_dis(pick, drop)
-    
+    home = "Keupstraße 26, 51063 Köln, Germany"
+    home_dist = cal_dis(home, pick)
+
     if vehicle == "mini":
-        if dist < 1:
-            price = float(4.3 + 0 + 2.20)
-            return round(price, 2)
+        if dist < 1 and home_dist < 7:
+            price = float(4.3 + 0 + 2.20 + 0)
+            return round(price)
+        elif dist < 1 and home_dist > 7:
+            price = float(4.3 + 0 + 2.20 + 4.30)
+            return round(price)
+        elif dist > 1 and home_dist > 7:
+            price = float(4.3 + 0 + (2.20 * dist) + 4.30)
+            return round(price)
         else:
-            price = float(4.3 + 0 + (2.20 * dist))
-            return round(price, 2)
+            price = float(4.3 + 0 + (2.20 * dist) + 0)
+            return round(price)
     elif vehicle == "combi":
-        if dist < 1:
-            price = float(4.3 + 5 + 2.20)
-            return round(price, 2)
+        if dist < 1 and home_dist < 7:
+            price = float(4.3 + 5 + 2.20 + 0)
+            return round(price)
+        elif dist < 1 and home_dist > 7:
+            price = float(4.3 + 5 + 2.20 + 4.30)
+            return round(price)
+        elif dist > 1 and home_dist > 7:
+            price = float(4.3 + 5 + (2.20 * dist) + 4.30)
+            return round(price)
         else:
-            price = float(4.3 + 5 + (2.20 * dist))
-            return round(price, 2)
+            price = float(4.3 + 5 + (2.20 * dist) + 0)
+            return round(price)
     elif vehicle == "wagen":
-        if dist < 1:
-            price = float(4.3 + 10 + 2.20)
-            return round(price, 2)
+        if dist < 1 and home_dist < 7:
+            price = float(4.3 + 10 + 2.20 + 0)
+            return round(price)
+        elif dist < 1 and home_dist > 7:
+            price = float(4.3 + 10 + 2.20 + 4.30)
+            return round(price)
+        elif dist > 1 and home_dist > 7:
+            price = float(4.3 + 10 + (2.20 * dist) + 4.30)
+            return round(price)
         else:
-            price = float(4.3 + 10 + (2.20 * dist))
-            return round(price, 2)
+            price = float(4.3 + 10 + (2.20 * dist) + 0)
+            return round(price)
 
 
 # stripe key
-#stripe.api_key = os.getenv('t_s_s_k')
+# stripe.api_key = os.getenv('t_s_s_k')
 stripe.api_key = os.environ.get('t_s_s_k')
 
 
@@ -377,8 +402,6 @@ def vacancy():
 # vacancy with sending mail
 @app.route('/vacancy_result', methods=['POST', 'GET'])
 def vacancy_result():
-    lock.acquire()
-
     user_id = session.get('user_id', None)
     if user_id is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
@@ -394,26 +417,28 @@ def vacancy_result():
 
     body = msg0 + data.format(name=name, phone=phone, mail=mail)
     licence = request.files['licence']
-    licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename))
+    L = licence.filename + str(user_id)
+    licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(L))
 
     PB = request.files['P-letter']
+    P = PB.filename + str(user_id)
     ############ form validating ###################
     # whole form validation check point
     if name == "" or str(phone) == "" or str(phone).find("+49") == -1 or mail == "" or licence == "" or PB == "":
         error = "Ihre Bewerbung wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
         Sie eine gültige Telefonnummer (einschließlich +49), E-Mail und Dokumente an."
         flash(error)
-        lock.release()
+
 
     # phone number validation checkpoint
     elif ph_country(str(phone)) != "Germany":
         flash("Ihre Bewerbung wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
-        lock.release()
-    else:
-        licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename)))
-        PB_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename))
 
-        PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename)))
+    else:
+        licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(L)))
+        PB_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(P))
+
+        PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(P)))
 
         msg = MIMEMultipart()
         msg['From'] = os.environ.get("cg")
@@ -427,7 +452,7 @@ def vacancy_result():
                 'application', "octet-stream"
             )
             path = "static/{name}"
-            part.set_payload(open(path.format(name=request.files[f].filename), "rb").read())
+            part.set_payload(open(path.format(name=request.files[f].filename + str(user_id)), "rb").read())
             encoders.encode_base64(part)
             part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
             msg.attach(part)
@@ -444,7 +469,7 @@ def vacancy_result():
         os.remove(licence_path)
 
         os.remove(PB_path)
-        lock.release()
+
     session.pop(f'data_{user_id}', None)
 
     return render_template('vacancy.html')
@@ -462,7 +487,6 @@ def taxi():
 
 @app.route('/booking', methods=['POST'])
 def booking():
-    lock.acquire()
     if check_location() == 'Access denied':
         return "Access Denied"
 
@@ -487,7 +511,7 @@ def booking():
     # with open(file_name, "w") as f:
     # json.dump(book, f)
     # Store data in the session
-    #session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     session.clear()
     user_id = str(uuid.uuid4())
@@ -495,8 +519,7 @@ def booking():
     # Store data in the session using the user ID as the key
     session[f'data_{user_id}'] = book
     print('booking', book)
-    #file_N.append(book)
-    lock.release()
+    # file_N.append(book)
 
     return jsonify({'message': 'Form data received!'})
 
@@ -506,7 +529,7 @@ def booking():
 def ambulance():
     if check_location() == 'Access denied':
         return "Access Denied"
-    #session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     session.clear()
     user_id = str(uuid.uuid4())
@@ -516,13 +539,12 @@ def ambulance():
 
 @app.route('/ambulance_result', methods=['POST', 'GET'])
 def ambulance_result():
-    lock.acquire()
+
     if check_location() == 'Access denied':
         return "Access Denied"
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-        lock.release()
         return render_template('ambulance.html')
     msg0 = "############## Kundendaten : ###############" + '\n'
     name = request.form.get('PName')
@@ -542,9 +564,11 @@ def ambulance_result():
 
     body = msg0 + data + msg1 + data1
     licence = request.files['Doctor-letter']
-    licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename))
+    L = licence.filename + str(user_id)
+    licence_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(L))
 
     PB = request.files['P-letter']
+    P = PB.filename + str(user_id)
 
     ############ form validating ###################
     # whole form validation check point
@@ -556,22 +580,22 @@ def ambulance_result():
         error = "Ihre Anfrage wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
            Sie eine gültige Telefonnummer (einschließlich +49), E-Mail, Alter, Abholort, Zielort, Datum, Zeit und Dokumente an."
         flash(error)
-        lock.release()
+
 
     # phone number validation checkpoint
     elif ph_country(str(phone)) != "Germany":
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
-        lock.release()
+
     elif pcity != "Köln" or dcity != "Köln":
         flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
-        lock.release()
+
 
     else:
 
-        licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(licence.filename)))
-        PB_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename))
+        licence.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(L)))
+        PB_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(P))
         if request.files['P-letter'].filename != "":
-            PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(PB.filename)))
+            PB.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(P)))
 
         msg = MIMEMultipart()
         msg['From'] = os.environ.get("cg")
@@ -587,9 +611,9 @@ def ambulance_result():
                     'application', "octet-stream"
                 )
                 path = "static/{name}"
-                part.set_payload(open(path.format(name=request.files[f].filename), "rb").read())
+                part.set_payload(open(path.format(name=request.files[f].filename + str(user_id)), "rb").read())
                 encoders.encode_base64(part)
-                part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename)
+                part.add_header('Content-Disposition', 'attachment', filename=request.files[f].filename + str(user_id))
                 msg.attach(part)
 
         smtp = smtplib.SMTP('smtp.gmail.com', 587)
@@ -638,7 +662,6 @@ def ambulance_result():
 
         # terminating the session
         s.quit()
-        lock.release()
     session.pop(f'data_{user_id}', None)
 
     return render_template('ambulance.html')
@@ -655,7 +678,7 @@ def kappey():
 def contact_us():
     if check_location() == 'Access denied':
         return "Access Denied"
-    #session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     session.clear()
     user_id = str(uuid.uuid4())
@@ -666,8 +689,6 @@ def contact_us():
 # kappey result page
 @app.route('/kappey_result', methods=['POST', 'GET'])
 def kappey_result():
-
-    lock.acquire()
     msg = "Hallo," + '\n' + '\n'
     date = request.form.getlist('date')
     time = request.form.getlist('time')
@@ -680,44 +701,44 @@ def kappey_result():
         msg = msg + data
     # creates SMTP session
 
-    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s = smtplib.SMTP("smtp.udag.de", port=587)
 
     # start TLS for security
     s.starttls()
 
     # Authentication
-    s.login(os.environ.get("cg"), os.environ.get("cgp"))
+    s.login("kappey@autoblitz-koeln.de", "Autoblitz100%")
 
     # message to be sent
     end = '\n' + "Danke und Grüße, " + '\n' + 'Team Autoblitz'
     message = msg + end
 
-    mail_msg = EmailMessage()
-    mail_msg.set_content(message)
+    mail_msg = MIMEMultipart()
+    mail_msg.attach(MIMEText(message, 'plain'))
     mail_msg['Subject'] = "Kappey"
-    mail_msg['From'] = os.environ.get("cg")
-    mail_msg['To'] = os.environ.get("bk")
+    mail_msg['From'] = "kappey@autoblitz-koeln.de"
+    mail_msg['To'] = ', '.join(["bestellung@autoblitz-koeln.de", " info@ck-taxi.koeln"])
 
     # sending the mail
 
-    s.send_message(mail_msg)
+    s.sendmail("kappey@autoblitz-koeln.de", mail_msg['To'], mail_msg.as_string())
 
     # terminating the session
     s.quit()
-    lock.release()
+
     return render_template('kappey.html')
 
 
 # contact_us backend
 @app.route('/contact_us_result', methods=['POST', 'GET'])
 def contact_us_result():
-    lock.acquire()
+
     if check_location() == 'Access denied':
         return "Access Denied"
     user_id = session.get('user_id', None)
-    if user_id is None :
+    if user_id is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-        lock.release()
+
         return render_template('contact_us.html')
     msg = "############## Kundendaten : ###############" + '\n'
     name = request.form.get('Name')
@@ -731,12 +752,12 @@ def contact_us_result():
         error = "Ihre Bewerbung wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
            Sie eine gültige Telefonnummer (einschließlich Landesvorwahl), E-Mail und Dokumente an."
         flash(error)
-        lock.release()
+
 
 
     elif ph_country(str(phone)) != "Germany":
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
-        lock.release()
+
 
 
     else:
@@ -765,7 +786,7 @@ def contact_us_result():
 
         # terminating the session
         s.quit()
-        lock.release()
+
 
     session.pop(f'data_{user_id}', None)
 
@@ -790,14 +811,12 @@ def publish():
 
 @app.route('/create-payment-intent', methods=['POST'])
 def create_payment():
-    lock.acquire()
 
     try:
 
         user_id = session.get('user_id', None)
         if user_id is None or session.get(f'data_{user_id}') is None:
             flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-            lock.release()
             return render_template('taxi.html')
 
         book = session.get(f'data_{user_id}')
@@ -840,7 +859,6 @@ def create_payment():
         """with open(file_N[0], 'w') as new_json:
             json.dump(book, new_json)"""
         session[f'data_{user_id}'] = book
-        lock.release()
         return test
 
     except Exception as e:
@@ -854,24 +872,26 @@ def online_booking():
 
 @app.route('/online_booking_res', methods=['POST', 'GET'])
 def online_booking_res():
-    lock.acquire()
+
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
         return "session is None"
 
     book = session.get(f'data_{user_id}')
-    lock.release()
+
     return render_template('online_booking_res.html', orderid=book['orderNo']), session.pop(f'data_{user_id}', None)
+
 
 @app.route('/cash_booking_res', methods=['POST', 'GET'])
 def cash_booking_res():
-    lock.acquire()
+
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
         return "session is None"
     book = session.get(f'data_{user_id}')
-    lock.release()
+
     return render_template('cash_booking_res.html', orderid=book['orderNo']), session.pop(f'data_{user_id}', None)
+
 
 @app.route('/cash_booking', methods=['POST', 'GET'])
 def cash_booking():
@@ -880,10 +900,9 @@ def cash_booking():
 
 @app.route('/booking_status', methods=['POST', 'GET'])
 def booking_status():
-    lock.acquire()
+
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
-        lock.release()
         return "session is None"
 
     book = session.get(f'data_{user_id}')
@@ -902,7 +921,7 @@ def booking_status():
             pay_status = intent.status
 
             print('payment_status', pay_status)
-            if counter == 10 and pay_status !="succeeded":
+            if counter == 10 and pay_status != "succeeded":
                 try:
                     stripe.Refund.create(payment_intent=id, amount=book['amount'])
                     flash(
@@ -910,10 +929,8 @@ def booking_status():
                     return render_template('checkout.html')
                 except:
                     flash(
-                       'Ihre Zahlung ist fehlgeschlagen. Bitte setzen Sie sich mit unserem Team unter 0221 612277 in Verbindung, um weitere Hilfe zu erhalten.')
+                        'Ihre Zahlung ist fehlgeschlagen. Bitte setzen Sie sich mit unserem Team unter 0221 612277 in Verbindung, um weitere Hilfe zu erhalten.')
                     return render_template('checkout.html')
-
-
 
             counter += 1
 
@@ -979,13 +996,15 @@ def booking_status():
                 s.sendmail(me, you, msg.as_string())
                 s.quit()
                 if book['payment_type'] == 'link':
-                    book['net_amount'] = (int(book['amount'])/100) - (((int(book['amount'])/100) * (1.2/100)) + 0.25)
-                elif book['payment_type'] == 'card' or book['payment_type'] == 'apple_pay' or book['payment_type'] == 'google_pay':
                     book['net_amount'] = (int(book['amount']) / 100) - (
-                                ((int(book['amount']) / 100) * (2.28 / 100)) + 0.25)
+                                ((int(book['amount']) / 100) * (1.2 / 100)) + 0.25)
+                elif book['payment_type'] == 'card' or book['payment_type'] == 'apple_pay' or book[
+                    'payment_type'] == 'google_pay':
+                    book['net_amount'] = (int(book['amount']) / 100) - (
+                            ((int(book['amount']) / 100) * (2.28 / 100)) + 0.25)
                 elif book['payment_type'] == 'giropay' or book['payment_type'] == 'sofort':
                     book['net_amount'] = (int(book['amount']) / 100) - (
-                                ((int(book['amount']) / 100) * (1.4 / 100)) + 0.25)
+                            ((int(book['amount']) / 100) * (1.4 / 100)) + 0.25)
 
                 add_data('Customer_data', 1, book)
 
@@ -995,7 +1014,7 @@ def booking_status():
                     'template': 'online_booking_res',
 
                 }
-                lock.release()
+
 
                 return jsonify(response_data_s)
 
@@ -1012,14 +1031,12 @@ def booking_status():
             time.sleep(5)
 
 
-
-
 @app.route('/booking_cash_status', methods=['POST', 'GET'])
 def booking_cash_status():
-    lock.acquire()
+
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
-        lock.release()
+
         return 'session is None'
 
     book = session.get(f'data_{user_id}')
@@ -1032,25 +1049,25 @@ def booking_cash_status():
         error = "Ihre Anfrage wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
                            Sie eine gültige Telefonnummer (einschließlich +49), E-Mail, Alter, Abholort, Zielort, Datum und Zeit."
         flash(error)
-        lock.release()
+
         return render_template("taxi.html")
     elif ph_country(str(book["phone"])) != "Germany":
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
-        lock.release()
+
         return render_template("taxi.html")
     elif validate_date(book["date"]) == False:
         flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
-        lock.release()
+
         return render_template("taxi.html")
 
     elif valid == False:
         flash("Bitte wählen Sie den gegenwärtigen oder zukünftigen Zeitpunkt")
-        lock.release()
+
         return render_template("taxi.html")
 
     elif pcity != "Köln" or dcity != "Köln":
         flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
-        lock.release()
+
         return render_template("taxi.html")
 
     else:
@@ -1058,12 +1075,13 @@ def booking_cash_status():
         book['payment_type'] = "cash"
         print("cash", book)
         order = create_order(book['payment_type'])
+        print('order details', order)
 
         book["orderGUID"] = order['data']['orderGUID']
         book["orderNo"] = order['data']['orderNo']
         print(order['status'])
         print(order['data']['orderGUID'])
-        time.sleep(3)
+
 
         if order['status'] == "OK":
             response_data = {
@@ -1125,10 +1143,10 @@ def booking_cash_status():
             s.quit()
 
             time.sleep(1)
-            book['net_amount'] = int(book['amount'])/100
+            book['net_amount'] = int(book['amount']) / 100
             add_data('Customer_data', 1, book)
             print('added data', book)
-            lock.release()
+
 
             return jsonify(response_data)
 
@@ -1142,7 +1160,7 @@ def booking_cash_status():
 
 @app.route('/order_status', methods=['POST', 'GET'])
 def order_status():
-    #session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     session.clear()
     user_id = str(uuid.uuid4())
@@ -1152,7 +1170,7 @@ def order_status():
 
 @app.route('/order', methods=['POST'])
 def order():
-    lock.acquire()
+
     orderNo = request.json.get('order')
     user_id = session.get('user_id', None)
     if user_id is None:
@@ -1168,15 +1186,13 @@ def order():
             'message': 'Es liegt ein technischer Fehler vor, bitte versuchen Sie es nach einer Minute erneut.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
-    if query == None:
+    if query == 0:
         response_data = {
             'status': 'error',
             'message': 'Die angegebene Bestellnummer ist falsch, bitte geben Sie die richtige Bestellnummer an.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
 
     while True:
@@ -1193,7 +1209,6 @@ def order():
             'message': 'Diese Bestellung wurde storniert.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
     elif q_order['data']['orderState'] == 'O_CONFIRMED' or q_order['data']['orderState'] == 'O_IN_DISPATCH':
         response_data = {
@@ -1201,7 +1216,6 @@ def order():
             'message': 'Bestellung bestätigt, Suche nach einem Fahrzeug.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
     elif q_order['data']['orderState'] == 'O_IN_APPROACH' or q_order['data']['orderState'] == 'O_RENDEZVOUS':
         response_data = {
@@ -1212,21 +1226,21 @@ def order():
             "vehModel": q_order['data']['transport']['vehicle']['vehModel']
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
-    elif q_order['data']['orderState'] == 'O_IN_TRANSPORT' or q_order['data']['orderState'] == 'O_DEST_REACHED' or q_order['data']['orderState'] == 'O_TRANSPORT_COMPLETE' or q_order['data']['orderState'] == 'O_SETTLED' or q_order['data']['orderState'] == 'O_COMPLETE':
+    elif q_order['data']['orderState'] == 'O_IN_TRANSPORT' or q_order['data']['orderState'] == 'O_DEST_REACHED' or \
+            q_order['data']['orderState'] == 'O_TRANSPORT_COMPLETE' or q_order['data']['orderState'] == 'O_SETTLED' or \
+            q_order['data']['orderState'] == 'O_COMPLETE':
         response_data = {
             'status': 'pending',
             'message': 'Dieser Auftrag ist entweder abgeschlossen oder auf dem Transportweg.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
         return jsonify(response_data)
 
 
 @app.route('/cancel_booking', methods=['POST', 'GET'])
 def cancel_booking():
-    #session.permanent = True  # Make the session permanent
+    # session.permanent = True  # Make the session permanent
     # Generate a unique user ID and store it in the session
     session.clear()
     user_id = str(uuid.uuid4())
@@ -1235,10 +1249,8 @@ def cancel_booking():
     return render_template('cancel_booking.html')
 
 
-
 @app.route('/cancel', methods=['POST'])
 def cancel():
-    lock.acquire()
     orderNo = request.json.get('order')
     reason = str(request.json.get('reason'))
     user_id = session.get('user_id', None)
@@ -1249,9 +1261,8 @@ def cancel():
             'message': 'Sitzung abgelaufen! Versuchen Sie es erneut.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
-        return jsonify(response_data)
 
+        return jsonify(response_data)
 
     print(orderNo)
     print(reason)
@@ -1260,18 +1271,17 @@ def cancel():
             query = query_data('Customer_data', 'orderNo', orderNo, 1)
             print(query)
 
-            if query != None or query == None:
+            if query != 0 or query == 0:
                 break
         except:
             time.sleep(40)
-    if query == None:
-
+    if query == 0:
         response_data = {
             'status': 'error',
             'message': 'Die angegebene Bestellnummer ist falsch, bitte geben Sie die richtige Bestellnummer an.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
+
         return jsonify(response_data)
 
     while True:
@@ -1289,15 +1299,17 @@ def cancel():
             'message': "Diese Bestellung wurde bereits zurückerstattet."
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
+
         return jsonify(response_data)
-    elif status['data']['orderState'] == 'O_IN_TRANSPORT' or status['data']['orderState'] == 'O_DEST_REACHED' or status['data']['orderState'] == 'O_TRANSPORT_COMPLETE' or status['data']['orderState'] == 'O_SETTLED' or status['data']['orderState'] == 'O_COMPLETE':
+    elif status['data']['orderState'] == 'O_IN_TRANSPORT' or status['data']['orderState'] == 'O_DEST_REACHED' or \
+            status['data']['orderState'] == 'O_TRANSPORT_COMPLETE' or status['data']['orderState'] == 'O_SETTLED' or \
+            status['data']['orderState'] == 'O_COMPLETE':
         response_data = {
             'status': 'error',
             'message': 'Dieser Auftrag ist entweder abgeschlossen oder auf dem Transportweg. Daher ist eine Stornierung nicht möglich.'
         }
         session.pop(f'data_{user_id}', None)
-        lock.release()
+
         return jsonify(response_data)
     if status['data']['orderState'] == 'O_CONFIRMED' or status['data']['orderState'] == 'O_IN_DISPATCH':
 
@@ -1321,9 +1333,9 @@ def cancel():
     send = {"cmd": "cancel_order",
             "data": {"orderGUID": query['orderGUID']}}
     headers = {'Content-Type': 'application/json',
-               'Authentication': 'optipos-apiIdentifier \
-                                  apiIdentifier=79E91C9358EB4A078653EA30A4C73D1F\
-                                   apiSecretKey=4C18CDEE890D43BF8A9AD06FB5C257B8',
+               'Authentication': f'optipos-apiIdentifier \
+                                  apiIdentifier={identifier}\
+                                   apiSecretKey={secert}',
 
                }
     order_json = json.dumps(send, indent=4)
@@ -1335,15 +1347,12 @@ def cancel():
                 break
         except:
             time.sleep(30)
-            
-    
 
     if res['data']['orderState'] == 'O_CANCELED':
 
         if query['payment_type'] == 'cash':
             print('cash')
 
-            
             ############ mail for customer #############
             me = os.environ.get("bk")
             you = query['mail']
@@ -1378,7 +1387,6 @@ def cancel():
 
             # Attach parts into message container.
 
-
             msg.attach(part2)
 
             # Send the message via local SMTP server.
@@ -1401,7 +1409,8 @@ def cancel():
 
             datum = str(now.date())
             zeit = str(now.time())
-            response_cash = {"orderNo": query['orderNo'], "mail": query['mail'], "payment_type": "cash", "amount": float(int(query['amount'])/100),
+            response_cash = {"orderNo": query['orderNo'], "mail": query['mail'], "payment_type": "cash",
+                             "amount": float(int(query['amount']) / 100),
                              "refund_amount": "0", "reason": reason, "date": datum, "time": zeit}
             add_data("Customer_data", 2, response_cash)
 
@@ -1410,7 +1419,7 @@ def cancel():
                 'message': cancel_msg
             }
             session.pop(f'data_{user_id}', None)
-            lock.release()
+
             return jsonify(response_data)
 
 
@@ -1421,7 +1430,6 @@ def cancel():
                 refund = session.get(f'data_{user_id}')
                 r_res = stripe.Refund.create(payment_intent=query['pay'], amount=refund['refund'])
                 print('stripe_success')
-
 
                 ############ mail for customer #############
                 me = "bestellung@autoblitz-koeln.de"
@@ -1486,13 +1494,14 @@ def cancel():
                 datum = str(now.date())
                 zeit = str(now.time())
 
-                response = {"orderNo": query['orderNo'], "mail": query['mail'],"payment_type": query['payment_type'], "amount": float(int(query['amount'])/100),
+                response = {"orderNo": query['orderNo'], "mail": query['mail'], "payment_type": query['payment_type'],
+                            "amount": float(int(query['amount']) / 100),
                             "refund_amount": float(int(r_res['amount']) / 100), "reason": reason, "date": datum,
                             "time": zeit}
                 add_data("Customer_data", 2, response)
 
                 session.pop(f'data_{user_id}', None)
-                lock.release()
+
 
                 return jsonify(response_data)
 
@@ -1505,13 +1514,13 @@ def cancel():
                     'status': 'error',
                     'message': "Diese Bestellung wurde bereits zurückerstattet."
                 }
-                lock.release()
+
                 return jsonify(response_data)
+
 
 # check out  page
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
-    lock.acquire()
 
 
     try:
@@ -1550,11 +1559,10 @@ def checkout():
 
         else:
 
-
             price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
             session[f'data_{user_id}'] = book
             print('price', price)
-            lock.release()
+
             return render_template('checkout.html', price=price)
     except:
         flash(
@@ -1571,14 +1579,30 @@ def datenschutz():
 def impressum():
     return render_template('impressum.html')
 
+
 @app.route('/dashboard', methods=['POST', 'GET'])
 @requires_auth
 def dashboard():
     return render_template('dashboard.html')
+
+
 @app.route('/gdash', methods=['POST', 'GET'])
 @requires_auth
 def gdash():
     return render_template('Gdash.html')
+
+
+@app.context_processor
+def inject_template_scope():
+    injections = dict()
+
+    def cookies_check():
+        value = request.cookies.get('cookie_consent')
+        return value == 'true'
+
+    injections.update(cookies_check=cookies_check)
+
+    return injections
 
 
 # runing the application
