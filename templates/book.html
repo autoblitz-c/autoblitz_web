@@ -3,6 +3,9 @@
 
 <head>
     <title>Book Jetzt!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+        integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
 
@@ -31,6 +34,39 @@
 </head>
 
 <body class="body">
+    {% if cookies_check() %}
+    {# then user has already consented so no requirement for consent banner #}
+    {% else %}
+    {# show a cookie consent banner #}
+    <div id="cookie-consent-container" class="cookie-banner fixed-bottom bg-dark text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h3 style="color:white"><i class='fas fa-cookie-bite' style='color:rgb(240,142,33)'></i>
+                        Drittanbieter-Cookies</h3>
+                    <p class="mb-0" style="color:white;font-size: 14px;">Wir verwenden Cookies von Drittanbietern, um
+                        Inhalte und Anzeigen zu personalisieren und den Website-Verkehr zu analysieren.</p>
+                        <a style="font-size: 14px;" href="/datenschutz">Mehr erfahren</a>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button id="cookie-consent" type="button" class="btn btn-outline-light btn-sm"
+                        data-bs-dismiss="cookie-banner">Akzeptieren</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var fn = function () {
+            document.cookie = "cookie_consent=true";
+            document.getElementById('cookie-consent-container').hidden = true;
+        };
+
+        document.getElementById('cookie-consent').onclick = fn;
+
+    </script>
+    {% endif %}
     <div class="container-fullwidth m-0 p-0">
 
 
@@ -342,6 +378,11 @@
                     <tr>
                         <td>Zusätzlicher Betrag</td>
                         <td id="additional"></td>
+
+                    </tr>
+                    <tr>
+                        <td>zusätzliche Kosten für weite Abholentfernungen</td>
+                        <td id="Hadditional"></td>
 
                     </tr>
                     <tr>

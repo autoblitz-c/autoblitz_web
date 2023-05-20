@@ -3,6 +3,9 @@
 
 <head>
     <title>Krankentransport</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+        integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
 
@@ -30,6 +33,39 @@
 </head>
 
 <body class="body">
+    {% if cookies_check() %}
+    {# then user has already consented so no requirement for consent banner #}
+    {% else %}
+    {# show a cookie consent banner #}
+    <div id="cookie-consent-container" class="cookie-banner fixed-bottom bg-dark text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h3 style="color:white"><i class='fas fa-cookie-bite' style='color:rgb(240,142,33)'></i>
+                        Drittanbieter-Cookies</h3>
+                    <p class="mb-0" style="color:white;font-size: 14px;">Wir verwenden Cookies von Drittanbietern, um
+                        Inhalte und Anzeigen zu personalisieren und den Website-Verkehr zu analysieren.</p>
+                        <a style="font-size: 14px;" href="/datenschutz">Mehr erfahren</a>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button id="cookie-consent" type="button" class="btn btn-outline-light btn-sm"
+                        data-bs-dismiss="cookie-banner">Akzeptieren</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var fn = function () {
+            document.cookie = "cookie_consent=true";
+            document.getElementById('cookie-consent-container').hidden = true;
+        };
+
+        document.getElementById('cookie-consent').onclick = fn;
+
+    </script>
+    {% endif %}
     <div class="container-fullwidth m-0 p-0">
 
 
@@ -80,14 +116,14 @@
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" >
+                        <li class="nav-item dropdown">
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
-                                        </a></li>
-                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
-                                        </a></li>
+                                    </a></li>
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                    </a></li>
 
                             </ul>
                         </li>
@@ -137,11 +173,11 @@
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding-left:12%;padding-top:3%;padding-bottom:3%;padding-right:10%;max-width:100%">
                     <br>
                     {% for message in get_flashed_messages()%}
-                    
+
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}} 
+                        {{message}}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                    </div>
                     {% endfor %}
                     <form autocomplete="on" action="/ambulance_result" method="post" enctype="multipart/form-data">
                         <label for="PName"> <i id="fu" class="fa fa-user"> :</i>
@@ -159,8 +195,8 @@
 
                         <label for="PPhone"><i id="fu" class="fa fa-phone"> :</i>
                         </label>
-                        <input id="PPhone" name="PPhone" class="form" type="tel"
-                            placeholder="Rufnummer (bitte mit +49)" required><br><br>
+                        <input id="PPhone" name="PPhone" class="form" type="tel" placeholder="Rufnummer (bitte mit +49)"
+                            required><br><br>
 
 
 
@@ -174,14 +210,13 @@
 
                         <label for="PPick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
-                        <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort"
-                            >
+                        <input id="PPick-up" name="PPick-up" class="form" type="text" placeholder="Abholort">
 
                         <br>
                         <br>
                         <label for="PDrop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort" >
+                        <input id="PDrop" class="form" name="PDrop" type="text" placeholder="Zielort">
 
                         <br>
                         <br>
@@ -198,21 +233,20 @@
                         <label id="fu" for="PDate">Datum :</label>
 
 
-                        <input class="form" id="PDate" name="PDate" type="date" min="{{ today }}"
-                            style="width:15%">
-                            <script>
-                                // Get the current date and add 1 day to get the minimum selectable date
-                                var today = new Date();
-                                today.setDate(today.getDate() + 1);
-    
-                                // Format the dates in ISO format (YYYY-MM-DD)
-                                var todayFormatted = today.toISOString().split('T')[0];
-                                
-    
-                                // Set the 'min' and 'max' attributes of the input element
-                                document.getElementById('PDate').setAttribute('min', todayFormatted);
-                                
-                            </script>
+                        <input class="form" id="PDate" name="PDate" type="date" min="{{ today }}" style="width:15%">
+                        <script>
+                            // Get the current date and add 1 day to get the minimum selectable date
+                            var today = new Date();
+                            today.setDate(today.getDate() + 1);
+
+                            // Format the dates in ISO format (YYYY-MM-DD)
+                            var todayFormatted = today.toISOString().split('T')[0];
+
+
+                            // Set the 'min' and 'max' attributes of the input element
+                            document.getElementById('PDate').setAttribute('min', todayFormatted);
+
+                        </script>
                         <label id="fu" for="PTime" style="position:relative;left:5%">Zeit :</label>
 
                         <input class="form" id="PTime" name="PTime" type="time"
@@ -224,7 +258,7 @@
                                 einer Krankenbeförderung
                                 :</i></label><br>
                         <input id="Doctor-letter" name="Doctor-letter" class="form" style="border-radius:0;" type="file"
-                            placeholder=""style="width:92%;padding-left:0">
+                            placeholder="" style="width:92%;padding-left:0">
                         <br>
                         <br>
 
@@ -237,7 +271,7 @@
                         <p class="fs-5" style="color:rgb(255, 255, 255)">Durch das klicken auf der Schaltfläche "Buchung
                             stornieren", akzeptieren Sie unsere <a class="fs-5" href="/datenschutz"
                                 target="_blank">DSGVO und AGB.</a></p>
-                        
+
 
 
 
@@ -329,7 +363,7 @@
                 </div>
                 <!-- Copyright -->
             </footer>
-            
+
 
         </div>
 
