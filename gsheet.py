@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timedelta
 from threading import Lock
 
-load_dotenv() #TODO: changes this
+#load_dotenv()
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
 credentials_dict = {

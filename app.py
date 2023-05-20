@@ -31,7 +31,7 @@ from threading import Lock
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
 
-load_dotenv(find_dotenv()) #TODO: changes this
+#load_dotenv(find_dotenv())
 # templates path and app creation
 
 app = flask.Flask(__name__, template_folder="templates/")
