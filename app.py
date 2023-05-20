@@ -303,7 +303,8 @@ def cal_price(pick: str, drop: str, vehicle: str):
 
     if vehicle == "mini":
         if dist < 1 and home_dist < 7:
-            price = float(4.3 + 0 + 2.20 + 0)
+            price = float(4.4 + 0 + 2.20 + 0)
+            print("test_price", price)
             return round(price)
         elif dist < 1 and home_dist > 7:
             price = float(4.3 + 0 + 2.20 + 4.30)
@@ -832,7 +833,7 @@ def create_payment():
 
         amount = int(price * 100)
         data = json.loads(request.data)
-        allowed_payment_methods = ["card", "paypal", "sofort", "giropay", "link"]
+        allowed_payment_methods = ["card", "sofort", "giropay", "link"]
         allowed_card_networks = ["visa", "mastercard"]
 
         intent = stripe.PaymentIntent.create(
