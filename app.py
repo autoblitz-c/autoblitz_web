@@ -43,12 +43,16 @@ app.secret_key = '123456789@autoblitz'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 #backend api
-identifier = os.environ.get('apiIdentifier_test')
-secert = os.environ.get('apiSecretKey_test')
+identifier = os.environ.get('apiIdentifier_prod')
+secert = os.environ.get('apiSecretKey_prod')
+# stripe key
+# stripe.api_key = os.getenv('t_s_s_k')
+stripe.api_key = os.environ.get('p_s_s_k')
+
 
 # order creating
 def create_order(pay_type: str):
-    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    url = "https://agentapi.seibtundstraub.de/v1/order"
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
@@ -128,12 +132,12 @@ def create_order(pay_type: str):
     }
 
     OrderRequest = {
-        "dispFleetId": 63,
+        "dispFleetId": 388,
         "productId": "1",
 
         "pickup": Pickup,
         "dest": Destination,
-        "title": "test",
+        "title": "Bestellung von " + book['mail'] + " am Datum " + book['date'] + ", " + book['time'],
         "customer": Customer,
 
         "payment": pay,
@@ -167,7 +171,7 @@ def create_order(pay_type: str):
 
 # query order
 def query_order(orderguid):
-    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    url = "https://agentapi.seibtundstraub.de/v1/order"
     send = {"cmd": "query_order",
             "data": {"orderGUID": orderguid}}
     headers = {'Content-Type': 'application/json',
@@ -338,9 +342,7 @@ def cal_price(pick: str, drop: str, vehicle: str):
             return round(price)
 
 
-# stripe key
-# stripe.api_key = os.getenv('t_s_s_k')
-stripe.api_key = os.environ.get('t_s_s_k')
+
 
 
 # creating auth
@@ -707,7 +709,7 @@ def kappey_result():
     s.starttls()
 
     # Authentication
-    s.login("kappey@autoblitz-koeln.de", "Autoblitz100%")
+    s.login(os.environ.get('ka'), os.environ.get('kap'))
 
     # message to be sent
     end = '\n' + "Danke und Grüße, " + '\n' + 'Team Autoblitz'
@@ -716,12 +718,12 @@ def kappey_result():
     mail_msg = MIMEMultipart()
     mail_msg.attach(MIMEText(message, 'plain'))
     mail_msg['Subject'] = "Kappey"
-    mail_msg['From'] = "kappey@autoblitz-koeln.de"
-    mail_msg['To'] = ', '.join(["bestellung@autoblitz-koeln.de", " info@ck-taxi.koeln"])
+    mail_msg['From'] = os.environ.get('ka')
+    mail_msg['To'] = ', '.join([os.environ.get('bk'), os.environ.get('iak')])
 
     # sending the mail
 
-    s.sendmail("kappey@autoblitz-koeln.de", mail_msg['To'], mail_msg.as_string())
+    s.sendmail(os.environ.get('ka'), mail_msg['To'], mail_msg.as_string())
 
     # terminating the session
     s.quit()
@@ -805,7 +807,7 @@ def src():
 # publish key #
 @app.route('/publish', methods=['GET'])
 def publish():
-    msg = {"key": os.environ.get('t_s_p_k')}
+    msg = {"key": os.environ.get('p_s_p_k')}
     return jsonify(msg)
 
 
@@ -1328,7 +1330,7 @@ def cancel():
         # Store data in the session using the user ID as the key
         session[f'data_{user_id}'] = refund_amount
 
-    url = "https://agentapitest.seibtundstraub.de/v1/order"
+    url = "https://agentapi.seibtundstraub.de/v1/order"
 
     send = {"cmd": "cancel_order",
             "data": {"orderGUID": query['orderGUID']}}
