@@ -24,7 +24,14 @@
                             document.getElementById("loading").style.display = "none"
                             $('#booking-container').html('');
                             $('#booking-container').load(response.template);
-                        } else {
+                        }
+                        else if (response.status === "flash") {
+                            pollFlag = true;
+                            document.getElementById("loading").style.display = "none"
+                            $('#booking-container').html('');
+                            $('#booking-container').load(response.template);
+                        }
+                        else {
                             document.getElementById("loading").style.display = "block";
                         }
                     },
