@@ -1065,8 +1065,8 @@ def booking_cash_status():
 
     book = session.get(f'data_{user_id}')
     pickup_time_v, valid = validate_time(book["date"], book["time"])
-    pstreet, pcity, pzip_code = geo_cal(book['pick'])
-    dstreet, dcity, dzip_code = geo_cal(book['drop'])
+    pstreet, pcity, pzip_code, pstreet_no = geo_cal(book['pick'])
+    dstreet, dcity, dzip_code, dstreet_no= geo_cal(book['drop'])
     if book['name'] == "" or book['phone'] == "" or str(book["phone"]).find('+') == -1 or book["mail"] == "" or \
             book["pick"] == "" or book["drop"] == "" or book["vehicle"] == "" or book["date"] == "" or book[
         "time"] == "":
@@ -1078,6 +1078,9 @@ def booking_cash_status():
     elif ph_country(str(book["phone"])) != "Germany":
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
 
+        return render_template("taxi.html")
+    elif pstreet_no == "none" or dstreet_no == "none":
+        flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
         return render_template("taxi.html")
     elif validate_date(book["date"]) == False:
         flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
