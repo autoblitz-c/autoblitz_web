@@ -27,6 +27,8 @@ from functools import wraps
 import googlemaps
 from gsheet import add_data, delete_data, query_data
 from threading import Lock
+import pytz
+from dateutil import tz
 
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
@@ -69,8 +71,8 @@ def create_order(pay_type: str):
 
     Plat, Plng = lat_long(book['pick'])
     Dlat, Dlng = lat_long(book['drop'])
-    p_street, p_city, p_zip = geo_cal(book['pick'])
-    d_street, d_city, d_zip = geo_cal(book['drop'])
+    p_street, p_city, p_zip, pstreet_no = geo_cal(book['pick'])
+    d_street, d_city, d_zip, dstreet_no = geo_cal(book['drop'])
     t, valid = validate_time(book['date'], book['time'])
     if pay_type == "cash":
         pay = "PAY_CASH"
@@ -105,7 +107,7 @@ def create_order(pay_type: str):
         "name": "",
         "pos": PlatLng,
         "street": p_street,
-        "streetNo": "9999",
+        "streetNo": str(pstreet_no),
         "zip": p_zip,
         "city": "cologne",
         "pickupTime": p_time,
@@ -114,7 +116,7 @@ def create_order(pay_type: str):
         "name": "",
         "pos": DlatLng,
         "street": d_street,
-        "streetNo": "9999",
+        "streetNo": str(dstreet_no),
         "zip": d_zip,
         "city": "cologne"
     }
@@ -217,7 +219,11 @@ def geo_cal(address: str):
     street = loc['road']
     city = loc['city']
     zip_code = loc['postcode']
-    return street, city, zip_code
+    try:
+        street_no = loc['house_number']
+    except:
+        street_no = "none"
+    return street, city, zip_code, street_no
 
 
 def unix(datum: str, zeit: str):
@@ -225,12 +231,25 @@ def unix(datum: str, zeit: str):
     date_format = "%Y-%m-%d"  # Format string for ISO date
     time_str = zeit  # Example time in 24-hour format
     time_format = "%H:%M"  # Format string for 24-hour time
-    # Parse date string and time string into date and time objects
-    date_obj = datetime.strptime(date_str, date_format).date()
-    time_obj = datetime.strptime(time_str, time_format).time()
-    # Combine date and time objects into a datetime object
-    datetime_obj = datetime.combine(date_obj, time_obj)
-    return int(time.mktime(datetime_obj.timetuple()))
+    # Combine the date and time strings into a single string
+    date_time_str = date_str + " " + time_str
+
+    # Get the server's local time zone
+    server_timezone = tz.gettz()
+
+    # Define the Berlin time zone
+    berlin_timezone = pytz.timezone("Europe/Berlin")
+
+    # Convert the string to a datetime object in the server's local time zone
+    date_time = datetime.strptime(date_time_str, "%Y-%m-%d %H:%M")
+    date_time_server = date_time.replace(tzinfo=server_timezone)
+
+    # Convert the server's local datetime to the Berlin time zone
+    date_time_berlin = date_time_server.astimezone(berlin_timezone)
+
+    # Convert the datetime object to Unix time format
+    unix_time = int(date_time_berlin.timestamp())
+    return unix_time
 
 
 def validate_date(datum: str):
@@ -575,8 +594,8 @@ def ambulance_result():
 
     ############ form validating ###################
     # whole form validation check point
-    pstreet, pcity, pzip_code = geo_cal(str(pick))
-    dstreet, dcity, dzip_code = geo_cal(str(drop))
+    pstreet, pcity, pzip_code, pstreet_no = geo_cal(str(pick))
+    dstreet, dcity, dzip_code, dstreet_no = geo_cal(str(drop))
     if name == "" or str(phone) == "" or str(phone).find("+49") == -1 or str(
             age) == "" or str(date) == "" or str(time) == "" or str(ins) == "" or \
             str(pick) == "" or str(drop) == "" or mail == "" or licence == "":
@@ -591,6 +610,8 @@ def ambulance_result():
 
     elif pcity != "Köln" or dcity != "Köln":
         flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
+    elif pstreet_no == "none" or dstreet_no == "none":
+        flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
 
 
     else:
@@ -1535,8 +1556,8 @@ def checkout():
         print(book)
         # book = json.load(json_data)
         pickup_time_v, valid = validate_time(book["date"], book["time"])
-        pstreet, pcity, pzip_code = geo_cal(book['pick'])
-        dstreet, dcity, dzip_code = geo_cal(book['drop'])
+        pstreet, pcity, pzip_code, pstreet_no = geo_cal(book['pick'])
+        dstreet, dcity, dzip_code, dstreet_no = geo_cal(book['drop'])
         if book['name'] == "" or book['phone'] == "" or str(book["phone"]).find('+') == -1 or book["mail"] == "" or \
                 book["pick"] == "" or book["drop"] == "" or book["vehicle"] == "" or book["date"] == "" or book[
             "time"] == "":
@@ -1546,6 +1567,9 @@ def checkout():
             return render_template("taxi.html")
         elif ph_country(str(book["phone"])) != "Germany":
             flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
+            return render_template("taxi.html")
+        elif pstreet_no == "none" or dstreet_no == "none":
+            flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
             return render_template("taxi.html")
         elif validate_date(book["date"]) == False:
             flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
