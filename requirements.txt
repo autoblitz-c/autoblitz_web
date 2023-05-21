@@ -55,6 +55,7 @@ rsa==4.9
 six==1.16.0
 stripe==5.2.0
 tzdata==2023.3
+tzlocal==5.0.1
 urllib3==1.26.14
 WebOb==1.8.7
 Werkzeug==2.2.2
