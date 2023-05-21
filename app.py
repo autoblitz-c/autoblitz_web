@@ -223,6 +223,7 @@ def geo_cal(address: str):
         street_no = loc['house_number']
     except:
         street_no = "none"
+    print(address, street_no)
     return street, city, zip_code, street_no
 
 
@@ -1080,6 +1081,7 @@ def booking_cash_status():
 
         return render_template("taxi.html")
     elif pstreet_no == "none" or dstreet_no == "none":
+        print("passed condition street_no")
         flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
         return render_template("taxi.html")
     elif validate_date(book["date"]) == False:
