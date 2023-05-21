@@ -1074,30 +1074,53 @@ def booking_cash_status():
         error = "Ihre Anfrage wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
                            Sie eine gültige Telefonnummer (einschließlich +49), E-Mail, Alter, Abholort, Zielort, Datum und Zeit."
         flash(error)
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
 
-        return render_template("taxi.html")
+        return jsonify(response_data)
     elif ph_country(str(book["phone"])) != "Germany":
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
 
-        return render_template("taxi.html")
+        return jsonify(response_data)
     elif pstreet_no == "none" or dstreet_no == "none":
         print("passed condition street_no")
         flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
-        return render_template("taxi.html")
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
+
+        return jsonify(response_data)
     elif validate_date(book["date"]) == False:
         flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
 
-        return render_template("taxi.html")
-
+        return jsonify(response_data)
     elif valid == False:
         flash("Bitte wählen Sie den gegenwärtigen oder zukünftigen Zeitpunkt")
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
 
-        return render_template("taxi.html")
-
+        return jsonify(response_data)
     elif pcity != "Köln" or dcity != "Köln":
         flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
+        response_data = {
+            'status': 'flash',
+            'template': 'taxi'
+        }
 
-        return render_template("taxi.html")
+        return jsonify(response_data)
 
     else:
         book['pay'] = "NA"
