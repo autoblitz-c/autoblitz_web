@@ -90,6 +90,7 @@ def create_order(pay_type: str):
         p_time = 0
     else:
         p_time = unix(book['date'], book['time'])
+    print('pick_up_time', p_time)
 
     if book['vehicle'] == "mini":
         vehicle_type = "MINI"
@@ -236,25 +237,18 @@ def geo_cal(address: str):
 
 
 def unix(datum: str, zeit: str):
-    date_str = datum  # Example date string in ISO format
-    date_format = "%Y-%m-%d"  # Format string for ISO date
-    time_str = zeit  # Example time in 24-hour format
-    time_format = "%H:%M"  # Format string for 24-hour time
-    # Combine the date and time strings into a single string
+    date_str = datum
+    date_format = "%Y-%m-%d"
+    time_str = zeit
+    time_format = "%H:%M"
     date_time_str = date_str + " " + time_str
 
-    # Get the server's local time zone
-    server_timezone = tz.gettz()
-
-    # Define the Berlin time zone
+    # Define the desired time zone (Berlin in this case)
     berlin_timezone = pytz.timezone("Europe/Berlin")
 
-    # Convert the string to a datetime object in the server's local time zone
+    # Convert the string to a datetime object in the desired time zone
     date_time = datetime.strptime(date_time_str, "%Y-%m-%d %H:%M")
-    date_time_server = date_time.replace(tzinfo=server_timezone)
-
-    # Convert the server's local datetime to the Berlin time zone
-    date_time_berlin = date_time_server.astimezone(berlin_timezone)
+    date_time_berlin = berlin_timezone.localize(date_time)
 
     # Convert the datetime object to Unix time format
     unix_time = int(date_time_berlin.timestamp())
