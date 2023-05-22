@@ -42,7 +42,14 @@
         <button id="submit" style="border-radius:25px;">
             <div class="spinner hidden" id="spinner"></div>
             <span id="button-text">Jetzt bezahlen</span>
-        </button>
+        </button><br>
+        <button style='border-radius:25px' onclick="goBack()">Zurückgehen</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
         <div id="payment-message" class="hidden"></div>
         <br>
         <br>
