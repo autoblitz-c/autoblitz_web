@@ -62,7 +62,11 @@ def create_order(pay_type: str):
 
     book = session.get(f'data_{user_id}')
     # book = json.load(data)
-    price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
+    start = str(book["pick"]).split(',')
+    end = str(book["drop"]).split(',')
+    Pick = start[0] + " " + str(book['hpick']) + ", " + ",".join(start[1:])
+    Drop = end[0] + " " + str(book['hdrop']) + ", " + ",".join(end[1:])
+    price = cal_price(str(Pick), str(Drop), str(book["vehicle"]))
 
     amount = int(price * 100)
     book['amount'] = amount
@@ -73,6 +77,10 @@ def create_order(pay_type: str):
     Dlat, Dlng = lat_long(book['drop'])
     p_street, p_city, p_zip, pstreet_no = geo_cal(book['pick'])
     d_street, d_city, d_zip, dstreet_no = geo_cal(book['drop'])
+    pick_street = book['pick'].split(',')[0]
+    print('pick_street', pick_street)
+    drop_street = book['drop'].split(',')[0]
+    print('drop_street', drop_street)
     t, valid = validate_time(book['date'], book['time'])
     if pay_type == "cash":
         pay = "PAY_CASH"
@@ -106,8 +114,8 @@ def create_order(pay_type: str):
     Pickup = {
         "name": "",
         "pos": PlatLng,
-        "street": p_street,
-        "streetNo": str(pstreet_no),
+        "street": pick_street,
+        "streetNo": str(book['hpick']),
         "zip": p_zip,
         "city": "cologne",
         "pickupTime": p_time,
@@ -115,8 +123,8 @@ def create_order(pay_type: str):
     Destination = {
         "name": "",
         "pos": DlatLng,
-        "street": d_street,
-        "streetNo": str(dstreet_no),
+        "street": drop_street,
+        "streetNo": str(book['hdrop']),
         "zip": d_zip,
         "city": "cologne"
     }
@@ -517,6 +525,8 @@ def booking():
     phone = request.form.get('Phone')
     mail = request.form.get('Mail')
     pick = request.form.get('Pick-up')
+    hpick = request.form.get('Pick-h-no')
+    hdrop = request.form.get('Drop-h-no')
     drop = request.form.get('Drop')
     date = request.form.get('Date')
     time = request.form.get('Time')
@@ -525,6 +535,8 @@ def booking():
             "phone": phone,
             "mail": mail,
             "pick": pick,
+            "hpick": hpick,
+            "hdrop": hdrop,
             "drop": drop,
             "date": date,
             "time": time,
@@ -851,7 +863,11 @@ def create_payment():
             description=book['name']
         )
         # book = json.load(json_data)
-        price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
+        start = str(book["pick"]).split(',')
+        end = str(book["drop"]).split(',')
+        Pick = start[0] + " " + str(book['hpick']) + ", " + ",".join(start[1:])
+        Drop = end[0] + " " + str(book['hdrop']) + ", " + ",".join(end[1:])
+        price = cal_price(str(Pick), str(Drop), str(book["vehicle"]))
 
         amount = int(price * 100)
         data = json.loads(request.data)
@@ -1088,7 +1104,7 @@ def booking_cash_status():
         }
 
         return jsonify(response_data)
-    elif pstreet_no == "none" or dstreet_no == "none":
+    elif book['hpick'] == "" or book['hdrop'] == "":
         print("passed condition street_no")
         flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
         response_data = {
@@ -1596,7 +1612,7 @@ def checkout():
         elif ph_country(str(book["phone"])) != "Germany":
             flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
             return render_template("taxi.html")
-        elif pstreet_no == "none" or dstreet_no == "none":
+        elif book['hpick'] == "" or book['hdrop'] == "":
             flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
             return render_template("taxi.html")
         elif validate_date(book["date"]) == False:

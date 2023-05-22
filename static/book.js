@@ -29,17 +29,21 @@ directionsDisplay.setMap(map);
 
 function calcRoute() {
     //create request
+    var start = document.getElementById("Pick-up").value.toString().split(',');
+    var end = document.getElementById("Drop").value.toString().split(',');
+    var Pick = start[0] + " " + document.getElementById('Pick-h-no').value.toString() + ", " + start.slice(1).join();
+    var Drop = end[0] + " " + document.getElementById('Drop-h-no').value.toString() + ", " + end.slice(1).join();
 
     var request = {
-        origin: document.getElementById("Pick-up").value,
-        destination: document.getElementById("Drop").value,
+        origin: Pick,
+        destination: Drop,
         travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
         unitSystem: google.maps.UnitSystem.METRIC
     }
 
     var home = {
         origin: "Keupstraße 26, 51063 Köln, Germany",
-        destination: document.getElementById("Pick-up").value,
+        destination: Pick,
         travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
         unitSystem: google.maps.UnitSystem.METRIC
     }
@@ -76,13 +80,14 @@ function calcRoute() {
                 .then(function (distance) {
                     console.log(home_dist); // You can access home_dist here
                     var dur = result.routes[0].legs[0].duration.text;
+
                     document.getElementById('dur').innerHTML = dur;
                     document.getElementById('book-datetime').innerHTML = document.getElementById('Date').value.toString() + ", " + document.getElementById('Time').value.toString();
                     document.getElementById("name").innerHTML = document.getElementById("Name").value;
                     document.getElementById("phone").innerHTML = document.getElementById("Phone").value;
                     document.getElementById("mail").innerHTML = document.getElementById("Mail").value;
-                    document.getElementById("start").innerHTML = document.getElementById("Pick-up").value;
-                    document.getElementById("end").innerHTML = document.getElementById("Drop").value;
+                    document.getElementById("start").innerHTML = Pick;
+                    document.getElementById("end").innerHTML = Drop;
 
                     let wait = parseInt(document.getElementById('Time').value.toString())
 
