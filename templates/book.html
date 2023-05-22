@@ -253,13 +253,15 @@
 
                         <label for="Pick-up"><i id="fu" class="fa fa-dot-circle-o" aria-hidden="true"> :</i></label>
 
-                        <input id="Pick-up" name="Pick-up" class="form" type="text" placeholder="Abholort" />
+                        <input id="Pick-up" name="Pick-up" class="form" type="text" style="width:60%" placeholder="Abholort" />
+                        <input id="Pick-h-no" name="Pick-h-no" class="form" type="number" min="1" style="position:relative;left:3%;width:20%" placeholder="Hausnummer"/>
 
                         <br>
                         <br>
                         <label for="Drop"><i id="fu" class="fa fa-map-marker" aria-hidden="true"> : </i></label>
 
-                        <input id="Drop" name="Drop" class="form" type="text" placeholder="Zielort" />
+                        <input id="Drop" name="Drop" class="form" type="text" style="width:60%" placeholder="Zielort" />
+                        <input id="Drop-h-no" name="Drop-h-no" class="form" type="number" min="1" style="position:relative;left:3%;width:20%" placeholder="Hausnummer"/>
 
                         <br>
                         <br>
@@ -699,6 +701,9 @@
             else if (document.getElementById("Pick-up").value == "" || document.getElementById("Drop").value == "") {
                 alert("Bitte wählen Sie den gültigen Abhol- und Abgabeort aus dem Dropdown-Menü, wenn die Eingabefelder für die Abholung und Abgabe ausgewählt sind.")
             }
+            else if (document.getElementById("Pick-h-no").value == "" || document.getElementById("Drop-h-no").value == "") {
+                    alert("Bitte geben Sie die Hausnummer für die Abholung und Zielort an.")
+                }
             else if (document.getElementById("Date").value == "" || document.getElementById("Time").value == "") {
                 alert("Bitte wählen Sie das Datum und die Uhrzeit der Fahrt")
 
