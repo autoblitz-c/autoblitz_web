@@ -4,8 +4,8 @@ import requests
 from datetime import datetime, time, date, timedelta
 import time
 import flask
-from flask import request, render_template, redirect, jsonify, Response, flash, abort, session
-import urllib.parse
+from flask import request, render_template, redirect, jsonify, Response, flash, session
+#import urllib.parse
 from phonenumbers import geocoder, parse
 from geopy.geocoders import Nominatim
 import geoip2.database
@@ -25,10 +25,10 @@ from dotenv import load_dotenv, find_dotenv
 import os
 from functools import wraps
 import googlemaps
-from gsheet import add_data, delete_data, query_data
+from gsheet import add_data, query_data
 from threading import Lock
 import pytz
-from dateutil import tz
+#from dateutil import tz
 
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
@@ -238,9 +238,7 @@ def geo_cal(address: str):
 
 def unix(datum: str, zeit: str):
     date_str = datum
-    date_format = "%Y-%m-%d"
     time_str = zeit
-    time_format = "%H:%M"
     date_time_str = date_str + " " + time_str
 
     # Define the desired time zone (Berlin in this case)
@@ -365,9 +363,6 @@ def cal_price(pick: str, drop: str, vehicle: str):
             return round(price)
 
 
-
-
-
 # creating auth
 def check_auth(username, password):
     """This function is called to check if a username /
@@ -453,7 +448,6 @@ def vacancy_result():
         error = "Ihre Bewerbung wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
         Sie eine gültige Telefonnummer (einschließlich +49), E-Mail und Dokumente an."
         flash(error)
-
 
     # phone number validation checkpoint
     elif ph_country(str(phone)) != "Germany":
@@ -861,11 +855,13 @@ def create_payment():
         end = str(book["drop"]).split(',')
         Pick = start[0] + " " + str(book['hpick']) + ", " + ",".join(start[1:])
         Drop = end[0] + " " + str(book['hdrop']) + ", " + ",".join(end[1:])
+
         price = cal_price(str(Pick), str(Drop), str(book["vehicle"]))
+
 
         amount = int(price * 100)
         data = json.loads(request.data)
-        allowed_payment_methods = ["card", "sofort", "giropay", "link"]
+        allowed_payment_methods = ["card", "sofort", "giropay", "paypal", "klarna", "link"]
         allowed_card_networks = ["visa", "mastercard"]
 
         intent = stripe.PaymentIntent.create(
@@ -1494,7 +1490,7 @@ def cancel():
                 print('stripe_success')
 
                 ############ mail for customer #############
-                me = "bestellung@autoblitz-koeln.de"
+                me = os.environ.get('bk')
                 you = query['mail']
 
                 # Create message container - the correct MIME type is multipart/alternative.
@@ -1540,7 +1536,7 @@ def cancel():
                 s.ehlo()
 
                 # Authentication
-                s.login(me, 'tiam2002')
+                s.login(me, os.environ.get('bkp'))
                 # sendmail function takes 3 arguments: sender's address, recipient's address
                 # and message to send - here it is sent as one string.
                 s.sendmail(me, you, msg.as_string())
@@ -1623,8 +1619,12 @@ def checkout():
 
 
         else:
+            start = str(book["pick"]).split(',')
+            end = str(book["drop"]).split(',')
+            Pick = start[0] + " " + str(book['hpick']) + ", " + ",".join(start[1:])
+            Drop = end[0] + " " + str(book['hdrop']) + ", " + ",".join(end[1:])
 
-            price = cal_price(str(book["pick"]), str(book["drop"]), str(book["vehicle"]))
+            price = cal_price(str(Pick), str(Drop), str(book["vehicle"]))
             session[f'data_{user_id}'] = book
             print('price', price)
 
