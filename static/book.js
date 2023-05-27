@@ -113,14 +113,14 @@ function calcRoute() {
 
 
                         }
-                        else if (dist < 1 && home_dist > 7) {
+                        else if (dist < 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 0 + 2.20 + 4.30);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20) + 4.30)).toString() + " " + "€"
 
 
                         }
-                        else if (dist > 1 && home_dist > 7) {
+                        else if (dist > 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 0 + (2.20 * dist) + 4.3);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 0 + (2.20 * dist) + 4.3)).toString() + " " + "€"
@@ -144,13 +144,13 @@ function calcRoute() {
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + 2.20 + 0)).toString() + " " + "€"
 
                         }
-                        else if (dist < 1 && home_dist > 7) {
+                        else if (dist < 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 5 + 2.20 + 4.3);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + 2.20 + 4.3)).toString() + " " + "€"
 
                         }
-                        else if (dist > 1 && home_dist > 7) {
+                        else if (dist > 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 5 + (2.20 * dist) + 4.3);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 5 + (2.20 * dist) + 4.3)).toString() + " " + "€"
@@ -173,13 +173,13 @@ function calcRoute() {
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + 2.20 + 0)).toString() + " " + "€"
 
                         }
-                        else if (dist < 1 && home_dist > 7) {
+                        else if (dist < 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 10 + 2.20 + 4.30);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + 2.20 + 4.30)).toString() + " " + "€"
 
                         }
-                        else if (dist > 1 && home_dist > 7) {
+                        else if (dist > 1 && home_dist >= 7) {
                             document.getElementById("Hadditional").innerHTML = "4.30"
                             document.getElementById("total").innerHTML = Math.round(4.3 + 10 + (2.20 * dist) + 4.30);
                             document.getElementById('pay').innerHTML = "Bezahlen " + (Math.round(4.3 + 10 + (2.20 * dist) + 4.30)).toString() + " " + "€"

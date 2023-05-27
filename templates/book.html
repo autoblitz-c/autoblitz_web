@@ -73,7 +73,7 @@
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
+                <a class="navbar-brand" ><img id="logo" style="position:relative;top:2%" alt="logo"
                         src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
@@ -88,7 +88,7 @@
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown">unsere Dienstleistungen</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" onclick="taxi()">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item" href="/taxi">Personenbeförderung</a></li>
                                 <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
 
                             </ul>
@@ -133,45 +133,16 @@
                 </div>
             </div>
         </nav>
-        <!-- Modal -->
-        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-            style="border-radius:45px">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
-                            bald online gehen.
-                        </h3>
-
-                    </div>
-                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
-                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
-                        </txt>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Modal end-->
-
-        <script type="text/javascript">
-            function taxi() {
-                $("#taxi_modal").modal('toggle');
-            }
-        </script>
+        
         <br>
         <br>
 
         <!--booking type buttons-->
         <div class="row">
             <div id="t" class="col-sm-6">
-                <a id="tbtn" type="button" onclick="taxi()" style="position:relative;left:21%;right:30%;top:0.5vh;"><i
+                <a id="tbtn" type="button" onclick="taxi()" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:21%;right:30%;top:0.5vh;border-radius: 25px;"><i
                         id="fu" class='fa fa-car'
-                        style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;color:rgb(255, 255, 255);font-size:100%">
+                        style="color:rgb(255, 255, 255);font-size:100%">
                         Personenbeförderung</i></a>
                 <br>
                 <br>
@@ -189,8 +160,10 @@
 
 
         <script>
-            /*if (document.getElementById("taxi").style.display == 'none') {
+            function taxi(){
+            if (document.getElementById("taxi").style.display == 'none') {
                 document.getElementById("abtn").style.background = "rgb(13,110,253)"
+                document.getElementById("abtn").style.WebkitBorderRadius = "50px"
                 document.getElementById("ambulance").style.display = "none"
                 document.getElementById("taxi").style.display = "block"
                 document.getElementById("tbtn").style.background = "rgb(240, 142, 33)"
@@ -201,7 +174,7 @@
                 document.getElementById("tbtn").style.background = "rgb(13,110,253)"
 
             }
-        }*/
+        }
 
             function ambulance() {
                 if (document.getElementById("ambulance").style.display == 'none') {

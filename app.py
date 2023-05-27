@@ -326,10 +326,10 @@ def cal_price(pick: str, drop: str, vehicle: str):
             price = float(4.4 + 0 + 2.20 + 0)
             print("test_price", price)
             return round(price)
-        elif dist < 1 and home_dist > 7:
+        elif dist < 1 and home_dist >= 7:
             price = float(4.3 + 0 + 2.20 + 4.30)
             return round(price)
-        elif dist > 1 and home_dist > 7:
+        elif dist > 1 and home_dist >= 7:
             price = float(4.3 + 0 + (2.20 * dist) + 4.30)
             return round(price)
         else:
@@ -339,10 +339,10 @@ def cal_price(pick: str, drop: str, vehicle: str):
         if dist < 1 and home_dist < 7:
             price = float(4.3 + 5 + 2.20 + 0)
             return round(price)
-        elif dist < 1 and home_dist > 7:
+        elif dist < 1 and home_dist >= 7:
             price = float(4.3 + 5 + 2.20 + 4.30)
             return round(price)
-        elif dist > 1 and home_dist > 7:
+        elif dist > 1 and home_dist >= 7:
             price = float(4.3 + 5 + (2.20 * dist) + 4.30)
             return round(price)
         else:
@@ -352,10 +352,10 @@ def cal_price(pick: str, drop: str, vehicle: str):
         if dist < 1 and home_dist < 7:
             price = float(4.3 + 10 + 2.20 + 0)
             return round(price)
-        elif dist < 1 and home_dist > 7:
+        elif dist < 1 and home_dist >= 7:
             price = float(4.3 + 10 + 2.20 + 4.30)
             return round(price)
-        elif dist > 1 and home_dist > 7:
+        elif dist > 1 and home_dist >= 7:
             price = float(4.3 + 10 + (2.20 * dist) + 4.30)
             return round(price)
         else:
@@ -496,7 +496,7 @@ def vacancy_result():
 
 # taxi booking page
 @app.route('/taxi', methods=['POST', 'GET'])
-@requires_auth
+
 def taxi():
     if check_location() == 'Access denied':
         return "Access Denied"
