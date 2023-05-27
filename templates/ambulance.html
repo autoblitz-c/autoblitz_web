@@ -72,7 +72,7 @@
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img id="logo" style="position:relative;top:2%" alt="logo"
+                <a class="navbar-brand" ><img id="logo" style="position:relative;top:2%" alt="logo"
                         src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
@@ -87,8 +87,8 @@
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown">unsere Dienstleistungen</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" onclick="taxi()">Personenbeförderung</a></li>
-                                <li><a class="dropdown-item" href="#" style="color:rgb(240,142,33)">Krankentransport</a>
+                                <li><a class="dropdown-item" href="/taxi">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item"  style="color:rgb(240,142,33)">Krankentransport</a>
                                 </li>
 
                             </ul>
@@ -133,36 +133,7 @@
                 </div>
             </div>
         </nav>
-        <!-- Modal -->
-        <div class="modal fade" id="taxi_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-            style="border-radius:45px">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel" style="color:rgb(78, 192, 78)">Der Service wird
-                            bald online gehen.
-                        </h3>
-
-                    </div>
-                    <div class="modal-body" style="background-color: rgb(16, 16, 52)">
-                        <txt style="font-size: 70%;color:white">Wir freuen uns auf euch und vielen Dank fürs Verständnis
-                            <img src="{{url_for('static', filename='smile.png')}}" width="7%" height="7%">.
-                        </txt>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="ok" type="submit" class="btn btn-primary" data-bs-dismiss="modal">ok</button>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Modal end-->
-
-        <script type="text/javascript">
-            function taxi() {
-                $("#taxi_modal").modal('toggle');
-            }
-        </script>
+        
 
         <!--ambulance booking-->
         <div id="googleMap" class="col-sm-6 hidden-sm hidden-xs" style="display:none"></div>
