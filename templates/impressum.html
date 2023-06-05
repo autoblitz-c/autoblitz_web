@@ -2,7 +2,18 @@
 <html lang="de">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MMRTVMZ');</script>
+    <!-- End Google Tag Manager -->
     <title>Impressum</title>
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='autoblitz_logo-removebg.png')}}">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='book.css')}}">
 
@@ -25,13 +36,79 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        button {
+            background: #5469d4;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            border-radius: 4px;
+            border: 0;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            transition: all 0.2s ease;
+            box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+            
+        }
 
+        button:hover {
+            background-color: rgb(240, 142, 33);
+        }
+        #scroll-to-top {
+      display: none; /* Initially hidden */
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      font-size: 18px;
+      border: none;
+      outline: none;
+      background-color: #f3960a;
+      color: white;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 50%;
+    }
+    </style>
 
 
 </head>
 
-<body>
+<body style="padding:3%">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMRTVMZ" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <button style='border-radius:25px' onclick="goBack()"> Zurückgehen</button><br>
+    <button id="scroll-to-top" onclick="scrollToTop()"><i class="fa fa-arrow-up" aria-hidden="true"></i></button><br>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        // Show the scroll-to-top button when scrolling down
+        window.addEventListener('scroll', scrollFunction);
+      
+        function scrollFunction() {
+          var scrollButton = document.getElementById("scroll-to-top");
+          if (window.pageYOffset > 20) {
+            scrollButton.style.display = "block";
+          } else {
+            scrollButton.style.display = "none";
+          }
+        }
+      
+        // Scroll to top when the button is clicked
+        function scrollToTop() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      </script>
     <h2>Impressum</h2>
+
     <p>Auto-Blitz Funkmietwagen Gesellschaft mit mbH<br />Keupstraße 26<br />51063 Köln</p>
     <p>Telefon: 0221612277<br />E-Mail: <a href="mailto:info
         @autoblitz-koeln.de">info@autoblitz-koeln.de</a><br /></p>
