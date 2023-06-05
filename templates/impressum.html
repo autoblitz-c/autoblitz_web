@@ -50,63 +50,145 @@
             display: block;
             transition: all 0.2s ease;
             box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-            
+
         }
 
         button:hover {
             background-color: rgb(240, 142, 33);
         }
+
         #scroll-to-top {
-      display: none; /* Initially hidden */
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 99;
-      font-size: 18px;
-      border: none;
-      outline: none;
-      background-color: #f3960a;
-      color: white;
-      cursor: pointer;
-      padding: 12px;
-      border-radius: 50%;
-    }
+            display: none;
+            /* Initially hidden */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #f3960a;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
+        }
+
+        #datap {
+            color: rgb(85, 85, 85)
+        }
+
+        #datap:hover {
+            color: black
+        }
+
+        .vertical-line {
+            display: inline-block;
+            width: 1px;
+            height: 36px;
+            /* Set the height of the line according to your requirement */
+            background-color: rgb(85, 85, 85);
+            /* Set the color of the line */
+            margin: 0 10px;
+            /* Set the margin according to your requirement */
+            vertical-align: middle;
+            /* To align the line with the text in the <a> tags */
+        }
     </style>
 
 
 </head>
 
-<body style="padding:3%">
+<body style="padding:1%">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMRTVMZ" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
-    <button style='border-radius:25px' onclick="goBack()"> Zurückgehen</button><br>
+
+    <nav class="navbar navbar-expand-sm bg-transparent navbar-light   ">
+        <div class="container-fluid">
+            <a class="navbar-brand"><img id="logo" style="position:relative;top:2%" alt="logo"
+                    src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="tab" href="/"><i id="tab" class="fa fa-home"></i></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown">unsere Dienstleistungen</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/taxi">Personenbeförderung</a></li>
+                            <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a id="tab" class="nav-link" href="/vacancy">Stellenangebote</a>
+                    </li>
+                    <li class=" nav-item">
+                        <a id="tab" class="nav-link" href="/about_us">Über uns</a>
+                    </li>
+
+
+
+                    <li class="nav-item dropdown">
+                        <a id="tab" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
+                                id="tab" class="fa fa-address-book"></i></a>
+                        <ul class="dropdown-menu">
+
+                            <li><a class="dropdown-item" href="/contact_us" data-bs-toggle="tooltip" title="Mail uns"
+                                    style="text-align:center">Kontaktieren Sie uns <i class="fa fa-envelope"
+                                        aria-hidden="true"></i></a>
+                            </li>
+                            <li hidden><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Help"
+                                    style="text-align:center"> <i class="fa fa-question-circle fa-lg"
+                                        aria-hidden="true"></i></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a id="tab" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
+                                id="tab" class="fa fa-shopping-cart"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
+                                </a></li>
+                            <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                </a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
     <button id="scroll-to-top" onclick="scrollToTop()"><i class="fa fa-arrow-up" aria-hidden="true"></i></button><br>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
+
     <script>
         // Show the scroll-to-top button when scrolling down
         window.addEventListener('scroll', scrollFunction);
-      
+
         function scrollFunction() {
-          var scrollButton = document.getElementById("scroll-to-top");
-          if (window.pageYOffset > 20) {
-            scrollButton.style.display = "block";
-          } else {
-            scrollButton.style.display = "none";
-          }
+            var scrollButton = document.getElementById("scroll-to-top");
+            if (window.pageYOffset > 20) {
+                scrollButton.style.display = "block";
+            } else {
+                scrollButton.style.display = "none";
+            }
         }
-      
+
         // Scroll to top when the button is clicked
         function scrollToTop() {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-      </script>
+    </script>
     <h2>Impressum</h2>
 
     <p>Auto-Blitz Funkmietwagen Gesellschaft mit mbH<br />Keupstraße 26<br />51063 Köln</p>
@@ -168,4 +250,35 @@
     vorgenannten Paragraphen abweichen, wird an entsprechender Stelle ausdrücklich darauf hingewiesen. In diesem Falle
     gelten im jeweiligen Einzelfall die besonderen Nutzungsbedingungen.<p>Quelle: <a href="https:/
         /www.juraforum.de/impressum-generator/">Link klicken</a></p>
+    <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
+
+        <footer class="text-center text-lg-start"
+            style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
+            <div class="container d-flex justify-content-center py-5">
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52); border-radius: 50px;"
+                    href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
+                    <i style="color:white" class="fa fa-facebook-f"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                    href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
+                    <i style="color:white" class="fa fa-youtube"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                    href="https://www.instagram.com/autoblitz_c/">
+                    <i style="color:white" class="fa fa-instagram"></i>
+                </a>
+                <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                    style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                    href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
+                    <i style="color:white" class="fa fa-twitter"></i>
+                </a>
+            </div>
+            
+        </footer>
+    </div>
 </body>
+
+</html>
