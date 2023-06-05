@@ -2,8 +2,20 @@
 <html lang="de">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MMRTVMZ');</script>
+    <!-- End Google Tag Manager -->
     <title>Ueber uns</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+        integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="{{url_for('static', filename='about_us.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,6 +36,10 @@
 </head>
 
 <body class="body">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMRTVMZ" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     {% if cookies_check() %}
     {# then user has already consented so no requirement for consent banner #}
     {% else %}
@@ -32,8 +48,10 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h3 style="color:white"><i class='fas fa-cookie-bite' style='color:rgb(240,142,33)'></i> Drittanbieter-Cookies</h3>
-                    <p class="mb-0" style="color:white;font-size: 14px;">Wir verwenden Cookies von Drittanbietern, um Inhalte und Anzeigen zu personalisieren und den Website-Verkehr zu analysieren.</p>
+                    <h3 style="color:white"><i class='fas fa-cookie-bite' style='color:rgb(240,142,33)'></i>
+                        Drittanbieter-Cookies</h3>
+                    <p class="mb-0" style="color:white;font-size: 14px;">Wir verwenden Cookies von Drittanbietern, um
+                        Inhalte und Anzeigen zu personalisieren und den Website-Verkehr zu analysieren.</p>
                     <a style="font-size: 14px;" href="/datenschutz">Mehr erfahren</a>
                 </div>
                 <div class="col-md-4 text-md-end">
@@ -61,7 +79,7 @@
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light   ">
             <div class="container-fluid">
-                <a class="navbar-brand" ><img id="logo" style="position:relative;top:2%" alt="logo"
+                <a class="navbar-brand"><img id="logo" style="position:relative;top:2%" alt="logo"
                         src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapsibleNavbar">
@@ -73,8 +91,8 @@
                             <a class="nav-link" id="tab" href="/"><i id="tab" class="fa fa-home"></i></a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a id="tab" class="nav-link dropdown-toggle"  role="button"
-                                data-bs-toggle="dropdown">unsere Dienstleistungen</a>
+                            <a id="tab" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">unsere
+                                Dienstleistungen</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/taxi">Personenbeförderung</a></li>
                                 <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
@@ -85,7 +103,7 @@
                             <a id="tab" class="nav-link" href="/vacancy">Stellenangebote</a>
                         </li>
                         <li class=" nav-item" style="background-color:rgb(240,142,33);border-radius: 25px;">
-                            <a id="tab" class="nav-link" href="#" >Über uns</a>
+                            <a id="tab" class="nav-link" href="#">Über uns</a>
                         </li>
 
 
@@ -94,24 +112,24 @@
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-address-book"></i></a>
                             <ul class="dropdown-menu">
-                                
-                                <li><a class="dropdown-item" href="/contact_us" data-bs-toggle="tooltip" title="Mail uns"
-                                        style="text-align:center"> Kontaktieren Sie uns <i class="fa fa-envelope"
-                                            aria-hidden="true"></i></a>
+
+                                <li><a class="dropdown-item" href="/contact_us" data-bs-toggle="tooltip"
+                                        title="Mail uns" style="text-align:center"> Kontaktieren Sie uns <i
+                                            class="fa fa-envelope" aria-hidden="true"></i></a>
                                 </li>
                                 <li hidden><a class="dropdown-item" href="#" data-bs-toggle="tooltip" title="Help"
                                         style="text-align:center">Help <i class="fa fa-question-circle fa-lg"
                                             aria-hidden="true"></i></a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown" >
+                        <li class="nav-item dropdown">
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i id="tab" class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/order_status">Buchungsstatus überprüfen
-                                        </a></li>
-                                <li><a class="dropdown-item"  href="/cancel_booking">Buchung stornieren
-                                        </a></li>
+                                    </a></li>
+                                <li><a class="dropdown-item" href="/cancel_booking">Buchung stornieren
+                                    </a></li>
 
                             </ul>
                         </li>
@@ -121,9 +139,9 @@
                 </div>
             </div>
         </nav>
-             
-      
-      
+
+
+
 
         <div class="container--sm-fullwidth" style="background-color:rgb(16, 16, 52);border-radius:25px;">
             <div class="row" style="padding:5px;margin:5px">
@@ -143,7 +161,7 @@
                     </p>
                     <br>
                     <br>
-                   
+
 
 
 
@@ -156,7 +174,7 @@
             </div>
         </div>
         <br>
-     
+
 
         <div class="container-sm-fullwidth">
             <div class="row">
@@ -168,76 +186,83 @@
                         Dafür stehen wir
                     </h1>
                     <br>
-                    
+
                     <p style="position:relative;left:5%;max-width:70%;color:rgb(0, 0, 0)">
                         " Kölsch ist unsere Sprache – Service ist unsere Mission."
                     </p>
                     <br>
-                    
-                    <img src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"style="position:relative;left:5%;width:15%;height:15%">
-                    <txt class="fw-bold" style="position:relative;left:0%;top:-3%;max-width:70%;color:rgb(0, 0, 0);width:fit-content">Team AutoBlitz  </txt><br>
-                    
-                    
-                    <a  class="btn btn-primary btn-lg" href="/book" style="position:relative;left:4%; background-color:rgb(240,142,33);border-radius: 35px;font-size:100%;color:rgb(0, 0, 0);margin:0" >Jetzt einfach buchen</a>
+
+                    <img src="{{url_for('static', filename='autoblitz_logo-removebg.png')}}"
+                        style="position:relative;left:5%;width:15%;height:15%">
+                    <txt class="fw-bold"
+                        style="position:relative;left:0%;top:-3%;max-width:70%;color:rgb(0, 0, 0);width:fit-content">
+                        Team AutoBlitz </txt><br>
+
+
+                    <a class="btn btn-primary btn-lg" href="/book"
+                        style="position:relative;left:4%; background-color:rgb(240,142,33);border-radius: 35px;font-size:100%;color:rgb(0, 0, 0);margin:0">Jetzt
+                        einfach buchen</a>
                     <br>
                     <br>
                     <br><br><br>
-                    
 
-                   
+
+
                 </div>
                 <div class="col-sm-6">
-                    <img src="{{url_for('static', filename='stand.jpg')}}" alt="qutation" style="border-radius:25px;max-width:100%">
+                    <img src="{{url_for('static', filename='stand.jpg')}}" alt="qutation"
+                        style="border-radius:25px;max-width:100%">
                 </div>
             </div>
 
             <br>
-        <br>
-        <br>
-        <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
+            <br>
+            <br>
+            <div class="container-sm-fullwidth" style="position:relative;bottom:0vh;top:50vh">
 
-            <footer class="text-center text-lg-start"
-                style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
-                <div class="container d-flex justify-content-center py-5">
-                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
-                        style="background-color: rgb(16, 16, 52); border-radius: 50px;"
-                        href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
-                        <i style="color:white" class="fa fa-facebook-f"></i>
-                    </a>
-                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
-                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
-                        href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
-                        <i style="color:white" class="fa fa-youtube"></i>
-                    </a>
-                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
-                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
-                        href="https://www.instagram.com/autoblitz_c/">
-                        <i style="color:white" class="fa fa-instagram"></i>
-                    </a>
-                    <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
-                        style="background-color: rgb(16, 16, 52);border-radius: 50px;"
-                        href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
-                        <i style="color:white" class="fa fa-twitter"></i>
-                    </a>
-                </div>
-                <div class="container d-flex justify-content-center ">
-                    <a id="datap" type="button" href="/datenschutz" target="_blank">Datenschutz</a>
-                    <span class="vertical-line"></span>
-                    <a id="datap" type="button" href="/impressum" target="_blank">Impressum</a>
-                </div>
+                <footer class="text-center text-lg-start"
+                    style="background-color: rgb(240,142,33);border-top-left-radius:25px;border-top-right-radius:25px">
+                    <div class="container d-flex justify-content-center py-5">
+                        <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                            style="background-color: rgb(16, 16, 52); border-radius: 50px;"
+                            href="https://www.facebook.com/autoblitz.koeln/?locale=de_D">
+                            <i style="color:white" class="fa fa-facebook-f"></i>
+                        </a>
+                        <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                            style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                            href="https://www.youtube.com/@autoblitzcologne/featured?sub_confirmation=1">
+                            <i style="color:white" class="fa fa-youtube"></i>
+                        </a>
+                        <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                            style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                            href="https://www.instagram.com/autoblitz_c/">
+                            <i style="color:white" class="fa fa-instagram"></i>
+                        </a>
+                        <a type="button" class="btn btn-primary btn-lg btn-floating mx-2"
+                            style="background-color: rgb(16, 16, 52);border-radius: 50px;"
+                            href="https://twitter.com/intent/follow?screen_name=Autoblitz_C">
+                            <i style="color:white" class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <a id="datap" type="button" href="/datenschutz" target="_blank">Datenschutz</a>
+                        <span class="vertical-line"></span>
+                        <a id="datap" type="button" href="/impressum" target="_blank">Impressum</a>
+                    </div>
 
-                <!-- Copyright -->
-                <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-                    © 2023 Copyright:
-                    <a class="text-white" href="mailto:kontakt@tm-marketingservice.de">TM-Marketing Service</a>
-                </div>
-                <!-- Copyright -->
-            </footer>
-            
+                    <!-- Copyright -->
+                    <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                        © 2023 Copyright:
+                        <a class="text-white" href="mailto:kontakt@tm-marketingservice.de">TM-Marketing Service</a>
+                    </div>
+                    <!-- Copyright -->
+                </footer>
+
+
+            </div>
+
 
         </div>
-
-
-    </div>
 </body>
+
 </html>
