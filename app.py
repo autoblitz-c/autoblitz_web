@@ -58,7 +58,7 @@ def create_order(pay_type: str):
     user_id = session.get('user_id', None)
     if user_id is None or session.get(f'data_{user_id}') is None:
         flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-        return render_template('taxi.html')
+        return render_template('funkmietwagen.html')
 
     book = session.get(f'data_{user_id}')
     # book = json.load(data)
@@ -221,7 +221,7 @@ def ph_country(phone_number: str):
 
 # street, city, zipcode
 def geo_cal(address: str):
-    geolocator = Nominatim(user_agent="autoblitz_cologne_taxi_web_app")
+    geolocator = Nominatim(user_agent="autoblitz_cologne_funkmietwagen_web_app")
     lat, lon = lat_long(address)
     location = geolocator.reverse(str(lat) + "," + str(lon))
     loc = location.raw['address']
@@ -494,14 +494,14 @@ def vacancy_result():
     return render_template('vacancy.html')
 
 
-# taxi booking page
-@app.route('/taxi', methods=['POST', 'GET'])
+# funkmietwagen booking page
+@app.route('/funkmietwagen', methods=['POST', 'GET'])
 
-def taxi():
+def funkmietwagen():
     if check_location() == 'Access denied':
         return "Access Denied"
 
-    return render_template('taxi.html')
+    return render_template('funkmietwagen.html')
 
 
 @app.route('/booking', methods=['POST'])
@@ -842,7 +842,7 @@ def create_payment():
         user_id = session.get('user_id', None)
         if user_id is None or session.get(f'data_{user_id}') is None:
             flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-            return render_template('taxi.html')
+            return render_template('funkmietwagen.html')
 
         book = session.get(f'data_{user_id}')
         # Create a customer object
@@ -1082,7 +1082,7 @@ def booking_cash_status():
         flash(error)
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1090,7 +1090,7 @@ def booking_cash_status():
         flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1099,7 +1099,7 @@ def booking_cash_status():
         flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1107,7 +1107,7 @@ def booking_cash_status():
         flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1115,7 +1115,7 @@ def booking_cash_status():
         flash("Bitte wählen Sie den gegenwärtigen oder zukünftigen Zeitpunkt")
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1123,7 +1123,7 @@ def booking_cash_status():
         flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
         response_data = {
             'status': 'flash',
-            'template': 'taxi'
+            'template': 'funkmietwagen'
         }
 
         return jsonify(response_data)
@@ -1585,7 +1585,7 @@ def checkout():
         user_id = session.get('user_id', None)
         if user_id is None or session.get(f'data_{user_id}') is None:
             flash('Sitzung abgelaufen! Versuchen Sie es erneut.')
-            return render_template('taxi.html')
+            return render_template('funkmietwagen.html')
         book = session.get(f'data_{user_id}')
         print(book)
         # book = json.load(json_data)
@@ -1598,24 +1598,24 @@ def checkout():
             error = "Ihre Anfrage wurde noch nicht eingereicht. Bitte füllen Sie das Formular korrekt aus und geben \
                        Sie eine gültige Telefonnummer (einschließlich +49), E-Mail, Alter, Abholort, Zielort, Datum und Zeit."
             flash(error)
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
         elif ph_country(str(book["phone"])) != "Germany":
             flash("Ihre Anfrage wird nicht übermittelt, da nur deutsche Handynummern akzeptiert werden.")
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
         elif book['hpick'] == "" or book['hdrop'] == "":
             flash("Bitte geben Sie die Hausnummern für die Abholung und Zielort an.")
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
         elif validate_date(book["date"]) == False:
             flash("Bitte wählen Sie ein Datum aus dem angegebenen Bereich")
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
 
         elif valid == False:
             flash("Bitte wählen Sie den gegenwärtigen oder zukünftigen Zeitpunkt")
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
 
         elif pcity != "Köln" or dcity != "Köln":
             flash("Es tut uns sehr leid.  Wir bedienen den angegebenen Ort nicht.")
-            return render_template("taxi.html")
+            return render_template("funkmietwagen.html")
 
 
         else:
@@ -1632,7 +1632,7 @@ def checkout():
     except:
         flash(
             "Wir bitten um Entschuldigung, aber die Formulardaten wurden nicht an den Server übertragen. Bitte geben Sie daher die Daten erneut ein.")
-        return render_template("taxi.html")
+        return render_template("funkmietwagen.html")
 
 
 @app.route('/datenschutz', methods=['POST', 'GET'])
