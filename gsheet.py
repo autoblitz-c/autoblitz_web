@@ -8,9 +8,10 @@ import time
 from datetime import datetime, timedelta
 from threading import Lock
 
-#load_dotenv()
+load_dotenv()
 # create a lock for synchronizing access to the Google Sheet
 lock = Lock()
+print(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY'))
 credentials_dict = {
     'type': os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_TYPE'),
     'project_id': os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID'),

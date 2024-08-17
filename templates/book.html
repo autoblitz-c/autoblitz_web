@@ -103,7 +103,7 @@
                             <a id="tab" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown">unsere Dienstleistungen</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/taxi">Personenbeförderung</a></li>
+                                <li><a class="dropdown-item" href="/funkmietwagen">Personenbeförderung</a></li>
                                 <li><a class="dropdown-item" href="/ambulance">Krankentransport</a></li>
 
                             </ul>
@@ -155,7 +155,7 @@
         <!--booking type buttons-->
         <div class="row">
             <div id="t" class="col-sm-6">
-                <a id="tbtn" type="button" onclick="taxi()" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:21%;right:30%;top:0.5vh;border-radius: 25px;"><i
+                <a id="tbtn" type="button" onclick="funkmietwagen()" style="padding: 10px;background-color: rgb(13,110,253);border-radius: 50px;position:relative;left:21%;right:30%;top:0.5vh;border-radius: 25px;"><i
                         id="fu" class='fa fa-car'
                         style="color:rgb(255, 255, 255);font-size:100%">
                         Personenbeförderung</i></a>
@@ -175,17 +175,17 @@
 
 
         <script>
-            function taxi(){
-            if (document.getElementById("taxi").style.display == 'none') {
+            function funkmietwagen(){
+            if (document.getElementById("funkmietwagen").style.display == 'none') {
                 document.getElementById("abtn").style.background = "rgb(13,110,253)"
                 document.getElementById("abtn").style.WebkitBorderRadius = "50px"
                 document.getElementById("ambulance").style.display = "none"
-                document.getElementById("taxi").style.display = "block"
+                document.getElementById("funkmietwagen").style.display = "block"
                 document.getElementById("tbtn").style.background = "rgb(240, 142, 33)"
 
             }
-            else if (document.getElementById("taxi").style.display == 'block') {
-                document.getElementById("taxi").style.display = "none"
+            else if (document.getElementById("funkmietwagen").style.display == 'block') {
+                document.getElementById("funkmietwagen").style.display = "none"
                 document.getElementById("tbtn").style.background = "rgb(13,110,253)"
 
             }
@@ -195,7 +195,7 @@
                 if (document.getElementById("ambulance").style.display == 'none') {
                     document.getElementById("tbtn").style.background = "rgb(13,110,253)"
                     document.getElementById("tbtn").style.WebkitBorderRadius = "50px"
-                    document.getElementById("taxi").style.display = "none"
+                    document.getElementById("funkmietwagen").style.display = "none"
                     document.getElementById("ambulance").style.display = "block"
                     document.getElementById("abtn").style.background = "rgb(240, 142, 33)"
 
@@ -212,7 +212,7 @@
 
 
 
-        <div id="taxi" class="container-fullwidth" style="display:none">
+        <div id="funkmietwagen" class="container-fullwidth" style="display:none">
             <div class="row">
                 <div class="col-sm-6"
                     style="background-color:rgb(16, 16, 52);border-radius:25px;padding:25px;max-width:100%">
